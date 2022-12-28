@@ -49,22 +49,23 @@ public class MainActivity extends AppCompatActivity {
 
         gmsBarcodeScanner
                 .startScan()
-                .addOnSuccessListener(barcode -> vDisplay.setText(getSuccessfulMessage(barcode)))
+                .addOnSuccessListener(barcode
+                        -> {
+                    vDisplay.setText(getSuccessfulMessage(barcode));
+                    final DatabaseHelper helper = new DatabaseHelper(this);
+
+                    helper.read(vDisplay.getText().toString());
+
+                    if (helper.insert("1234567", "big tin", "10")) {
+                        Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
+                    }
+
+                })
                 .addOnCanceledListener(
                         () -> {
                         });
-
-
-        final DatabaseHelper helper = new DatabaseHelper(this);
-        //   name = findViewById(R.id.name);
-        //  salary = findViewById(R.id.salary);
-
-        if (helper.insert("1234567", "big tin", "10")) {
-            Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
-        }
-
 
     }
 
@@ -85,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
         String scan = "s";
         String update = "u";
 
-        if(thisKey.equals(scan)){
+        if (thisKey.equals(scan)) {
             readBarcode(findViewById(R.id.barcodeResultView));
-        }
-        if(thisKey.equals(update)){
 
         }
-        else if (thisKey.equals(erase))
+        if (thisKey.equals(update)) {
+
+        } else if (thisKey.equals(erase))
             newQty = "";
         else if (thisKey.equals(correct))
             if (currentQty.length() > 0)
