@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PanicBuy</string>
+    <string name="textview">TextView</string>
+    <string name="first_name">First Name</string>
+    <string name="Result">Result</string>
+
+</resources>
