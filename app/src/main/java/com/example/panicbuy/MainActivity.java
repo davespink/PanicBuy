@@ -46,26 +46,33 @@ public class MainActivity extends AppCompatActivity {
 
         gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
 
-
+        //  vDisplay.setText(getSuccessfulMessage(barcode);
         gmsBarcodeScanner
                 .startScan()
-                .addOnSuccessListener(barcode
-                        -> {
-                    vDisplay.setText(getSuccessfulMessage(barcode));
-                    final DatabaseHelper helper = new DatabaseHelper(this);
+                .addOnSuccessListener(
+                        (barcode) -> {
+                            vDisplay.setText(getSuccessfulMessage(barcode));
+                            final DatabaseHelper helper = new DatabaseHelper(this);
+                            if (helper.insert(vDisplay.getText().toString(), "new tin", "10")) {
+                                Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
+                            }
 
-                    helper.read(vDisplay.getText().toString());
 
-                    if (helper.insert("1234567", "big tin", "10")) {
-                        Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
-                    }
+                            if (helper.read(vDisplay.getText().toString(), this)) {
+                                Toast.makeText(MainActivity.this, "Read main", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "NOT Read main", Toast.LENGTH_LONG).show();
+                            }
 
-                })
+
+                        }
+                )
                 .addOnCanceledListener(
                         () -> {
-                        });
+                        }
+                );
 
     }
 
