@@ -41,24 +41,23 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public boolean read(String barcode, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
+     //   MainActivity mainActivity = new MainActivity();
 
-        //   ContentValues contentValues = new ContentValues();
-        //  contentValues.put("barcode", barcode);
-        MainActivity mainActivity = new MainActivity();
-
-        String sql = new String("Select * from stock where barcode = " + barcode);
+        String sql =  String.format("Select * from stock where barcode = %s", barcode);
         Toast.makeText(context, "Reading " + sql, Toast.LENGTH_LONG).show();
 
         try {
             Cursor cursor =
                     db.rawQuery(sql, null);
 
-            String col = ((Integer) cursor.getColumnCount()).toString();
-            String[] s = cursor.getColumnNames();
+         //   String col = ((Integer) cursor.getColumnCount()).toString();
+         //   String[] s = cursor.getColumnNames();
 
             cursor.moveToFirst();
             String val = cursor.getString(2);
             Toast.makeText(context, "Read OK " + val, Toast.LENGTH_LONG).show();
+
+            cursor.close();
 
             return true;
         } catch (Exception e) {

@@ -3,5 +3,7 @@
     <string name="textview">TextView</string>
     <string name="first_name">First Name</string>
     <string name="Result">Result</string>
+    <string name="barcode">Barcode</string>
+    <string name="upda">UP</string>
 
 </resources>

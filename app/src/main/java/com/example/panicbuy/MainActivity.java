@@ -6,12 +6,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Button;
+//import android.widget.Button;
 
 import android.widget.Toast;
 
-
-import com.google.mlkit.vision.barcode.common.Barcode;
+//import com.google.ml-kit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
+        // GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
     }
 
 
@@ -51,8 +50,17 @@ public class MainActivity extends AppCompatActivity {
                 .startScan()
                 .addOnSuccessListener(
                         (barcode) -> {
-                            vDisplay.setText(getSuccessfulMessage(barcode));
-                            final DatabaseHelper helper = new DatabaseHelper(this);
+
+                             DatabaseHelper helper = null;
+
+                            vDisplay.setText(barcode.getDisplayValue());
+                            try {
+                               helper = new DatabaseHelper(this);
+                            } catch (Exception e) {
+                                Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
                             if (helper.insert(vDisplay.getText().toString(), "new tin", "10")) {
                                 Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
                             } else {
@@ -61,13 +69,14 @@ public class MainActivity extends AppCompatActivity {
 
 
                             if (helper.read(vDisplay.getText().toString(), this)) {
-                                Toast.makeText(MainActivity.this, "Read main", Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, "Read main OK", Toast.LENGTH_LONG).show();
                             } else {
-                                Toast.makeText(MainActivity.this, "NOT Read main", Toast.LENGTH_LONG).show();
+                                Toast.makeText(MainActivity.this, "NOT Read main ;-(", Toast.LENGTH_LONG).show();
                             }
 
-
                         }
+
+
                 )
                 .addOnCanceledListener(
                         () -> {
@@ -95,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (thisKey.equals(scan)) {
             readBarcode(findViewById(R.id.barcodeResultView));
-
         }
         if (thisKey.equals(update)) {
 
@@ -115,33 +123,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 /*
-    public OnSuccessListener<? super Barcode> someSub() {
-        Context context = getApplicationContext();
-
-     //   barcodeResultView;
-        CharSequence text = "more toast please";
-
-        int duration = Toast.LENGTH_LONG;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-
-        return null;
-
-    }*/
-
-
-    // https://stackoverflow.com/questions/1910892/what-is-the-difference-between-super-and-extends-in-java-generi
-    // https://www.codejava.net/java-core/collections/generics-with-extends-and-super-wildcards-and-the-get-and-put-principle
-
-    //  Understand the extends wildcards in Java Generics
-
-
     private String getSuccessfulMessage(Barcode barcode) {
         String barcodeValue =
                 String.format(
                         Locale.US,
-                        "My Display Value: %s\nRaw Value: %s\nFormat: %s\nValue Type: %s",
+                        "Display Value: %s\nRaw Value: %s\nFormat: %s\nValue Type: %s",
                         barcode.getDisplayValue(),
                         barcode.getRawValue(),
                         barcode.getFormat(),
@@ -149,9 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
         return barcode.getDisplayValue();
 
-        // return  barcodeValue;
     }
-
+*/
 
 }
 
