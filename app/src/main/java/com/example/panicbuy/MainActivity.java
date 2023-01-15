@@ -2,9 +2,12 @@ package com.example.panicbuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 //import android.widget.Button;
 
@@ -15,12 +18,11 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
-
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
     GmsBarcodeScanner gmsBarcodeScanner;
     private TextView barcodeResultView;
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        makeList();
+
 
         // GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
     }
@@ -51,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(
                         (barcode) -> {
 
-                             DatabaseHelper helper = null;
+                            DatabaseHelper helper;
 
                             vDisplay.setText(barcode.getDisplayValue());
                             try {
-                               helper = new DatabaseHelper(this);
+                                helper = new DatabaseHelper(this);
                             } catch (Exception e) {
                                 Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
                                 return;
@@ -85,9 +90,60 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    public void makeList() {
+        ListView listView;
+        //   TextView listLine;
+
+        listView = findViewById(R.id.listView);
+        //      listLine = (TextView) findViewById(R.id.listLine);
+
+
+        ArrayList<String> gfg = new ArrayList<String>(
+                Arrays.asList("Geeks",
+                        "for",
+                        "Geeks"));
+
+
+        ArrayList<String> festivals = new ArrayList<String>(
+                Arrays.asList(
+                        "Diwali",
+                        "Holi",
+                        "Christmas",
+                        "Eid",
+                        "Baisakhi",
+                        "Halloween",
+                        "Diwali",
+                        "Holi",
+                        "Christmas",
+                        "Eid",
+                        "Baisakhi",
+                        "Halloween",
+                        "Diwali",
+                        "Baisakhi",
+                        "Hallowen"));
+
+        DatabaseHelper helper = new DatabaseHelper(this);
+        helper.readAll(this, festivals);
+
+
+        try {
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    R.layout.list_item, R.id.listLine, festivals);
+            listView.setAdapter(adapter);
+        } catch (Error e) {
+            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+            return;
+        }
+        Toast.makeText(MainActivity.this, "Some new toast", Toast.LENGTH_LONG).show();
+
+
+    }
+
+
     public void actionButton(View v) {
 
-        TextView vQty = findViewById(R.id.qty);
+        TextView vQty = findViewById(R.id.textViewQty);
         String currentQty = vQty.getText().toString();
         String viewID = getResources().getResourceName(v.getId());
         int l = viewID.length();

@@ -5,5 +5,7 @@
     <string name="Result">Result</string>
     <string name="barcode">Barcode</string>
     <string name="upda">UP</string>
+    <string name="listLine">listLine</string>
+    <string name="barcodeResult">barcode</string>
 
 </resources>

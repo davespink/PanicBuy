@@ -39,7 +39,7 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:hint="e.g 544"
+                android:hint="@string/barcodeResult"
                 android:inputType="text"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -180,14 +180,27 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/purpleLayout"
         android:layout_width="349dp"
         android:layout_height="508dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:background="@color/purple_200"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orangeLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/orangeLayout"
+        android:orientation="horizontal">
 
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@android:color/black"
+            android:dividerHeight="1dp" />
+
+
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

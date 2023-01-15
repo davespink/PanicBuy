@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "panicData";
     public static final String STOCK_TABLE_NAME = "stock";
@@ -41,17 +43,17 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public boolean read(String barcode, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-     //   MainActivity mainActivity = new MainActivity();
+        //   MainActivity mainActivity = new MainActivity();
 
-        String sql =  String.format("Select * from stock where barcode = %s", barcode);
+        String sql = String.format("Select * from stock where barcode = %s", barcode);
         Toast.makeText(context, "Reading " + sql, Toast.LENGTH_LONG).show();
 
         try {
             Cursor cursor =
                     db.rawQuery(sql, null);
 
-         //   String col = ((Integer) cursor.getColumnCount()).toString();
-         //   String[] s = cursor.getColumnNames();
+            //   String col = ((Integer) cursor.getColumnCount()).toString();
+            //   String[] s = cursor.getColumnNames();
 
             cursor.moveToFirst();
             String val = cursor.getString(2);
@@ -68,6 +70,47 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public boolean readAll(Context context, ArrayList<String> festivals) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //   MainActivity mainActivity = new MainActivity();
+
+        String sql = String.format("Select * from stock where 1");
+        Toast.makeText(context, "Reading " + sql, Toast.LENGTH_LONG).show();
+
+        try {
+            Cursor cursor =
+                    db.rawQuery(sql, null);
+
+            //   String col = ((Integer) cursor.getColumnCount()).toString();
+            //   String[] s = cursor.getColumnNames();
+
+            cursor.moveToFirst();
+
+            String val;
+
+            int i = 0;
+            while (!cursor.isLast()) {
+                val = cursor.getString(2);
+                //     Toast.makeText(context, "Read OK " + i + val, Toast.LENGTH_SHORT).show();
+
+                festivals.add(val);
+
+                cursor.moveToNext();
+                i++;
+            }
+            cursor.close();
+
+            return true;
+        } catch (Exception e) {
+            Toast.makeText(context, "NOT Read", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+
+    }
 }
 
 
