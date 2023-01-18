@@ -113,7 +113,8 @@
                         android:text="M"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:onClick="actionButton"/>
 
                     <EditText
                         android:id="@+id/editTextQty"
@@ -181,24 +182,21 @@
 
     <LinearLayout
         android:id="@+id/purpleLayout"
-        android:layout_width="349dp"
-        android:layout_height="508dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="345dp"
+        android:layout_height="368dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
         android:background="@color/purple_200"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orangeLayout"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@+id/orangeLayout">
+
 
         <ListView
-            android:id="@+id/listView"
+            android:id="@+id/userlist"
+
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/black"
-            android:dividerHeight="1dp" />
-
-
-
+            android:layout_height="wrap_content"></ListView>
 
     </LinearLayout>
 

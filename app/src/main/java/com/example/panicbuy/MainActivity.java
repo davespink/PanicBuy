@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Context;
+import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,29 +34,52 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        makeList();
+
+        ListView mListView;
+        ArrayAdapter aAdapter;
 
 
-        // GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
+
+        ArrayList<String> users = new ArrayList<String>(
+                Arrays.asList(
+                      "Mr Suresh Dasari", "Rohini Alavala",   "Hamsika Yemineni Cricket",
+                        "Mr Suresh Dasari", "Rohini Alavala",   "Hamsika Yemineni Cricket"
+
+                ));
+
+
+        DatabaseHelper helper = new DatabaseHelper(this);
+        helper.readAll(this, users);
+
+        mListView = (ListView) findViewById(R.id.userlist);
+        aAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, users);
+        mListView.setAdapter(aAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // TODO Auto-generated method stub
+                String value=aAdapter.getItem(position).toString();
+                Toast.makeText(getApplicationContext(),value,Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
     }
+            public void readBarcode(View v) {
+                //      Log.d("some TAG", "a message");
 
+                TextView vDisplay = findViewById(R.id.barcodeResultView);
 
-    public void readBarcode(View v) {
-        //      Log.d("some TAG", "a message");
+                GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
 
-        TextView vDisplay = findViewById(R.id.barcodeResultView);
+                optionsBuilder.allowManualInput();
 
-        GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
+                gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
 
-        optionsBuilder.allowManualInput();
-
-        gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
-
-        //  vDisplay.setText(getSuccessfulMessage(barcode);
-        gmsBarcodeScanner
-                .startScan()
-                .addOnSuccessListener(
-                        (barcode) -> {
+                //  vDisplay.setText(getSuccessfulMessage(barcode);
+                gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
 
                             DatabaseHelper helper;
 
@@ -82,101 +107,50 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 
-                )
-                .addOnCanceledListener(
-                        () -> {
-                        }
-                );
+                ).addOnCanceledListener(() -> {
+                });
 
-    }
-
-
-    public void makeList() {
-        ListView listView;
-        //   TextView listLine;
-
-        listView = findViewById(R.id.listView);
-        //      listLine = (TextView) findViewById(R.id.listLine);
-
-
-        ArrayList<String> gfg = new ArrayList<String>(
-                Arrays.asList("Geeks",
-                        "for",
-                        "Geeks"));
-
-
-        ArrayList<String> festivals = new ArrayList<String>(
-                Arrays.asList(
-                        "Diwali",
-                        "Holi",
-                        "Christmas",
-                        "Eid",
-                        "Baisakhi",
-                        "Halloween",
-                        "Diwali",
-                        "Holi",
-                        "Christmas",
-                        "Eid",
-                        "Baisakhi",
-                        "Halloween",
-                        "Diwali",
-                        "Baisakhi",
-                        "Hallowen"));
-
-        DatabaseHelper helper = new DatabaseHelper(this);
-        helper.readAll(this, festivals);
-
-
-        try {
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    R.layout.list_item, R.id.listLine, festivals);
-            listView.setAdapter(adapter);
-        } catch (Error e) {
-            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-            return;
-        }
-        Toast.makeText(MainActivity.this, "Some new toast", Toast.LENGTH_LONG).show();
-
-
-    }
-
-
-    public void actionButton(View v) {
-
-        TextView vQty = findViewById(R.id.textViewQty);
-        String currentQty = vQty.getText().toString();
-        String viewID = getResources().getResourceName(v.getId());
-        int l = viewID.length();
-        viewID = viewID.substring(l - 1, l);
-
-        // ViewID is the bit after the "_"
-        String thisKey = viewID;
-        String newQty = "";
-
-        String erase = "e";
-        String correct = "c";
-        String scan = "s";
-        String update = "u";
-
-        if (thisKey.equals(scan)) {
-            readBarcode(findViewById(R.id.barcodeResultView));
-        }
-        if (thisKey.equals(update)) {
-
-        } else if (thisKey.equals(erase))
-            newQty = "";
-        else if (thisKey.equals(correct))
-            if (currentQty.length() > 0)
-                newQty = currentQty.substring(0, currentQty.length() - 1);
-            else {
             }
-        else {
-            newQty = currentQty + thisKey;
-        }
 
-        vQty.setText(newQty);
 
-    }
+            public void actionButton(View v) {
+                Toast.makeText(MainActivity.this, "Click", Toast.LENGTH_LONG).show();
+
+
+                TextView vQty = findViewById(R.id.textViewQty);
+                String currentQty = vQty.getText().toString();
+                String viewID = getResources().getResourceName(v.getId());
+                int l = viewID.length();
+                viewID = viewID.substring(l - 1, l);
+
+                // ViewID is the bit after the "_"
+                String thisKey = viewID;
+                String newQty = "";
+
+                String erase = "e";
+                String correct = "c";
+                String scan = "s";
+                String update = "u";
+
+                if (thisKey.equals(scan)) {
+                    readBarcode(findViewById(R.id.barcodeResultView));
+                }
+                if (thisKey.equals(update)) {
+
+                } else if (thisKey.equals(erase)) newQty = "";
+                else if (thisKey.equals(correct))
+                    if (currentQty.length() > 0)
+                        newQty = currentQty.substring(0, currentQty.length() - 1);
+                    else {
+                    }
+                else {
+                    newQty = currentQty + thisKey;
+                }
+
+                vQty.setText(newQty);
+
+
+            }
 
 /*
     private String getSuccessfulMessage(Barcode barcode) {
@@ -194,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 */
 
-}
+        }
 
 
 
