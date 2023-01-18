@@ -39,11 +39,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter aAdapter;
 
 
-
         ArrayList<String> users = new ArrayList<String>(
                 Arrays.asList(
-                      "Mr Suresh Dasari", "Rohini Alavala",   "Hamsika Yemineni Cricket",
-                        "Mr Suresh Dasari", "Rohini Alavala",   "Hamsika Yemineni Cricket"
+                        "Mr Suresh Dasari", "Rohini Alavalas", "Hamsika Yemineni Cricket",
+                        "Mr Suresh Dasari", "Rohini Alavala", "Hamsika Yemineni Cricket"
 
                 ));
 
@@ -52,123 +51,111 @@ public class MainActivity extends AppCompatActivity {
         helper.readAll(this, users);
 
         mListView = (ListView) findViewById(R.id.userlist);
-        aAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, users);
+        aAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, users);
         mListView.setAdapter(aAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // TODO Auto-generated method stub
-                String value=aAdapter.getItem(position).toString();
-                Toast.makeText(getApplicationContext(),value,Toast.LENGTH_SHORT).show();
+                String value = aAdapter.getItem(position).toString();
+                Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
 
             }
         });
 
 
     }
-            public void readBarcode(View v) {
-                //      Log.d("some TAG", "a message");
 
-                TextView vDisplay = findViewById(R.id.barcodeResultView);
+    public void readBarcode() {
+        //      Log.d("some TAG", "a message");
 
-                GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
+        TextView vDisplay = findViewById(R.id.barcodeResultView);
 
-                optionsBuilder.allowManualInput();
+        GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
 
-                gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
+        optionsBuilder.allowManualInput();
 
-                //  vDisplay.setText(getSuccessfulMessage(barcode);
-                gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
+        gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
 
-                            DatabaseHelper helper;
+        //  vDisplay.setText(getSuccessfulMessage(barcode);
+        gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
 
-                            vDisplay.setText(barcode.getDisplayValue());
-                            try {
-                                helper = new DatabaseHelper(this);
-                            } catch (Exception e) {
-                                Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
-                                return;
-                            }
+                    DatabaseHelper helper;
 
-                            if (helper.insert(vDisplay.getText().toString(), "new tin", "10")) {
-                                Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
-                            }
-
-
-                            if (helper.read(vDisplay.getText().toString(), this)) {
-                                Toast.makeText(MainActivity.this, "Read main OK", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, "NOT Read main ;-(", Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-
-
-                ).addOnCanceledListener(() -> {
-                });
-
-            }
-
-
-            public void actionButton(View v) {
-                Toast.makeText(MainActivity.this, "Click", Toast.LENGTH_LONG).show();
-
-
-                TextView vQty = findViewById(R.id.textViewQty);
-                String currentQty = vQty.getText().toString();
-                String viewID = getResources().getResourceName(v.getId());
-                int l = viewID.length();
-                viewID = viewID.substring(l - 1, l);
-
-                // ViewID is the bit after the "_"
-                String thisKey = viewID;
-                String newQty = "";
-
-                String erase = "e";
-                String correct = "c";
-                String scan = "s";
-                String update = "u";
-
-                if (thisKey.equals(scan)) {
-                    readBarcode(findViewById(R.id.barcodeResultView));
-                }
-                if (thisKey.equals(update)) {
-
-                } else if (thisKey.equals(erase)) newQty = "";
-                else if (thisKey.equals(correct))
-                    if (currentQty.length() > 0)
-                        newQty = currentQty.substring(0, currentQty.length() - 1);
-                    else {
+                    vDisplay.setText(barcode.getDisplayValue());
+                    try {
+                        helper = new DatabaseHelper(this);
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
+                        return;
                     }
-                else {
-                    newQty = currentQty + thisKey;
+
+                    if (helper.insert(vDisplay.getText().toString(), "new tin", "10")) {
+                        Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
+                    }
+
+
+                    if (helper.read(vDisplay.getText().toString(), this)) {
+                        Toast.makeText(MainActivity.this, "Read main OK", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "NOT Read main ;-(", Toast.LENGTH_LONG).show();
+                    }
+
                 }
 
-                vQty.setText(newQty);
 
-
-            }
-
-/*
-    private String getSuccessfulMessage(Barcode barcode) {
-        String barcodeValue =
-                String.format(
-                        Locale.US,
-                        "Display Value: %s\nRaw Value: %s\nFormat: %s\nValue Type: %s",
-                        barcode.getDisplayValue(),
-                        barcode.getRawValue(),
-                        barcode.getFormat(),
-                        barcode.getValueType());
-
-        return barcode.getDisplayValue();
+        ).addOnCanceledListener(() -> {
+        });
 
     }
-*/
 
+
+    public void actionButton(View v) {
+
+        TextView vQty = findViewById(R.id.textViewQty);
+        String currentQty = vQty.getText().toString();
+        String viewID = getResources().getResourceName(v.getId());
+        int l = viewID.length();
+        viewID = viewID.substring(l - 1, l);
+
+        // ViewID is the bit after the "_"
+        String thisKey = viewID;
+
+        Toast.makeText(MainActivity.this, "Click" + thisKey, Toast.LENGTH_LONG).show();
+
+
+        switch (thisKey) {
+
+            case "m":
+
+                break;
+            case "p":
+
+                break;
+            case "s":
+                readBarcode();
+                break;
+            case "u":
+
+                break;
+            case "f":
+
+                break;
+            case "d":
+
+                break;
         }
+
+
+    }
+}
+
+
+
+
 
 
 
