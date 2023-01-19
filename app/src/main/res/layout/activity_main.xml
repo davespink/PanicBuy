@@ -41,7 +41,7 @@
                 android:layout_width="232dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="22dp"
-                android:background="@color/white"
+
                 android:hint="@string/barcodeResult"
                 android:inputType="text"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -67,7 +67,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:hint="e.g 52"
+                android:hint="Unknown"
 
 
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -121,7 +121,7 @@
                         android:layout_width="100dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="2dp"
-                        android:hint="e.g 5"
+                        android:hint="0"
 
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -222,7 +222,7 @@
             android:id="@+id/userlist"
 
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="match_parent"></ListView>
 
     </LinearLayout>
 

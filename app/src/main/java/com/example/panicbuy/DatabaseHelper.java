@@ -30,13 +30,25 @@ class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insert(String barcode, String description, String qty) {
+    public boolean update(String barcode, String description, String qty, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("barcode", barcode);
-        contentValues.put("description", description);
-        contentValues.put("qty", qty);
-        db.insert(STOCK_TABLE_NAME, null, contentValues);
+
+
+        String sql = String.format("Insert into stock (barcode,description,qty) values('%s','%s',%s)", barcode, description, qty);
+    //    Toast.makeText(context, "Update " + sql, Toast.LENGTH_LONG).show();
+        try {
+
+            ContentValues newValues = new ContentValues();
+            newValues.put("barcode", barcode);
+            newValues.put("description", description);
+            newValues.put("qty", qty);
+
+            db.insert("stock", null, newValues);
+
+        } catch (Error e) {
+               Toast.makeText(context, "Some error" + sql, Toast.LENGTH_LONG).show();
+        }
+
         return true;
     }
 
@@ -71,7 +83,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean readAll(Context context, ArrayList<String> festivals) {
+    public boolean delete(String barcode, Context context) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = String.format("delete from stock where barcode = '%s'", barcode);
+        db.rawQuery(sql, null);
+        return true;
+    }
+
+    public boolean readAll(Context context, ArrayList<String> product) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -93,10 +112,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             int i = 0;
             while (!cursor.isLast()) {
-                val = cursor.getString(2);
+                val = cursor.getString(1) + cursor.getString(2) + cursor.getString(3);
                 //     Toast.makeText(context, "Read OK " + i + val, Toast.LENGTH_SHORT).show();
 
-                festivals.add(val);
+                product.add(val);
 
                 cursor.moveToNext();
                 i++;

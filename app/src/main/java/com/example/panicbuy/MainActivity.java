@@ -2,16 +2,12 @@ package com.example.panicbuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import android.content.Context;
-import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-//import android.widget.Button;
 
 import android.widget.Toast;
 
@@ -25,45 +21,41 @@ import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
-
     GmsBarcodeScanner gmsBarcodeScanner;
-    private TextView barcodeResultView;
 
+    //
+    // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
+    //
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         ListView mListView;
         ArrayAdapter aAdapter;
 
 
-        ArrayList<String> users = new ArrayList<String>(
-                Arrays.asList(
-                        "Mr Suresh Dasari", "Rohini Alavalas", "Hamsika Yemineni Cricket",
-                        "Mr Suresh Dasari", "Rohini Alavala", "Hamsika Yemineni Cricket"
 
-                ));
+        ArrayList<String> products = new ArrayList<String>(Arrays.asList("Mr Suresh Dasari", "Rohini Alavalas", "Hamsika Yemineni Cricket", "Mr Suresh Dasari", "Rohini Alavala", "Hamsika Yemineni Cricket"
+
+        ));
 
 
         DatabaseHelper helper = new DatabaseHelper(this);
-        helper.readAll(this, users);
+        helper.readAll(this, products);
 
         mListView = (ListView) findViewById(R.id.userlist);
-        aAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, users);
+        aAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products);
         mListView.setAdapter(aAdapter);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // TODO Auto-generated method stub
-                String value = aAdapter.getItem(position).toString();
-                Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+        mListView.setOnItemClickListener((adapterView, view, position, l) -> {
 
-            }
+            String value = aAdapter.getItem(position).toString();
+            Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+
         });
 
+      //  aAdapter.notifyDataSetChanged();
 
     }
 
@@ -77,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
         optionsBuilder.allowManualInput();
 
         gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
-
-        //  vDisplay.setText(getSuccessfulMessage(barcode);
         gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
 
-                    DatabaseHelper helper;
+                    //       DatabaseHelper helper;
 
                     vDisplay.setText(barcode.getDisplayValue());
+
+    /*
                     try {
                         helper = new DatabaseHelper(this);
                     } catch (Exception e) {
@@ -102,12 +94,14 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Read main OK", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(MainActivity.this, "NOT Read main ;-(", Toast.LENGTH_LONG).show();
-                    }
+                    } */
 
                 }
 
 
         ).addOnCanceledListener(() -> {
+            Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show();
+
         });
 
     }
@@ -126,6 +120,21 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(MainActivity.this, "Click" + thisKey, Toast.LENGTH_LONG).show();
 
+        DatabaseHelper helper;
+        try {
+            helper = new DatabaseHelper(this);
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "Failed to access database", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String sBarcode = ((TextView) (findViewById(R.id.barcodeResultView))).getText().toString();
+        String sDescription = ((TextView) (findViewById(R.id.editTextDescription))).getText().toString();
+        //String sBarcode = tv.getText().toString();
+
+        //String sBarcode = ((TextView)findViewById(R.id.barcodeResultView).
+
+        //String sDescription = findViewById(R.id.editTextDescription).toString();
 
         switch (thisKey) {
 
@@ -139,13 +148,22 @@ public class MainActivity extends AppCompatActivity {
                 readBarcode();
                 break;
             case "u":
-
+                helper.update(sBarcode, sDescription, "10", this);
                 break;
             case "f":
-
+                if (helper.read(sBarcode, this)) {
+                    Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
+                }
                 break;
-            case "d":
 
+            case "d":
+                if (helper.delete(sBarcode, this)) {
+                    Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "NOT Deleted", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
 
