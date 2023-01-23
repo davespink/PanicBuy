@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ArrayList<String> products = new ArrayList<String>(Arrays.asList("Mr Suresh Dasari", "Rohini Alavalas", "Hamsika Yemineni Cricket", "Mr Suresh Dasari", "Rohini Alavala", "Hamsika Yemineni Cricket"
+        ArrayList<String> products = new ArrayList<String>(Arrays.asList("Mr Suresh Dasaryi", "Rohini Alavalas", "Hamsika Yemineni Cricket", "Mr Suresh Dasari", "Rohini Alavala", "Hamsika Yemineni Cricket"
 
         ));
 
