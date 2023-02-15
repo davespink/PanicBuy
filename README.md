@@ -1,5 +1,5 @@
 # PanicBuy
-barcode stock androd app
+barcode stock android app
 
 
 Some test code to uderstand sqllite and mlkit better
