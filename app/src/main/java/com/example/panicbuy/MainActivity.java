@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,26 +31,39 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView mListView;
-        ArrayAdapter aAdapter;
 
 
+   //     DatabaseHelper helper = new DatabaseHelper(this);
+    //    helper.readAll(this, products);
 
-        ArrayList<String> products = new ArrayList<String>(Arrays.asList("Mr Suresh Dasaryi", "Rohini Alavalas", "Hamsika Yemineni Cricket", "Mr Suresh Dasari", "Rohini Alavala", "Hamsika Yemineni Cricket"
+        //Create the Stock objects
+        Stock pen = new Stock("1","1111111","Nice Pen Black","10");
+        Stock beans = new Stock("2","22222","Nice Heinz beans","20");
+        Stock tuna = new Stock("3","33333","Fishy fish","30");
+        Stock soap = new Stock("4","4444","Soft soap","40");
 
-        ));
+
+        //Add the Stock objects to an ArrayList
+        ArrayList<Stock> stockList = new ArrayList<>();
+        stockList.add(pen);
+        stockList.add(beans);
+        stockList.add(tuna);
+        stockList.add(soap);
+
+        ListView mListView = (ListView) findViewById(R.id.userlist);
 
 
-        DatabaseHelper helper = new DatabaseHelper(this);
-        helper.readAll(this, products);
+        StockListAdapter adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
+        mListView.setAdapter(adapter);
 
-        mListView = (ListView) findViewById(R.id.userlist);
-        aAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products);
-        mListView.setAdapter(aAdapter);
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
 
-            String value = aAdapter.getItem(position).toString();
+            String value = adapter.getItem(position).toString();
+
+            Integer i = position;
+            Toast.makeText(getApplicationContext(), String.format("Clicked %s", i.toString()), Toast.LENGTH_SHORT).show();
+
             Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
 
         });
@@ -118,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         // ViewID is the bit after the "_"
         String thisKey = viewID;
 
-        Toast.makeText(MainActivity.this, "Click" + thisKey, Toast.LENGTH_LONG).show();
+    //    Toast.makeText(MainActivity.this, "Click" + thisKey, Toast.LENGTH_LONG).show();
 
         DatabaseHelper helper;
         try {
@@ -160,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
 
             case "d":
                 if (helper.delete(sBarcode, this)) {
-                    Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "NOT Deleted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "NOT Deleted", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

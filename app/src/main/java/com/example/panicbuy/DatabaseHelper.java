@@ -33,9 +33,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public boolean update(String barcode, String description, String qty, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-
         String sql = String.format("Insert into stock (barcode,description,qty) values('%s','%s',%s)", barcode, description, qty);
-    //    Toast.makeText(context, "Update " + sql, Toast.LENGTH_LONG).show();
+        //    Toast.makeText(context, "Update " + sql, Toast.LENGTH_SHORT).show();
         try {
 
             ContentValues newValues = new ContentValues();
@@ -44,21 +43,25 @@ class DatabaseHelper extends SQLiteOpenHelper {
             newValues.put("qty", qty);
 
             db.insert("stock", null, newValues);
+            Toast.makeText(context, "Updated" + sql, Toast.LENGTH_SHORT).show();
 
         } catch (Error e) {
-               Toast.makeText(context, "Some error" + sql, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Some error" + sql, Toast.LENGTH_SHORT).show();
         }
+
+        // close database somewhere!!!
+        db.close();
 
         return true;
     }
 
     public boolean read(String barcode, Context context) {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        //   MainActivity mainActivity = new MainActivity();
-
+        
         String sql = String.format("Select * from stock where barcode = %s", barcode);
-        Toast.makeText(context, "Reading " + sql, Toast.LENGTH_LONG).show();
+
+
+        Toast.makeText(context, "Reading " + sql, Toast.LENGTH_SHORT).show();
 
         try {
             Cursor cursor =
@@ -69,13 +72,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             cursor.moveToFirst();
             String val = cursor.getString(2);
-            Toast.makeText(context, "Read OK " + val, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Read OK " + val, Toast.LENGTH_SHORT).show();
 
             cursor.close();
+            db.close();
 
             return true;
         } catch (Exception e) {
-            Toast.makeText(context, "NOT Read", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -86,18 +90,28 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public boolean delete(String barcode, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = String.format("delete from stock where barcode = '%s'", barcode);
-        db.rawQuery(sql, null);
+        Toast.makeText(context, sql, Toast.LENGTH_SHORT).show();
+
+        try {
+            db.execSQL(sql);
+        } catch (Exception e) {
+            Toast.makeText(context, "NOT Deleted", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        db.close();
+
         return true;
     }
 
     public boolean readAll(Context context, ArrayList<String> product) {
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         //   MainActivity mainActivity = new MainActivity();
 
         String sql = String.format("Select * from stock where 1");
-        Toast.makeText(context, "Reading " + sql, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Reading " + sql, Toast.LENGTH_SHORT).show();
 
         try {
             Cursor cursor =
@@ -112,7 +126,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             int i = 0;
             while (!cursor.isLast()) {
-                val = cursor.getString(1) + cursor.getString(2) + cursor.getString(3);
+                val = cursor.getString(0)  + '-' + cursor.getString(1) + '-' + cursor.getString(2) + '-' + cursor.getString(3);
                 //     Toast.makeText(context, "Read OK " + i + val, Toast.LENGTH_SHORT).show();
 
                 product.add(val);
@@ -124,7 +138,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             return true;
         } catch (Exception e) {
-            Toast.makeText(context, "NOT Read", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
             return false;
         }
 

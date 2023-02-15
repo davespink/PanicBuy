@@ -16,11 +16,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginRight="4dp"
 
-
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <TableRow
             android:layout_width="match_parent"
@@ -114,7 +111,7 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="8dp"
                         android:onClick="actionButton"
-                        android:text="-"/>
+                        android:text="-" />
 
                     <EditText
                         android:id="@+id/editTextQty"
@@ -217,15 +214,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/orangeLayout">
 
-
         <ListView
             android:id="@+id/userlist"
-
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            android:layout_height="match_parent">
+        </ListView>
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

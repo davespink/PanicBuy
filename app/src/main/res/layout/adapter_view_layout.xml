@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
+    <TextView
+        android:id="@+id/textView_my_id"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_weight="25"
+        android:visibility="gone"
+        android:text="TextView_Id"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView_barcode"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_weight="25"
+        android:text="TextView_barcode"
+        android:textAlignment="center" />
+
+    <TextView
+        android:id="@+id/textView_description"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_weight="25"
+        android:text="TextView_description" />
+
+    <TextView
+        android:id="@+id/textView_qty"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="25"
+        android:text="TextView_qty" />
+
+
+</LinearLayout>
