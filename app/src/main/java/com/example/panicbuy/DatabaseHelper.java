@@ -13,8 +13,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "panicData";
     public static final String STOCK_TABLE_NAME = "stock";
 
+    private SQLiteDatabase m_db;
+
     public DatabaseHelper(Context context) {
+
         super(context, DATABASE_NAME, null, 1);
+
+        m_db = getWritableDatabase();
     }
 
     @Override
@@ -55,37 +60,32 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean read(String barcode, Context context) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        
+    public Stock findBarcode(String barcode, Context context) {
+
         String sql = String.format("Select * from stock where barcode = %s", barcode);
-
-
-        Toast.makeText(context, "Reading " + sql, Toast.LENGTH_SHORT).show();
 
         try {
             Cursor cursor =
-                    db.rawQuery(sql, null);
-
-            //   String col = ((Integer) cursor.getColumnCount()).toString();
-            //   String[] s = cursor.getColumnNames();
+                    m_db.rawQuery(sql, null);
 
             cursor.moveToFirst();
-            String val = cursor.getString(2);
-            Toast.makeText(context, "Read OK " + val, Toast.LENGTH_SHORT).show();
+
+            String description = cursor.getString(2);
+
+       //     Toast.makeText(context, "Read OK " + val, Toast.LENGTH_SHORT).show();
 
             cursor.close();
-            db.close();
 
-            return true;
+            Stock s = new Stock("1","1234",description,"10");
+
+            return s;
         } catch (Exception e) {
             Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
-            return false;
+
+            return null;
         }
 
-
     }
-
 
     public boolean delete(String barcode, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -104,9 +104,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean readAll(Context context, ArrayList<String> product) {
+    public boolean readAll(Context context, ArrayList<Stock> stockList) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
+     //   m_db  = this.getWritableDatabase();
 
         //   MainActivity mainActivity = new MainActivity();
 
@@ -115,10 +115,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             Cursor cursor =
-                    db.rawQuery(sql, null);
-
-            //   String col = ((Integer) cursor.getColumnCount()).toString();
-            //   String[] s = cursor.getColumnNames();
+                   m_db.rawQuery(sql, null);
 
             cursor.moveToFirst();
 
@@ -126,10 +123,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             int i = 0;
             while (!cursor.isLast()) {
-                val = cursor.getString(0)  + '-' + cursor.getString(1) + '-' + cursor.getString(2) + '-' + cursor.getString(3);
+        //        val = cursor.getString(0)  + '-' + cursor.getString(1) + '-' + cursor.getString(2) + '-' + cursor.getString(3);
                 //     Toast.makeText(context, "Read OK " + i + val, Toast.LENGTH_SHORT).show();
 
-                product.add(val);
+           //     stockList.add(val);
+
+                Stock record = new Stock(cursor.getString(0),cursor.getString(1),
+                        cursor.getString(2),cursor.getString(3));
+
+                stockList.add(record);
 
                 cursor.moveToNext();
                 i++;

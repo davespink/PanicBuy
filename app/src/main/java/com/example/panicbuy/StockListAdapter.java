@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * Created by User on 3/14/2017.
@@ -59,7 +59,7 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         String qty = getItem(position).getQty();
 
         //Create the person object with the information
-        Stock stock = new Stock(my_id, barcode, description,qty);
+        Stock stock = new Stock(my_id, barcode, description, qty);
 
         //create the view result for showing the animation
         final View result;
@@ -73,10 +73,10 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
             convertView = inflater.inflate(mResource, parent, false);
             holder = new ViewHolder();
 
-            holder.my_id = (TextView) convertView.findViewById(R.id.textView_my_id);
-            holder.barcode = (TextView) convertView.findViewById(R.id.textView_barcode);
-            holder.description = (TextView) convertView.findViewById(R.id.textView_description);
-            holder.qty= (TextView) convertView.findViewById(R.id.textView_qty);
+            holder.my_id = convertView.findViewById(R.id.textView_my_id);
+            holder.barcode = convertView.findViewById(R.id.textView_barcode);
+            holder.description = convertView.findViewById(R.id.textView_description);
+            holder.qty = convertView.findViewById(R.id.textView_qty);
 
             result = convertView;
 

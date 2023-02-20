@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-   //     DatabaseHelper helper = new DatabaseHelper(this);
-    //    helper.readAll(this, products);
+        //     DatabaseHelper helper = new DatabaseHelper(this);
+        //    helper.readAll(this, products);
 
         //Create the Stock objects
         Stock pen = new Stock("1","1111111","Nice Pen Black","10");
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-      //  aAdapter.notifyDataSetChanged();
+        //  aAdapter.notifyDataSetChanged();
 
     }
 
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         // ViewID is the bit after the "_"
         String thisKey = viewID;
 
-    //    Toast.makeText(MainActivity.this, "Click" + thisKey, Toast.LENGTH_LONG).show();
+        //    Toast.makeText(MainActivity.this, "Click" + thisKey, Toast.LENGTH_LONG).show();
 
         DatabaseHelper helper;
         try {
@@ -164,25 +164,24 @@ public class MainActivity extends AppCompatActivity {
                 helper.update(sBarcode, sDescription, "10", this);
                 break;
             case "f":
-                if (helper.read(sBarcode, this)) {
-                    Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
+   //             if (helper.read(sBarcode, this)) {
+      //              Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
+       //         } else {
+         //           Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
                 }
-                break;
+              //  break;
 
-            case "d":
-                if (helper.delete(sBarcode, this)) {
-                    Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "NOT Deleted", Toast.LENGTH_SHORT).show();
-                }
-                break;
+            //case "d":
+          //      if (helper.delete(sBarcode, this)) {
+          //          Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+           //     } else {
+            //        Toast.makeText(MainActivity.this, "NOT Deleted", Toast.LENGTH_SHORT).show();
+            //    }
+             //   break;
         }
 
 
     }
-}
 
 
 
