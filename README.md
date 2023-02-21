@@ -2,4 +2,4 @@
 barcode stock android app
 
 
-Some test code to uderstand sqllite and mlkit better
+Some test code to understand sqllite and mlkit better
