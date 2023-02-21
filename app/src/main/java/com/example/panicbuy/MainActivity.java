@@ -1,11 +1,15 @@
 package com.example.panicbuy;
 
+import static java.lang.Integer.parseInt;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,8 +22,6 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 import java.util.ArrayList;
 
-
-
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
 
@@ -31,34 +33,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-        //     DatabaseHelper helper = new DatabaseHelper(this);
-        //    helper.readAll(this, products);
-
-        //Create the Stock objects
-        Stock pen = new Stock("1","1111111","Nice Pen Black","10");
-        Stock beans = new Stock("2","22222","Nice Heinz beans","20");
-        Stock tuna = new Stock("3","33333","Fishy fish","30");
-        Stock soap = new Stock("4","4444","Soft soap","40");
-
-
-        //Add the Stock objects to an ArrayList
-        ArrayList<Stock> stockList = new ArrayList<>();
-        stockList.add(pen);
-        stockList.add(beans);
-        stockList.add(tuna);
-        stockList.add(soap);
-
         ListView mListView = (ListView) findViewById(R.id.userlist);
-
-
+        ArrayList<Stock> stockList = new ArrayList<>();
         StockListAdapter adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
         mListView.setAdapter(adapter);
 
+        DatabaseHelper helper = new DatabaseHelper(this);
+        helper.readAll(this, stockList);
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
-
             String value = adapter.getItem(position).toString();
 
             Integer i = position;
@@ -123,15 +106,11 @@ public class MainActivity extends AppCompatActivity {
     public void actionButton(View v) {
 
         TextView vQty = findViewById(R.id.textViewQty);
-        String currentQty = vQty.getText().toString();
+     //   String currentQty = vQty.getText().toString();
         String viewID = getResources().getResourceName(v.getId());
         int l = viewID.length();
         viewID = viewID.substring(l - 1, l);
-
-        // ViewID is the bit after the "_"
         String thisKey = viewID;
-
-        //    Toast.makeText(MainActivity.this, "Click" + thisKey, Toast.LENGTH_LONG).show();
 
         DatabaseHelper helper;
         try {
@@ -141,27 +120,26 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // Lets construct a stock object
         String sBarcode = ((TextView) (findViewById(R.id.barcodeResultView))).getText().toString();
         String sDescription = ((TextView) (findViewById(R.id.editTextDescription))).getText().toString();
-        //String sBarcode = tv.getText().toString();
-
-        //String sBarcode = ((TextView)findViewById(R.id.barcodeResultView).
-
-        //String sDescription = findViewById(R.id.editTextDescription).toString();
+        String sQty = ((TextView)(findViewById(R.id.editTextQty))).getText().toString();
 
         switch (thisKey) {
-
             case "m":
-
-                break;
             case "p":
-
+                int iQty = Integer.parseInt(sQty);
+                if(thisKey.equals("m"))
+                iQty--;else iQty++;
+                TextView eQty = (TextView)(findViewById(R.id.editTextQty));
+                eQty.setText(String.valueOf(iQty));
                 break;
             case "s":
                 readBarcode();
                 break;
             case "u":
-                helper.update(sBarcode, sDescription, "10", this);
+                Stock stock = new Stock("0",sBarcode,sDescription,sQty);
+                helper.update(stock);
                 break;
             case "f":
    //             if (helper.read(sBarcode, this)) {

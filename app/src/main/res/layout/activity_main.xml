@@ -118,8 +118,7 @@
                         android:layout_width="100dp"
                         android:layout_height="60dp"
                         android:layout_marginStart="2dp"
-                        android:hint="0"
-
+                        android:text="7"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         app:layout_constraintStart_toStartOf="parent" />
 
