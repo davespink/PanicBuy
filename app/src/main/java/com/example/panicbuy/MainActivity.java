@@ -45,10 +45,12 @@ public class MainActivity extends AppCompatActivity {
             String value = adapter.getItem(position).toString();
 
             Integer i = position;
-            Toast.makeText(getApplicationContext(), String.format("Clicked %s", i.toString()), Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(getApplicationContext(), String.format("Clicked %s", i.toString()), Toast.LENGTH_SHORT).show();
 
+            Stock s = helper.findStock(i + 1, this);
+            ((TextView) (findViewById(R.id.barcodeResultView))).setText(s.getBarcode());
+            ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
         });
 
         //  aAdapter.notifyDataSetChanged();
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     public void actionButton(View v) {
 
         TextView vQty = findViewById(R.id.textViewQty);
-     //   String currentQty = vQty.getText().toString();
+        //   String currentQty = vQty.getText().toString();
         String viewID = getResources().getResourceName(v.getId());
         int l = viewID.length();
         viewID = viewID.substring(l - 1, l);
@@ -123,43 +125,40 @@ public class MainActivity extends AppCompatActivity {
         // Lets construct a stock object
         String sBarcode = ((TextView) (findViewById(R.id.barcodeResultView))).getText().toString();
         String sDescription = ((TextView) (findViewById(R.id.editTextDescription))).getText().toString();
-        String sQty = ((TextView)(findViewById(R.id.editTextQty))).getText().toString();
+        String sQty = ((TextView) (findViewById(R.id.editTextQty))).getText().toString();
 
         switch (thisKey) {
             case "m":
             case "p":
                 int iQty = Integer.parseInt(sQty);
-                if(thisKey.equals("m"))
-                iQty--;else iQty++;
-                TextView eQty = (TextView)(findViewById(R.id.editTextQty));
+                if (thisKey.equals("m"))
+                    iQty--;
+                else iQty++;
+                TextView eQty = (TextView) (findViewById(R.id.editTextQty));
                 eQty.setText(String.valueOf(iQty));
                 break;
             case "s":
                 readBarcode();
                 break;
             case "u":
-                Stock stock = new Stock("0",sBarcode,sDescription,sQty);
-                helper.update(stock);
+                Stock stock = new Stock("0", sBarcode, sDescription, sQty);
+                helper.update(stock, this);
                 break;
             case "f":
-   //             if (helper.read(sBarcode, this)) {
-      //              Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
-       //         } else {
-         //           Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
-                }
-              //  break;
+                Stock s = helper.findBarcode(sBarcode, this);
+                ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
 
-            //case "d":
-          //      if (helper.delete(sBarcode, this)) {
-          //          Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-           //     } else {
-            //        Toast.makeText(MainActivity.this, "NOT Deleted", Toast.LENGTH_SHORT).show();
-            //    }
-             //   break;
+                break;
+            case "d":
+                helper.deleteBarcode(sBarcode, this);
+
+                break;
         }
-
-
     }
+}
+
+
+
 
 
 
