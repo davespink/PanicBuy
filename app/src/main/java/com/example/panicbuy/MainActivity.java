@@ -1,15 +1,13 @@
 package com.example.panicbuy;
 
-import static java.lang.Integer.parseInt;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,7 +22,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
-
+    DatabaseHelper helper;
     //
     // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
     //
@@ -33,22 +31,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView mListView = (ListView) findViewById(R.id.userlist);
+        ListView mListView = findViewById(R.id.userlist);
         ArrayList<Stock> stockList = new ArrayList<>();
         StockListAdapter adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
         mListView.setAdapter(adapter);
 
-        DatabaseHelper helper = new DatabaseHelper(this);
+        try {
+             helper = new DatabaseHelper(this);
+        } catch (Exception e) {
+            Toast.makeText(this, "Error opening database", Toast.LENGTH_SHORT).show();
+        }
+
         helper.readAll(this, stockList);
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
-            String value = adapter.getItem(position).toString();
 
-            Integer i = position;
-
-            //  Toast.makeText(getApplicationContext(), String.format("Clicked %s", i.toString()), Toast.LENGTH_SHORT).show();
-
-            Stock s = helper.findStock(i + 1, this);
+            Stock s = helper.findStock(position + 1, this);
             ((TextView) (findViewById(R.id.barcodeResultView))).setText(s.getBarcode());
             ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
         });
@@ -67,48 +65,14 @@ public class MainActivity extends AppCompatActivity {
         optionsBuilder.allowManualInput();
 
         gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
-        gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
-
-                    //       DatabaseHelper helper;
-
-                    vDisplay.setText(barcode.getDisplayValue());
-
-    /*
-                    try {
-                        helper = new DatabaseHelper(this);
-                    } catch (Exception e) {
-                        Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    if (helper.insert(vDisplay.getText().toString(), "new tin", "10")) {
-                        Toast.makeText(MainActivity.this, "Inserted", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "NOT Inserted", Toast.LENGTH_LONG).show();
-                    }
-
-
-                    if (helper.read(vDisplay.getText().toString(), this)) {
-                        Toast.makeText(MainActivity.this, "Read main OK", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "NOT Read main ;-(", Toast.LENGTH_LONG).show();
-                    } */
-
-                }
-
-
-        ).addOnCanceledListener(() -> {
-            Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show();
-
-        });
+        gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> vDisplay.setText(barcode.getDisplayValue())
+        ).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
 
     }
 
 
     public void actionButton(View v) {
 
-        TextView vQty = findViewById(R.id.textViewQty);
-        //   String currentQty = vQty.getText().toString();
         String viewID = getResources().getResourceName(v.getId());
         int l = viewID.length();
         viewID = viewID.substring(l - 1, l);
@@ -134,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 if (thisKey.equals("m"))
                     iQty--;
                 else iQty++;
-                TextView eQty = (TextView) (findViewById(R.id.editTextQty));
+                @SuppressLint("CutPasteId")
+                TextView eQty = findViewById(R.id.editTextQty);
                 eQty.setText(String.valueOf(iQty));
                 break;
             case "s":

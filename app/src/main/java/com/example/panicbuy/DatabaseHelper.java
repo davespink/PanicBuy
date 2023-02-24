@@ -1,5 +1,6 @@
 package com.example.panicbuy;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 
 import android.content.Context;
@@ -15,7 +16,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "panicData";
     public static final String STOCK_TABLE_NAME = "stock";
 
-    private SQLiteDatabase m_db;
+    private final SQLiteDatabase m_db;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -70,10 +71,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             cursor.moveToFirst();
 
-            String description = cursor.getString(2);
-
-            //     Toast.makeText(context, "Read OK " + val, Toast.LENGTH_SHORT).show();
-
             Stock s = new Stock(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
             cursor.close();
 
@@ -89,23 +86,29 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteBarcode(String barcode, Context context) {
 
         String sql = String.format("Delete from stock where barcode = %s", barcode);
-        // String sql =  "Delete from stock where id = 5";
-        m_db.execSQL(sql);
+
+        try{
+        m_db.execSQL(sql);}
+        catch(Exception e)
+        {
+            Toast.makeText(context, "NOT deleted", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
 
     public Stock findStock(int stock_id, Context context) {
 
-        String sql = String.format("Select * from stock where id = %d", stock_id);
+
+        @SuppressLint("DefaultLocale")
+        String sql =
+                String.format( "Select * from stock where id = %d", stock_id);
 
         try {
             Cursor cursor =
                     m_db.rawQuery(sql, null);
 
             cursor.moveToFirst();
-
-            String description = cursor.getString(2);
 
             //     Toast.makeText(context, "Read OK " + val, Toast.LENGTH_SHORT).show();
 
