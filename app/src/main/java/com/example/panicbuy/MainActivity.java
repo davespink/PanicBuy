@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,7 +24,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
+    ArrayList<Stock> stockList;
+    StockListAdapter adapter;
+
     DatabaseHelper helper;
+
     //
     // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
     //
@@ -32,27 +38,69 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView mListView = findViewById(R.id.userlist);
-        ArrayList<Stock> stockList = new ArrayList<>();
-        StockListAdapter adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
+        stockList = new ArrayList<>();
+
+        helper = new DatabaseHelper(this);
+        helper.readAll(this, stockList);
+
+        adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
         mListView.setAdapter(adapter);
 
-        try {
-             helper = new DatabaseHelper(this);
-        } catch (Exception e) {
-            Toast.makeText(this, "Error opening database", Toast.LENGTH_SHORT).show();
-        }
-
-        helper.readAll(this, stockList);
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
 
-            Stock s = helper.findStock(position + 1, this);
-            ((TextView) (findViewById(R.id.barcodeResultView))).setText(s.getBarcode());
-            ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
+/*
+            for(int index = 0; index < ((ViewGroup) view ).getChildCount(); index++) {
+                View nextChild = ((ViewGroup) view ).getChildAt(index);
+                String s = (String) ((TextView)nextChild).getText();
+                String t = s;
+            }
+
+ */
+            View thisChild = ((ViewGroup) view).getChildAt(1);
+            String sBarcode = (String) ((TextView) thisChild).getText();
+            thisChild = ((ViewGroup) view).getChildAt(2);
+            String sDescription = (String) ((TextView) thisChild).getText();
+            thisChild = ((ViewGroup) view).getChildAt(3);
+            String sQty = (String) ((TextView) thisChild).getText();
+
+
+            ((TextView) (findViewById(R.id.barcodeResultView))).setText(sBarcode);
+            ((TextView) (findViewById(R.id.editTextDescription))).setText(sDescription);
+            ((TextView) (findViewById(R.id.editTextQty))).setText(sQty);
+
+
         });
+/*
+        Stock s = new Stock("1", "1", "one", "1");
+        helper.update(s, this);
 
-        //  aAdapter.notifyDataSetChanged();
+        s.setBarcode("2");
+        s.setDescription("two");
+        s.setQty("2");
+        helper.update(s, this);
 
+        s.setBarcode("3");
+        s.setDescription("three");
+        s.setQty("3");
+        helper.update(s, this);
+
+        s.setBarcode("4");
+        s.setDescription("four");
+        s.setQty("4");
+        helper.update(s, this);
+
+        s.setBarcode("5");
+        s.setDescription("five");
+        s.setQty("5");
+        helper.update(s, this);
+*/
+
+    }
+
+    public void refreshDataset() {
+        helper.readAll(this, stockList);
+     adapter.notifyDataSetChanged();
     }
 
     public void readBarcode() {
@@ -78,13 +126,6 @@ public class MainActivity extends AppCompatActivity {
         viewID = viewID.substring(l - 1, l);
         String thisKey = viewID;
 
-        DatabaseHelper helper;
-        try {
-            helper = new DatabaseHelper(this);
-        } catch (Exception e) {
-            Toast.makeText(MainActivity.this, "Failed to access database", Toast.LENGTH_LONG).show();
-            return;
-        }
 
         // Lets construct a stock object
         String sBarcode = ((TextView) (findViewById(R.id.barcodeResultView))).getText().toString();
@@ -108,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
             case "u":
                 Stock stock = new Stock("0", sBarcode, sDescription, sQty);
                 helper.update(stock, this);
+                helper.readAll(this,stockList);
+               refreshDataset();
                 break;
             case "f":
                 Stock s = helper.findBarcode(sBarcode, this);
@@ -116,9 +159,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "d":
                 helper.deleteBarcode(sBarcode, this);
-
+                refreshDataset();
                 break;
+
+
         }
+
+
     }
 }
 
