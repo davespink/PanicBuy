@@ -171,14 +171,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
                 stockList.add(record);
                 cursor.moveToNext();
-                cursor.close();
             }
+            cursor.close();
         } catch (Exception e) {
             Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-    return true;
+        return true;
     }
 
 

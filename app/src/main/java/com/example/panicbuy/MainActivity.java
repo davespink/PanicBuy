@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-/*
+
         Stock s = new Stock("1", "1", "one", "1");
         helper.update(s, this);
 
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         s.setDescription("five");
         s.setQty("5");
         helper.update(s, this);
-*/
 
+        refreshDataset();
     }
 
     public void refreshDataset() {
