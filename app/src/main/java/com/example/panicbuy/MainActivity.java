@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        /*
         Stock s = new Stock("1", "1", "one", "1");
         helper.update(s, this);
 
@@ -94,13 +95,15 @@ public class MainActivity extends AppCompatActivity {
         s.setDescription("five");
         s.setQty("5");
         helper.update(s, this);
+*/
+
 
         refreshDataset();
     }
 
     public void refreshDataset() {
         helper.readAll(this, stockList);
-     adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public void readBarcode() {
@@ -143,19 +146,26 @@ public class MainActivity extends AppCompatActivity {
                 TextView eQty = findViewById(R.id.editTextQty);
                 eQty.setText(String.valueOf(iQty));
                 break;
-            case "s":
-                readBarcode();
-                break;
+
             case "u":
                 Stock stock = new Stock("0", sBarcode, sDescription, sQty);
                 helper.update(stock, this);
-                helper.readAll(this,stockList);
-               refreshDataset();
+                helper.readAll(this, stockList);
+                refreshDataset();
                 break;
+            case "s":
+                readBarcode();
+                break;
+
             case "f":
                 Stock s = helper.findBarcode(sBarcode, this);
-                ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
-
+                if (s == null) {
+                    ((TextView) (findViewById(R.id.editTextDescription))).setText("    ");
+                    ((TextView) (findViewById(R.id.editTextQty))).setText("2");
+                } else {
+                    ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
+                    ((TextView) (findViewById(R.id.editTextQty))).setText(s.getQty());
+                }
                 break;
             case "d":
                 helper.deleteBarcode(sBarcode, this);

@@ -86,6 +86,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String sql = String.format("Select * from stock where barcode = %s", barcode);
             Cursor cursor =
                     db.rawQuery(sql, null);
+            if(cursor.getCount()<1) {
+            Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
+            return null;
+            }
             cursor.moveToFirst();
             Stock s = new Stock(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
             cursor.close();
