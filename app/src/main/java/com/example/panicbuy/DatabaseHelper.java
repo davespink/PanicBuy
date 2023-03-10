@@ -44,7 +44,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String sql = String.format("Select * from stock where barcode = %s", stock.getBarcode());
+        String sql = String.format("Select * from stock where barcode = '%s'", stock.getBarcode());
         Cursor cursor = null;
         try {
             cursor =
@@ -83,7 +83,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public Stock findBarcode(String barcode, Context context) {
 
         try (SQLiteDatabase db = getReadableDatabase()) {
-            String sql = String.format("Select * from stock where barcode = %s", barcode);
+            String sql = String.format("Select * from stock where barcode = '%s'", barcode);
             Cursor cursor =
                     db.rawQuery(sql, null);
             if(cursor.getCount()<1) {
@@ -93,6 +93,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
             Stock s = new Stock(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
             cursor.close();
+            db.close();
             return s;
         } catch (Exception e) {
             Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
@@ -104,42 +105,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteBarcode(String barcode, Context context) {
 
         try (SQLiteDatabase db = getWritableDatabase()) {
-            String sql = String.format("Delete from stock where barcode = %s", barcode);
+            String sql = String.format("Delete from stock where barcode = '%s'", barcode);
             db.execSQL(sql);
         } catch (Exception e) {
             Toast.makeText(context, "NOT deleted", Toast.LENGTH_SHORT).show();
         }
     }
 
-    /*
-            public Stock findStock ( int stock_id, Context context){
-                SQLiteDatabase db = getReadableDatabase();
-
-                @SuppressLint("DefaultLocale")
-                String sql =
-                        String.format("Select * from stock where id = %d", stock_id);
-
-                try {
-                    Cursor cursor =
-                            db.rawQuery(sql, null);
-
-                    cursor.moveToFirst();
-
-                      Toast.makeText(context, "Read OK " , Toast.LENGTH_SHORT).show();
-
-                    Stock s = new Stock(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
-                    db.close();
-
-                    return s;
-                } catch (Exception e) {
-                    Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
-
-                    return null;
-                }
-
-
-            }
-    */
     public boolean delete(String barcode, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = String.format("delete from stock where barcode = '%s'", barcode);
@@ -162,7 +134,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         try {
-            String sql = "Select * from stock where 1";
+            String sql = "Select * from stock where 1 order by  description  COLLATE NOCASE ASC";
             Cursor cursor =
                     db.rawQuery(sql, null);
 

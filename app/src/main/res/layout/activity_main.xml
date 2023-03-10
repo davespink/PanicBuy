@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:backgroundTint="@color/teal_200"
 
+    android:backgroundTintMode="add"
+    android:padding="5dp"
     tools:context=".MainActivity">
 
 
@@ -28,7 +30,6 @@
                     android:id="@+id/textViewBarcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_weight="1"
                     android:text="@string/barcode"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -52,13 +53,6 @@
 
             <LinearLayout>
 
-                <TextView
-                    android:id="@+id/textViewDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Description"
-
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
                 <EditText
                     android:id="@+id/editTextDescription"
@@ -213,7 +207,9 @@
         <ListView
             android:id="@+id/userlist"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            android:layout_height="319dp"
+
+            android:backgroundTintMode="screen"></ListView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

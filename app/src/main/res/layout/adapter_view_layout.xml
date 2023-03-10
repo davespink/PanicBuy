@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:background="#FDFBFB"
     android:orientation="horizontal"
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
     android:weightSum="100">
 
 
@@ -11,34 +13,35 @@
         android:id="@+id/textView_my_id"
         android:layout_width="50dp"
         android:layout_height="30dp"
-        android:layout_weight="25"
-        android:visibility="gone"
-        android:text="TextView_Id"
 
-        android:textAlignment="center" />
+        android:text="TextView_Id"
+        android:textAlignment="center"
+
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView_barcode"
         android:layout_width="150dp"
         android:layout_height="30dp"
-        android:layout_weight="25"
         android:text="TextView_barcode"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textAlignment="viewStart" />
+        android:textAlignment="viewStart"
+
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView_description"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_weight="25"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:text="TextView_description" />
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:text="TextView_description"
+        android:layout_marginLeft="20dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
         android:id="@+id/textView_qty"
-        android:layout_width="20dp"
-        android:layout_height="30dp"
-        android:layout_weight="25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_marginLeft="30dp"
         android:text="TextView_qty" />
 
 

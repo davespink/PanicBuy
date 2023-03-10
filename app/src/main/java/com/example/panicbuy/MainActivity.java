@@ -22,6 +22,23 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 import java.util.ArrayList;
 
+
+/*
+
+https://stackoverflow.com/questions/10144820/get-the-html-of-the-javascript-rendered-page-after-interacting-with-it
+
+
+Pasting the following to your browser console ( F12 -> Console ) will automatically save a file called rendered.html to your downloads directory:
+
+let link = document.createElement("a");
+link.href = URL.createObjectURL(new Blob([document.getElementsByTagName('html')[0].innerHTML], { type: 'text/html' }));
+link.download = "rendered.html";
+link.click();
+URL.revokeObjectURL(link.href);
+
+ */
+
+
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
     ArrayList<Stock> stockList;
@@ -160,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
             case "f":
                 Stock s = helper.findBarcode(sBarcode, this);
                 if (s == null) {
-                    ((TextView) (findViewById(R.id.editTextDescription))).setText("    ");
-                    ((TextView) (findViewById(R.id.editTextQty))).setText("2");
+                    ((TextView) (findViewById(R.id.editTextDescription))).setText("");
+                    ((TextView) (findViewById(R.id.editTextQty))).setText("1");
                 } else {
                     ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
                     ((TextView) (findViewById(R.id.editTextQty))).setText(s.getQty());
