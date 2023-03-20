@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityNodeInfo;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
             ((TextView) (findViewById(R.id.barcodeResultView))).setText(sBarcode);
             ((TextView) (findViewById(R.id.editTextDescription))).setText(sDescription);
-            ((TextView) (findViewById(R.id.editTextQty))).setText(sQty);
+            ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sQty);
 
 
         });
