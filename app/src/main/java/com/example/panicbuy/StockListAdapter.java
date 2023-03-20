@@ -19,8 +19,6 @@ import java.util.ArrayList;
 
 public class StockListAdapter extends ArrayAdapter<Stock> {
 
-    //private static final String TAG = "PersonListAdapter";
-
     private Context mContext;
     private int mResource;
     private int lastPosition = -1;
@@ -33,7 +31,7 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         TextView my_id;
         TextView barcode;
         TextView description;
-        TextView qty;
+        TextView stockLevel;
     }
 
     /**
@@ -56,10 +54,10 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         String my_id = getItem(position).getMy_id();
         String barcode = getItem(position).getBarcode();
         String description = getItem(position).getDescription();
-        String qty = getItem(position).getQty();
+        String stocklevel = getItem(position).getStockLevel();
 
         //Create the person object with the information
-        Stock stock = new Stock(my_id, barcode, description, qty);
+        Stock stock = new Stock(my_id, barcode, description, stocklevel);
 
         //create the view result for showing the animation
         final View result;
@@ -76,7 +74,7 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
             holder.my_id = convertView.findViewById(R.id.textView_my_id);
             holder.barcode = convertView.findViewById(R.id.textView_barcode);
             holder.description = convertView.findViewById(R.id.textView_description);
-            holder.qty = convertView.findViewById(R.id.textView_qty);
+            holder.stockLevel  = convertView.findViewById(R.id.textView_stocklevel);
 
             result = convertView;
 
@@ -97,7 +95,7 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         holder.my_id.setText(stock.getMy_id());
         holder.barcode.setText(stock.getBarcode());
         holder.description.setText(stock.getDescription());
-        holder.qty.setText(stock.getQty());
+        holder.stockLevel.setText(stock.getStockLevel());
 
         return convertView;
     }

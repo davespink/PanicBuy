@@ -26,7 +26,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "create table " + STOCK_TABLE_NAME + "(id integer primary key, barcode text,description text,qty integer)"
+                "create table " + STOCK_TABLE_NAME + "(id integer primary key, barcode text,description text,stocklevel integer)"
         );
     }
 
@@ -58,7 +58,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues newValues = new ContentValues();
         newValues.put("barcode", stock.getBarcode());
         newValues.put("description", stock.getDescription());
-        newValues.put("qty", stock.getQty());
+        newValues.put("stocklevel", stock.getStockLevel());
 
         String[] whereArgs = {stock.getBarcode()};
 

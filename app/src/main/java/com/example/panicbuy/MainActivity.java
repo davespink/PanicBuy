@@ -79,40 +79,15 @@ public class MainActivity extends AppCompatActivity {
             thisChild = ((ViewGroup) view).getChildAt(2);
             String sDescription = (String) ((TextView) thisChild).getText();
             thisChild = ((ViewGroup) view).getChildAt(3);
-            String sQty = (String) ((TextView) thisChild).getText();
+            String sStockLevel = (String) ((TextView) thisChild).getText();
 
 
             ((TextView) (findViewById(R.id.barcodeResultView))).setText(sBarcode);
             ((TextView) (findViewById(R.id.editTextDescription))).setText(sDescription);
-            ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sQty);
-
+            ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sStockLevel);
+            ((TextView) (findViewById(R.id.editTextQty))).setText("0");
 
         });
-
-        /*
-        Stock s = new Stock("1", "1", "one", "1");
-        helper.update(s, this);
-
-        s.setBarcode("2");
-        s.setDescription("two");
-        s.setQty("2");
-        helper.update(s, this);
-
-        s.setBarcode("3");
-        s.setDescription("three");
-        s.setQty("3");
-        helper.update(s, this);
-
-        s.setBarcode("4");
-        s.setDescription("four");
-        s.setQty("4");
-        helper.update(s, this);
-
-        s.setBarcode("5");
-        s.setDescription("five");
-        s.setQty("5");
-        helper.update(s, this);
-*/
 
 
         refreshDataset();
@@ -151,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         String sBarcode = ((TextView) (findViewById(R.id.barcodeResultView))).getText().toString();
         String sDescription = ((TextView) (findViewById(R.id.editTextDescription))).getText().toString();
         String sQty = ((TextView) (findViewById(R.id.editTextQty))).getText().toString();
+        String sStockLevel = ((TextView) (findViewById(R.id.textViewStockLevel))).getText().toString();
 
         switch (thisKey) {
             case "m":
@@ -165,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case "u":
-                Stock stock = new Stock("0", sBarcode, sDescription, sQty);
+                String sNewStockLevel = String.valueOf(Integer.parseInt(sStockLevel) + Integer.parseInt(sQty));
+                ((TextView)findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
+                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel);
                 helper.update(stock, this);
                 helper.readAll(this, stockList);
                 refreshDataset();
@@ -179,9 +157,10 @@ public class MainActivity extends AppCompatActivity {
                 if (s == null) {
                     ((TextView) (findViewById(R.id.editTextDescription))).setText("");
                     ((TextView) (findViewById(R.id.editTextQty))).setText("1");
+                    ((TextView) (findViewById(R.id.textViewStockLevel))).setText("0");
                 } else {
                     ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
-                    ((TextView) (findViewById(R.id.editTextQty))).setText(s.getQty());
+                    ((TextView) (findViewById(R.id.editTextQty))).setText(s.getStockLevel());
                 }
                 break;
             case "d":

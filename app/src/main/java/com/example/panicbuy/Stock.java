@@ -8,13 +8,13 @@ public class Stock {
     private String my_id;
     private String barcode;
     private String description;
-    private String qty;
+    private String stockLevel;
 
-    public Stock(String my_id, String barcode,  String description, String qty) {
+    public Stock(String my_id, String barcode,  String description, String stockLevel) {
         this.my_id = my_id;
         this.barcode = barcode;
         this.description = description;
-        this.qty = qty;
+        this.stockLevel = stockLevel;
     }
 
     public String getMy_id() {
@@ -42,11 +42,11 @@ public class Stock {
     }
 
 
-    public String getQty() {
-        return qty;
+    public String getStockLevel() {
+        return stockLevel;
     }
 
-    public void setQty(String qty) {
-        this.qty = qty;
+    public void setStockLevel(String stockLevel) {
+        this.stockLevel = stockLevel;
     }
 }
