@@ -26,7 +26,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
-                "create table " + STOCK_TABLE_NAME + "(id integer primary key, barcode text,description text,stocklevel integer)"
+                "create table "
+                        + STOCK_TABLE_NAME + "(id integer primary key, barcode text,description text,stocklevel integer,tobuy char,minstock int,lastupdate date)"
         );
     }
 
@@ -59,6 +60,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         newValues.put("barcode", stock.getBarcode());
         newValues.put("description", stock.getDescription());
         newValues.put("stocklevel", stock.getStockLevel());
+        newValues.put("tobuy", stock.getToBuy());
 
         String[] whereArgs = {stock.getBarcode()};
 
@@ -86,12 +88,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String sql = String.format("Select * from stock where barcode = '%s'", barcode);
             Cursor cursor =
                     db.rawQuery(sql, null);
-            if(cursor.getCount()<1) {
-            Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
-            return null;
+            if (cursor.getCount() < 1) {
+                Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
+                return null;
             }
             cursor.moveToFirst();
-            Stock s = new Stock(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            Stock s = new Stock(cursor.getString(0),
+                    cursor.getString(1), cursor.getString(2),
+                    cursor.getString(3), cursor.getString(4),
+                    cursor.getString(5), cursor.getString(6));
             cursor.close();
             db.close();
             return s;
@@ -112,22 +117,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean delete(String barcode, Context context) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String sql = String.format("delete from stock where barcode = '%s'", barcode);
-        Toast.makeText(context, sql, Toast.LENGTH_SHORT).show();
 
-        try {
-            db.execSQL(sql);
-        } catch (Exception e) {
-            Toast.makeText(context, "NOT Deleted", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        db.close();
-
-        return true;
-    }
 
     public boolean readAll(Context context, ArrayList<Stock> stockList) {
 
@@ -143,7 +133,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
             stockList.clear();
             while (!cursor.isAfterLast()) {
                 Stock record = new Stock(cursor.getString(0), cursor.getString(1),
-                        cursor.getString(2), cursor.getString(3));
+                        cursor.getString(2), cursor.getString(3),
+                        cursor.getString(4),cursor.getString(5),
+                        cursor.getString(6));
 
                 stockList.add(record);
                 cursor.moveToNext();
@@ -157,6 +149,38 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean toggleToBuy(String barcode,Context context) {
+        try (SQLiteDatabase db = getWritableDatabase()) {
+            String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
+            Cursor cursor =
+                    db.rawQuery(sql, null);
+            if (cursor.getCount() < 1) {
+                Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            cursor.moveToFirst();
+            String toBuy = "";
+
+            toBuy = cursor.getString(0);
+            if(toBuy.equals("Y")) toBuy = "N"; else toBuy = "Y";
+
+            ContentValues newValues = new ContentValues();
+            newValues.put("tobuy", toBuy);
+
+            String[] whereArgs = {barcode};
+            db.update("stock", newValues, "barcode = ?", whereArgs);
+
+            cursor.close();
+            db.close();
+
+            if(toBuy=="Y") return true; else return false;
+        } catch (Exception e) {
+            Toast.makeText(context, "Error in toggle tobuy", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+
+    }
 
 }
 

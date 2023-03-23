@@ -1,5 +1,6 @@
 package com.example.panicbuy;
 
+
 /**
  * Created by User on 3/14/2017.
  */
@@ -8,13 +9,22 @@ public class Stock {
     private String my_id;
     private String barcode;
     private String description;
-    private String stockLevel;
+    private String stocklevel;
 
-    public Stock(String my_id, String barcode,  String description, String stockLevel) {
+    private String tobuy;
+
+    private String minstock;
+
+    private String lastupdate;
+
+    public Stock(String my_id, String barcode, String description, String stocklevel, String tobuy, String minstock, String lastupdate) {
         this.my_id = my_id;
         this.barcode = barcode;
         this.description = description;
-        this.stockLevel = stockLevel;
+        this.stocklevel = stocklevel;
+        this.tobuy = tobuy;
+        this.minstock = minstock;
+        this.lastupdate = lastupdate;
     }
 
     public String getMy_id() {
@@ -43,10 +53,17 @@ public class Stock {
 
 
     public String getStockLevel() {
-        return stockLevel;
+        return stocklevel;
     }
 
     public void setStockLevel(String stockLevel) {
-        this.stockLevel = stockLevel;
+        this.stocklevel = stocklevel;
     }
+    public String getToBuy() {
+        if(this.tobuy==null) {
+           this.tobuy = new String("N");
+        }
+        return this.tobuy;
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.panicbuy;
 
+import android.app.Activity;
 import android.content.Context;
 
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         TextView barcode;
         TextView description;
         TextView stockLevel;
+        TextView toBuy;
     }
 
     /**
@@ -55,9 +58,10 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         String barcode = getItem(position).getBarcode();
         String description = getItem(position).getDescription();
         String stocklevel = getItem(position).getStockLevel();
+        String tobuy = getItem(position).getToBuy();
 
-        //Create the person object with the information
-        Stock stock = new Stock(my_id, barcode, description, stocklevel);
+        //Create the stock object with the information
+        Stock stock = new Stock(my_id, barcode, description, stocklevel, tobuy, "0", "");
 
         //create the view result for showing the animation
         final View result;
@@ -74,7 +78,8 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
             holder.my_id = convertView.findViewById(R.id.textView_my_id);
             holder.barcode = convertView.findViewById(R.id.textView_barcode);
             holder.description = convertView.findViewById(R.id.textView_description);
-            holder.stockLevel  = convertView.findViewById(R.id.textView_stocklevel);
+            holder.stockLevel = convertView.findViewById(R.id.textView_stocklevel);
+            holder.toBuy = convertView.findViewById(R.id.textView_toBuy);
 
             result = convertView;
 
@@ -96,6 +101,19 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         holder.barcode.setText(stock.getBarcode());
         holder.description.setText(stock.getDescription());
         holder.stockLevel.setText(stock.getStockLevel());
+        holder.toBuy.setText(stock.getToBuy());
+
+        Activity activity = (Activity) mContext;
+        View vC = activity.findViewById(R.id.checkBox2);
+        boolean shopping = ((CheckBox)vC).isChecked();
+
+        View v = (View) holder.my_id.getParent();
+        if(shopping) {
+            if (stock.getToBuy().equals("Y"))
+                v.setBackgroundColor(0x5F00FF00);
+            else
+                v.setBackgroundColor(0xFFFFFFFF);
+        }else    v.setBackgroundColor(0xFFFFFFFF);
 
         return convertView;
     }

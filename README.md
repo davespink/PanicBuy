@@ -2,4 +2,9 @@
 barcode stock android app
 
 
-Some test code to understand sqllite and mlkit better
+new fields -
+    Date update
+    Min Level
+    ShoppingList *
+??    Generic
+

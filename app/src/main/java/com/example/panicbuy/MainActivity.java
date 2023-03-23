@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import android.view.ViewGroup;
 
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper helper;
 
+
+
     //
     // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
     //
@@ -81,7 +86,22 @@ public class MainActivity extends AppCompatActivity {
             thisChild = ((ViewGroup) view).getChildAt(3);
             String sStockLevel = (String) ((TextView) thisChild).getText();
 
+            //   boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
+            boolean shopping = true;
+            if (shopping) {
+                boolean bToBuy = helper.toggleToBuy(sBarcode, this);
 
+                if (bToBuy) {
+                    thisChild = ((ViewGroup) view).getChildAt(4);
+                    ((TextView) thisChild).setText("Y");
+
+                } else {
+                    thisChild = ((ViewGroup) view).getChildAt(4);
+                    ((TextView) thisChild).setText("N");
+
+                }
+                refreshDataset();
+            }
             ((TextView) (findViewById(R.id.barcodeResultView))).setText(sBarcode);
             ((TextView) (findViewById(R.id.editTextDescription))).setText(sDescription);
             ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sStockLevel);
@@ -97,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
         helper.readAll(this, stockList);
         adapter.notifyDataSetChanged();
     }
-
+    public void refreshDataset(View v) {
+        refreshDataset();
+    }
     public void readBarcode() {
         //      Log.d("some TAG", "a message");
 
@@ -142,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
             case "u":
                 String sNewStockLevel = String.valueOf(Integer.parseInt(sStockLevel) + Integer.parseInt(sQty));
-                ((TextView)findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
-                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel);
+                ((TextView) findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
+                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "0", "n", "");
                 helper.update(stock, this);
                 helper.readAll(this, stockList);
                 refreshDataset();
@@ -160,7 +182,8 @@ public class MainActivity extends AppCompatActivity {
                     ((TextView) (findViewById(R.id.textViewStockLevel))).setText("0");
                 } else {
                     ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
-                    ((TextView) (findViewById(R.id.editTextQty))).setText(s.getStockLevel());
+                    ((TextView) (findViewById(R.id.textViewStockLevel))).setText(s.getStockLevel());
+                    ((TextView) (findViewById(R.id.editTextQty))).setText("1");
                 }
                 break;
             case "d":

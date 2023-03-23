@@ -64,6 +64,8 @@
                     android:hint="Unknown"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+
+
             </LinearLayout>
         </TableRow>
 
@@ -139,57 +141,72 @@
 
     <LinearLayout
         android:id="@+id/orangeLayout"
-        android:layout_width="363dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="384dp"
+        android:layout_height="92dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
 
+        android:background="#EEF3EF"
+        android:backgroundTint="#BC8F8C"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout">
 
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="20dp"
+            android:onClick="refreshDataset"
+            android:text="Shop"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-        <Button
+        <ImageButton
             android:id="@+id/button_s"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="8dp"
-            android:minHeight="48dp"
+            android:layout_width="47dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="38dp"
             android:onClick="actionButton"
-            android:text="SCAN" />
+            android:src="@drawable/scan" />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/button_u"
-            android:layout_width="80dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
             android:onClick="actionButton"
-            android:text="UP" />
+            android:src="@drawable/save" />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/button_f"
-            android:layout_width="80dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
             android:onClick="actionButton"
-            android:text="FIND" />
+            android:src="@drawable/find" />
 
-        <Button
+
+        <ImageButton
             android:id="@+id/button_d"
-            android:layout_width="80dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="18dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
             android:onClick="actionButton"
-            android:text="DEL" />
+            android:src="@drawable/delete" />
+
 
     </LinearLayout>
 
@@ -208,7 +225,6 @@
             android:id="@+id/userlist"
             android:layout_width="match_parent"
             android:layout_height="319dp"
-
             android:backgroundTintMode="screen"></ListView>
 
     </LinearLayout>
