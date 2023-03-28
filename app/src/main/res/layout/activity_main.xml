@@ -1,234 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:backgroundTint="@color/teal_200"
 
     android:backgroundTintMode="add"
-    android:padding="5dp"
+
     tools:context=".MainActivity">
 
-
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="400dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout>
+            <ImageButton
+                android:id="@+id/button_s"
+                android:layout_width="47dp"
+                android:layout_height="44dp"
+
+                android:layout_marginStart="10dp"
+
+                android:onClick="actionButton"
+                android:src="@drawable/scan" />
+
+            <EditText
+                android:id="@+id/barcodeResultView"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+
+                android:hint="@string/barcodeResult"
+                android:inputType="text"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 
-                <TextView
-                    android:id="@+id/textViewBarcode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/barcode"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/barcodeResultView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_weight="2"
-                    android:hint="@string/barcodeResult"
-                    android:inputType="text"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-            </LinearLayout>
-
-        </TableRow>
-
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout>
+            <EditText
+                android:id="@+id/editTextDescription"
+                android:layout_width="208dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
 
+                android:hint="Unknown"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/editTextDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-
-
-                    android:hint="Unknown"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-
-
-            </LinearLayout>
-        </TableRow>
-
-
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/textViewQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Qty"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-            <LinearLayout>
+            <Button
+                android:id="@+id/button_m"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
 
-                <TextView
-                    android:id="@+id/textViewQty"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:text="Qty"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:layout_marginLeft="10dp"
+                android:onClick="actionButton"
+                android:text="@string/minus" />
 
-                <Button
-                    android:id="@+id/button_m"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+            <EditText
+                android:id="@+id/editTextQty"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
 
-                    android:layout_weight="1"
-                    android:onClick="actionButton"
-                    android:text="-" />
+                android:text="1"
 
-                <EditText
-                    android:id="@+id/editTextQty"
-                    android:layout_width="40dp"
-                    android:layout_height="60dp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-                    android:layout_weight="1"
-                    android:text="1"
+            <Button
+                android:id="@+id/button_p"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:onClick="actionButton"
+                android:text="@string/plus" />
 
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            <TextView
+                android:id="@+id/textViewStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/stock"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-                <Button
-                    android:id="@+id/button_p"
-                    android:layout_width="60dp"
-                    android:layout_height="66dp"
-                    android:layout_weight="1"
-                    android:onClick="actionButton"
-                    android:text="+" />
+            <TextView
+                android:id="@+id/textViewStockLevel"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
 
-                <TextView
-                    android:id="@+id/textViewStock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:text="Stock"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:text="0"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textViewStockLevel"
-                    android:layout_width="40dp"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:text="0"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/orangeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEF3EF"
+            android:backgroundTint="#BC8F8C">
 
-
-        </TableRow>
-
-
-    </TableLayout>
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="38dp"
+                android:layout_marginTop="20dp"
+                android:onClick="refreshDataset"
+                android:text="Shop"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
 
-    <LinearLayout
-        android:id="@+id/orangeLayout"
-        android:layout_width="384dp"
-        android:layout_height="92dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+            <ImageButton
+                android:id="@+id/button_u"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="actionButton"
+                android:src="@drawable/save"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-        android:background="#EEF3EF"
-        android:backgroundTint="#BC8F8C"
-        app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout">
+            <ImageButton
+                android:id="@+id/button_f"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="actionButton"
+                android:src="@drawable/find"
+                android:contentDescription="find item"
+                tools:ignore="SpeakableTextPresentCheck" />
 
-        <CheckBox
-            android:id="@+id/checkBox2"
+
+            <ImageButton
+                android:id="@+id/button_d"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="actionButton"
+                android:src="@drawable/delete"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/purpleLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="38dp"
-            android:layout_marginTop="20dp"
-            android:onClick="refreshDataset"
-            android:text="Shop"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:layout_height="368dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="28dp"
 
-        <ImageButton
-            android:id="@+id/button_s"
-            android:layout_width="47dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="38dp"
-            android:onClick="actionButton"
-            android:src="@drawable/scan" />
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orangeLayout">
 
+            <ListView
+                android:id="@+id/userlist"
+                android:layout_width="match_parent"
+                android:layout_height="319dp"
+                android:backgroundTintMode="screen"></ListView>
 
-        <ImageButton
-            android:id="@+id/button_u"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="actionButton"
-            android:src="@drawable/save" />
-
-
-        <ImageButton
-            android:id="@+id/button_f"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="actionButton"
-            android:src="@drawable/find" />
-
-
-        <ImageButton
-            android:id="@+id/button_d"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="8dp"
-            android:onClick="actionButton"
-            android:src="@drawable/delete" />
-
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/purpleLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="368dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="28dp"
-
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orangeLayout">
-
-        <ListView
-            android:id="@+id/userlist"
-            android:layout_width="match_parent"
-            android:layout_height="319dp"
-            android:backgroundTintMode="screen"></ListView>
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
 
 
 

@@ -7,5 +7,8 @@
     <string name="upda">UP</string>
     <string name="listLine">listLine</string>
     <string name="barcodeResult">barcode</string>
+    <string name="stock">Stock</string>
+    <string name="plus">+</string>
+    <string name="minus">-</string>
 
 </resources>

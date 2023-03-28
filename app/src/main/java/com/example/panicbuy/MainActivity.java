@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
         mListView.setAdapter(adapter);
+
 
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
@@ -124,16 +126,23 @@ public class MainActivity extends AppCompatActivity {
         //      Log.d("some TAG", "a message");
 
         TextView vDisplay = findViewById(R.id.barcodeResultView);
+        ImageButton bFind = (ImageButton)findViewById(R.id.button_f);
 
         GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
 
         optionsBuilder.allowManualInput();
 
         gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
-        gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> vDisplay.setText(barcode.getDisplayValue())
-        ).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
+
+        gmsBarcodeScanner.startScan().addOnSuccessListener(
+        (barcode) -> {
+            vDisplay.setText(barcode.getDisplayValue());
+            bFind.performClick();
+            ;
+        }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
 
     }
+
 
 
     public void actionButton(View v) {
@@ -169,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 helper.update(stock, this);
                 helper.readAll(this, stockList);
                 refreshDataset();
+                Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_LONG).show();
                 break;
             case "s":
                 readBarcode();
@@ -192,8 +202,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
 
+            default:
+                throw new IllegalStateException("Unexpected value: " + thisKey);
         }
-
 
     }
 }
