@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper helper;
 
-
-
     //
     // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
     //
@@ -68,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
         mListView.setAdapter(adapter);
-
-
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
 
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         refreshDataset();
     }
     public void readBarcode() {
-        //      Log.d("some TAG", "a message");
+
 
         TextView vDisplay = findViewById(R.id.barcodeResultView);
         ImageButton bFind = (ImageButton)findViewById(R.id.button_f);
@@ -174,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
             case "u":
                 String sNewStockLevel = String.valueOf(Integer.parseInt(sStockLevel) + Integer.parseInt(sQty));
                 ((TextView) findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
+                if(sBarcode.length()==0) {
+                    long now = (int) System.currentTimeMillis();
+                    sBarcode = Long.toString(now);
+                }
                 Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "0", "n", "");
                 helper.update(stock, this);
                 helper.readAll(this, stockList);
@@ -201,9 +201,18 @@ public class MainActivity extends AppCompatActivity {
                 refreshDataset();
                 break;
 
+            case "c":
 
+                ((TextView)findViewById(R.id.barcodeResultView)).setText("");
+                ((TextView)findViewById(R.id.editTextDescription)).setText("");
+                ((TextView)findViewById(R.id.editTextQty)).setText("1");
+                ((TextView)findViewById(R.id.textViewStockLevel)).setText("0");
+
+
+                break;
             default:
-                throw new IllegalStateException("Unexpected value: " + thisKey);
+                Toast.makeText(this, "Unknown button " + thisKey, Toast.LENGTH_SHORT).show();
+
         }
 
     }
