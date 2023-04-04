@@ -12,5 +12,7 @@
     <string name="minus">-</string>
     <string name="secondActivity">SecondActivity</string>
     <string name="text_header">HEADER</string>
+    <string name="chip">CHIP</string>
+    <string name="fish">FISH</string>
 
 </resources>
