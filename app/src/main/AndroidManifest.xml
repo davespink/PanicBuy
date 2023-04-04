@@ -22,11 +22,19 @@
             </intent-filter>
 
             <meta-data
-
                 android:name="com.google.mlkit.vision.DEPENDENCIES"
-                android:value="barcode"
-  />
+                android:value="barcode" />
         </activity>
+
+        <activity android:name=".SecondActivity"
+            android:label = "Details"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=
+                    "com.example.panicbuy.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

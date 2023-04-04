@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-class DatabaseHelper extends SQLiteOpenHelper {
+class  DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "panicData";
     public static final String STOCK_TABLE_NAME = "stock";
 
@@ -40,8 +40,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean update(Stock stock, Context context) {
 
-        //      String sBarcode = stock.getBarcode();
-        //   Stock dummy = findBarcode(sBarcode, context);
 
         SQLiteDatabase db = getWritableDatabase();
 

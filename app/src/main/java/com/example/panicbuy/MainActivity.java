@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import android.view.ViewGroup;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 
 
 /*
-
+TODO
 https://stackoverflow.com/questions/10144820/get-the-html-of-the-javascript-rendered-page-after-interacting-with-it
 
 
@@ -42,7 +44,7 @@ URL.revokeObjectURL(link.href);
 
  */
 
-
+// Todo: Learn about ToDo
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
     ArrayList<Stock> stockList;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         stockList = new ArrayList<>();
 
         helper = new DatabaseHelper(this);
+     //   setUp();
         helper.readAll(this, stockList);
 
         adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
@@ -111,9 +114,36 @@ public class MainActivity extends AppCompatActivity {
         refreshDataset();
     }
 
+    private static final String LOG_TAG =
+            MainActivity.class.getSimpleName();
+
+    public void launchSecondActivity(View view) {
+        Log.d(LOG_TAG, "Button clicked!");
+
+        Intent intent = new Intent(this, SecondActivity.class);
+        TextView v = (TextView)findViewById(R.id.barcodeResultView);
+        intent.putExtra("barcode", v.getText().toString());
+        startActivity(intent);
+    }
+
     public void refreshDataset() {
         helper.readAll(this, stockList);
         adapter.notifyDataSetChanged();
+    }
+    public void setUp() {
+        String list = "Fish, Cauliflower,Tortillas,Chicharones";
+        String[] arr = list.split(",");
+
+        int x = 0;
+        for (int i = 0;i<arr.length;i++)
+        {
+            String d = "Fresh " + arr[i];
+            Stock s = new Stock( "1","",d,"0","N","0","");
+            helper.update(s,this);
+            x = 0;
+        }
+
+
     }
     public void refreshDataset(View v) {
         refreshDataset();
@@ -170,10 +200,7 @@ public class MainActivity extends AppCompatActivity {
             case "u":
                 String sNewStockLevel = String.valueOf(Integer.parseInt(sStockLevel) + Integer.parseInt(sQty));
                 ((TextView) findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
-                if(sBarcode.length()==0) {
-                    long now = (int) System.currentTimeMillis();
-                    sBarcode = Long.toString(now);
-                }
+
                 Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "0", "n", "");
                 helper.update(stock, this);
                 helper.readAll(this, stockList);

@@ -10,5 +10,7 @@
     <string name="stock">Stock</string>
     <string name="plus">+</string>
     <string name="minus">-</string>
+    <string name="secondActivity">SecondActivity</string>
+    <string name="text_header">HEADER</string>
 
 </resources>

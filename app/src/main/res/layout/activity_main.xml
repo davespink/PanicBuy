@@ -62,6 +62,17 @@
 
                 android:hint="Unknown"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <Button
+                android:id="@+id/second_a"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="10dp"
+                android:onClick="launchSecondActivity"
+                android:text="A2" />
+
+
         </LinearLayout>
 
         <LinearLayout

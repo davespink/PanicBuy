@@ -18,6 +18,12 @@ public class Stock {
     private String lastupdate;
 
     public Stock(String my_id, String barcode, String description, String stocklevel, String tobuy, String minstock, String lastupdate) {
+
+        if(barcode.length()==0) {
+            long now = (long) System.currentTimeMillis();
+            barcode = Long.toString(now);
+        }
+
         this.my_id = my_id;
         this.barcode = barcode;
         this.description = description;
