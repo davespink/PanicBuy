@@ -29,6 +29,12 @@ android {
 }
 
 dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
+
+
+
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.1.0'
 
     implementation 'androidx.appcompat:appcompat:1.5.1'

@@ -28,23 +28,46 @@ public class SecondActivity extends AppCompatActivity {
 
         DatabaseHelper helper = new DatabaseHelper(this);
         Stock s = helper.findBarcode(sBarcode, this);
-        ((TextView) (findViewById(R.id.text_header))).setText(s.getDescription());
+        ((TextView)findViewById(R.id.text_header)).setText(s.getDescription());
 
         Log.d(LOG_TAG, s.getDescription());
 
-   //     LinearLayout bLine = (LinearLayout) findViewById(R.id.buttonLine);
-/*
-        androidx.constraintlayout.helper.widget.Flow sLine =   findViewById(R.id.flow_layout);
+        LinearLayout bLine = (LinearLayout) findViewById(R.id.buttonLine);
+        LinearLayout bLine2 = (LinearLayout) findViewById(R.id.buttonLine2);
+        LinearLayout cLine= (LinearLayout) findViewById(R.id.currentTags);
 
-        String[] tags = {"fish","meat","fruit","veg","cans","diary","frozen","soap"};
+        String[] tags = {"fish", "meat", "fruit", "veg", "cans"};
         Button b;
 
-        for (int i = 0;i<tags.length;i++){
+        for (int i = 0; i < tags.length; i++) {
             b = new com.google.android.material.chip.Chip(this);
             b.setText(tags[i]);
-            sLine.addView(b);
+
+            bLine.addView(b);
         }
-*/
+
+      String[] tags2 = {"diary", "frozen", "soap"};
+
+
+        for (int i = 0; i < tags2.length; i++) {
+            b = new com.google.android.material.chip.Chip(this);
+            b.setText(tags2[i]);
+            bLine2.addView(b);
+        }
+
+        for (int i = 0; i < tags2.length; i++) {
+            b = new com.google.android.material.chip.Chip(this);
+            b.setText(tags2[i]);
+
+            b.setOnClickListener(  (v)->{
+                TextView t = (TextView)v;
+                String str = t.getText().toString();
+
+            } );
+
+
+            cLine.addView(b);
+        }
     }
 }
 
