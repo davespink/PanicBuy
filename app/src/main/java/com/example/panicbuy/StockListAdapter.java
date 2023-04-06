@@ -61,7 +61,7 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         String tobuy = getItem(position).getToBuy();
 
         //Create the stock object with the information
-        Stock stock = new Stock(my_id, barcode, description, stocklevel, tobuy, "0", "");
+        Stock stock = new Stock(my_id, barcode, description, stocklevel, tobuy, "0", "","","");
 
         //create the view result for showing the animation
         final View result;

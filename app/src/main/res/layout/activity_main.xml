@@ -21,17 +21,18 @@
 
             <ImageButton
                 android:id="@+id/button_s"
-                android:layout_width="47dp"
-                android:layout_height="44dp"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
 
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
 
                 android:onClick="actionButton"
                 android:src="@drawable/scan" />
 
             <EditText
                 android:id="@+id/barcodeResultView"
-                android:layout_width="216dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
 
@@ -58,7 +59,7 @@
                 android:id="@+id/editTextDescription"
                 android:layout_width="208dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="55dp"
 
                 android:hint="Unknown"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -68,9 +69,9 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
 
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
                 android:onClick="launchSecondActivity"
-                android:text="A2" />
+                android:text="..." />
 
 
         </LinearLayout>
@@ -106,12 +107,12 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-            <Button
+   `         <Button
                 android:id="@+id/button_p"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:onClick="actionButton"
-                android:text="@string/plus" />
+                android:text="@string/plus" />`
 
             <TextView
                 android:id="@+id/textViewStock"
@@ -151,7 +152,7 @@
 
             <ImageButton
                 android:id="@+id/button_u"
-                android:layout_width="40dp"
+                android:layout_width="59dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
@@ -163,21 +164,21 @@
 
             <ImageButton
                 android:id="@+id/button_f"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
+                android:contentDescription="find item"
                 android:onClick="actionButton"
                 android:src="@drawable/find"
-                android:contentDescription="find item"
                 tools:ignore="SpeakableTextPresentCheck" />
 
 
             <ImageButton
                 android:id="@+id/button_d"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
@@ -189,11 +190,19 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/buttonLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/purpleLayout"
             android:layout_width="wrap_content"
             android:layout_height="368dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="10dp"
 
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"

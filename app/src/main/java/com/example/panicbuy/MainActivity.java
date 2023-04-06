@@ -14,8 +14,10 @@ import android.view.View;
 
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,7 +35,6 @@ import java.util.ArrayList;
 TODO
 https://stackoverflow.com/questions/10144820/get-the-html-of-the-javascript-rendered-page-after-interacting-with-it
 
-
 Pasting the following to your browser console ( F12 -> Console ) will automatically save a file called rendered.html to your downloads directory:
 
 let link = document.createElement("a");
@@ -42,9 +43,22 @@ link.download = "rendered.html";
 link.click();
 URL.revokeObjectURL(link.href);
 
+
+Panic Buy:
+
+Bug: Shop button doesn't work right. Shop mode persists when switched off.
+Idea: Use color changes to indicate tags. Green or white.
+
+Need to allow for a show to buy only.
+
+Should we change tobuy into a number? Could indicate order qty.
+
+
+
+
  */
 
-// Todo: Learn about ToDo
+
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
     ArrayList<Stock> stockList;
@@ -60,11 +74,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        LinearLayout bLine = (LinearLayout) findViewById(R.id.buttonLine);
+
+
+        String[] tags = {"fish", "meat", "fruit", "veg", "cans"};
+        Button b;
+
+        for (int i = 0; i < tags.length; i++) {
+            b = new com.google.android.material.chip.Chip(this);
+            b.setText(tags[i]);
+
+            bLine.addView(b);
+        }
+
         ListView mListView = findViewById(R.id.userlist);
         stockList = new ArrayList<>();
 
         helper = new DatabaseHelper(this);
-     //   setUp();
+        //   setUp();
         helper.readAll(this, stockList);
 
         adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
@@ -87,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
             thisChild = ((ViewGroup) view).getChildAt(3);
             String sStockLevel = (String) ((TextView) thisChild).getText();
 
-            //   boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
-            boolean shopping = true;
+            boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
+            //boolean shopping = true;
             if (shopping) {
                 boolean bToBuy = helper.toggleToBuy(sBarcode, this);
 
@@ -121,38 +149,43 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Button clicked!");
 
         Intent intent = new Intent(this, SecondActivity.class);
-        TextView v = (TextView)findViewById(R.id.barcodeResultView);
-        intent.putExtra("barcode", v.getText().toString());
-        startActivity(intent);
+        TextView v = (TextView) findViewById(R.id.barcodeResultView);
+        String barcode = v.getText().toString();
+        if (barcode.length() > 0) {
+            intent.putExtra("barcode", barcode);
+            startActivity(intent);
+        }
     }
 
     public void refreshDataset() {
         helper.readAll(this, stockList);
         adapter.notifyDataSetChanged();
     }
+
     public void setUp() {
         String list = "Fish, Cauliflower,Tortillas,Chicharones";
         String[] arr = list.split(",");
 
         int x = 0;
-        for (int i = 0;i<arr.length;i++)
-        {
+        for (int i = 0; i < arr.length; i++) {
             String d = "Fresh " + arr[i];
-            Stock s = new Stock( "1","",d,"0","N","0","");
-            helper.update(s,this);
+            Stock s = new Stock("1", "", d, "0", "N", "0", "","","");
+            helper.update(s, this);
             x = 0;
         }
 
 
     }
+
     public void refreshDataset(View v) {
         refreshDataset();
     }
+
     public void readBarcode() {
 
 
         TextView vDisplay = findViewById(R.id.barcodeResultView);
-        ImageButton bFind = (ImageButton)findViewById(R.id.button_f);
+        ImageButton bFind = (ImageButton) findViewById(R.id.button_f);
 
         GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
 
@@ -161,14 +194,13 @@ public class MainActivity extends AppCompatActivity {
         gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
 
         gmsBarcodeScanner.startScan().addOnSuccessListener(
-        (barcode) -> {
-            vDisplay.setText(barcode.getDisplayValue());
-            bFind.performClick();
-            ;
-        }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
+                (barcode) -> {
+                    vDisplay.setText(barcode.getDisplayValue());
+                    bFind.performClick();
+                    ;
+                }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
 
     }
-
 
 
     public void actionButton(View v) {
@@ -201,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 String sNewStockLevel = String.valueOf(Integer.parseInt(sStockLevel) + Integer.parseInt(sQty));
                 ((TextView) findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
 
-                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "0", "n", "");
+                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "0", "n", "","","");
                 helper.update(stock, this);
                 helper.readAll(this, stockList);
                 refreshDataset();
@@ -230,10 +262,10 @@ public class MainActivity extends AppCompatActivity {
 
             case "c":
 
-                ((TextView)findViewById(R.id.barcodeResultView)).setText("");
-                ((TextView)findViewById(R.id.editTextDescription)).setText("");
-                ((TextView)findViewById(R.id.editTextQty)).setText("1");
-                ((TextView)findViewById(R.id.textViewStockLevel)).setText("0");
+                ((TextView) findViewById(R.id.barcodeResultView)).setText("");
+                ((TextView) findViewById(R.id.editTextDescription)).setText("");
+                ((TextView) findViewById(R.id.editTextQty)).setText("1");
+                ((TextView) findViewById(R.id.textViewStockLevel)).setText("0");
 
 
                 break;

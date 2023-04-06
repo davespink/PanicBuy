@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-class  DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "panicData";
     public static final String STOCK_TABLE_NAME = "stock";
 
@@ -59,6 +59,8 @@ class  DatabaseHelper extends SQLiteOpenHelper {
         newValues.put("description", stock.getDescription());
         newValues.put("stocklevel", stock.getStockLevel());
         newValues.put("tobuy", stock.getToBuy());
+        newValues.put("notes", stock.getNotes());
+        newValues.put("tags", stock.getTags());
 
         String[] whereArgs = {stock.getBarcode()};
 
@@ -94,7 +96,9 @@ class  DatabaseHelper extends SQLiteOpenHelper {
             Stock s = new Stock(cursor.getString(0),
                     cursor.getString(1), cursor.getString(2),
                     cursor.getString(3), cursor.getString(4),
-                    cursor.getString(5), cursor.getString(6));
+                    cursor.getString(5), cursor.getString(6),
+                    cursor.getString(7), cursor.getString(8)
+            );
             cursor.close();
             db.close();
             return s;
@@ -116,12 +120,15 @@ class  DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-
     public boolean readAll(Context context, ArrayList<Stock> stockList) {
 
         SQLiteDatabase db = getReadableDatabase();
 
         try {
+
+
+            //     String sql = "update stock set tags = none";
+
             String sql = "Select * from stock where 1 order by  description  COLLATE NOCASE ASC";
             Cursor cursor =
                     db.rawQuery(sql, null);
@@ -132,8 +139,9 @@ class  DatabaseHelper extends SQLiteOpenHelper {
             while (!cursor.isAfterLast()) {
                 Stock record = new Stock(cursor.getString(0), cursor.getString(1),
                         cursor.getString(2), cursor.getString(3),
-                        cursor.getString(4),cursor.getString(5),
-                        cursor.getString(6));
+                        cursor.getString(4), cursor.getString(5),
+                        cursor.getString(6), cursor.getString(7),
+                        "tags");
 
                 stockList.add(record);
                 cursor.moveToNext();
@@ -147,7 +155,7 @@ class  DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean toggleToBuy(String barcode,Context context) {
+    public boolean toggleToBuy(String barcode, Context context) {
         try (SQLiteDatabase db = getWritableDatabase()) {
             String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
             Cursor cursor =
@@ -160,7 +168,8 @@ class  DatabaseHelper extends SQLiteOpenHelper {
             String toBuy = "";
 
             toBuy = cursor.getString(0);
-            if(toBuy.equals("Y")) toBuy = "N"; else toBuy = "Y";
+            if (toBuy.equals("Y")) toBuy = "N";
+            else toBuy = "Y";
 
             ContentValues newValues = new ContentValues();
             newValues.put("tobuy", toBuy);
@@ -171,7 +180,8 @@ class  DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
 
-            if(toBuy=="Y") return true; else return false;
+            if (toBuy == "Y") return true;
+            else return false;
         } catch (Exception e) {
             Toast.makeText(context, "Error in toggle tobuy", Toast.LENGTH_SHORT).show();
             return true;

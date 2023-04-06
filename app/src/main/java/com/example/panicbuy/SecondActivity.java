@@ -5,70 +5,92 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.internal.FlowLayout;
+
 
 public class SecondActivity extends AppCompatActivity {
     private static final String LOG_TAG =
             SecondActivity.class.getSimpleName();
 
+    private Stock stock;
+    private DatabaseHelper helper;
+
+    public void onClick(View v) {
+        TextView t = (TextView) v;
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
-
         Intent intent = getIntent();
         String sBarcode = intent.getStringExtra("barcode");
+        helper = new DatabaseHelper(this);
+        stock = helper.findBarcode(sBarcode, this);
 
-        DatabaseHelper helper = new DatabaseHelper(this);
-        Stock s = helper.findBarcode(sBarcode, this);
-        ((TextView)findViewById(R.id.text_header)).setText(s.getDescription());
+        setContentView(R.layout.activity_second);
 
-        Log.d(LOG_TAG, s.getDescription());
+        ((TextView) findViewById(R.id.text_header)).setText(stock.getDescription());
+        ((EditText) findViewById(R.id.notes)).setText(stock.getNotes());
 
-        LinearLayout bLine = (LinearLayout) findViewById(R.id.buttonLine);
-        LinearLayout bLine2 = (LinearLayout) findViewById(R.id.buttonLine2);
-        LinearLayout cLine= (LinearLayout) findViewById(R.id.currentTags);
+        String[] tags = {"fish", "meat", "fruit", "veg", "cans", "diary", "beer", "frozen", "soap"};
 
-        String[] tags = {"fish", "meat", "fruit", "veg", "cans"};
-        Button b;
+        Chip chip;
 
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
         for (int i = 0; i < tags.length; i++) {
-            b = new com.google.android.material.chip.Chip(this);
-            b.setText(tags[i]);
-
-            bLine.addView(b);
+            chip = new Chip(this);
+            chip.setText(tags[i]);
+            chip.setChipEndPadding((float) .5);
+            chip.setChipStartPadding((float) 1.5);
+            //    b.setOnClickListener(SecondActivity::onClick); //wtf??
+            chip.setOnClickListener(this::onClick); //wtf??
+            chip.setCheckable(true);
+            //      chip.setChecked(true);
+            chipGroup.addView(chip);
         }
 
-      String[] tags2 = {"diary", "frozen", "soap"};
 
 
-        for (int i = 0; i < tags2.length; i++) {
-            b = new com.google.android.material.chip.Chip(this);
-            b.setText(tags2[i]);
-            bLine2.addView(b);
-        }
 
-        for (int i = 0; i < tags2.length; i++) {
-            b = new com.google.android.material.chip.Chip(this);
-            b.setText(tags2[i]);
-
-            b.setOnClickListener(  (v)->{
-                TextView t = (TextView)v;
-                String str = t.getText().toString();
-
-            } );
-
-
-            cLine.addView(b);
-        }
     }
+
+    protected void onDestroy() {
+        String sNotes = ((TextView) findViewById(R.id.notes)).getText().toString();
+        stock.setNotes(sNotes);
+
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+
+        String str = "";
+
+        int index = 0;
+        while (index < ((ViewGroup) chipGroup).getChildCount()) {
+            Chip nextChip = (Chip) ((ViewGroup) chipGroup).getChildAt(index);
+
+            if (nextChip.isChecked()) {
+                 str  =  str + (String) ((TextView) nextChip).getText() +  "+";
+            }
+
+            index++;
+        }
+        stock.setTags(str.substring(0, str.length()-1));
+
+        helper.update(stock, this);
+        super.onDestroy();
+    }
+
 }
+
 
 

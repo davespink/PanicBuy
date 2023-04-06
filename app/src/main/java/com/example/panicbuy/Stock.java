@@ -17,9 +17,14 @@ public class Stock {
 
     private String lastupdate;
 
-    public Stock(String my_id, String barcode, String description, String stocklevel, String tobuy, String minstock, String lastupdate) {
+    private String tags;
 
-        if(barcode.length()==0) {
+    private String notes;
+
+    public Stock(String my_id, String barcode, String description, String stocklevel,
+                 String tobuy, String minstock, String lastupdate,String notes,String tags) {
+
+        if (barcode.length() == 0) {
             long now = (long) System.currentTimeMillis();
             barcode = Long.toString(now);
         }
@@ -29,8 +34,11 @@ public class Stock {
         this.description = description;
         this.stocklevel = stocklevel;
         this.tobuy = tobuy;
+
         this.minstock = minstock;
         this.lastupdate = lastupdate;
+        this.notes = notes;
+        this.tags = tags;
     }
 
     public String getMy_id() {
@@ -57,6 +65,21 @@ public class Stock {
         this.description = description;
     }
 
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     public String getStockLevel() {
         return stocklevel;
@@ -65,11 +88,13 @@ public class Stock {
     public void setStockLevel(String stockLevel) {
         this.stocklevel = stocklevel;
     }
+
     public String getToBuy() {
-        if(this.tobuy==null) {
-           this.tobuy = new String("N");
+        if (this.tobuy == null) {
+            this.tobuy = new String("N");
         }
         return this.tobuy;
     }
+
 
 }
