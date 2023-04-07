@@ -43,6 +43,7 @@ public class SecondActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.text_header)).setText(stock.getDescription());
         ((EditText) findViewById(R.id.notes)).setText(stock.getNotes());
+        String sTags = stock.getTags();
 
         String[] tags = {"fish", "meat", "fruit", "veg", "cans", "diary", "beer", "frozen", "soap"};
 
@@ -57,11 +58,10 @@ public class SecondActivity extends AppCompatActivity {
             //    b.setOnClickListener(SecondActivity::onClick); //wtf??
             chip.setOnClickListener(this::onClick); //wtf??
             chip.setCheckable(true);
-            //      chip.setChecked(true);
+            if (sTags.contains(tags[i]))
+                chip.setChecked(true);
             chipGroup.addView(chip);
         }
-
-
 
 
     }
@@ -72,19 +72,19 @@ public class SecondActivity extends AppCompatActivity {
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
 
-        String str = "";
+        String str = "+";
 
         int index = 0;
         while (index < ((ViewGroup) chipGroup).getChildCount()) {
             Chip nextChip = (Chip) ((ViewGroup) chipGroup).getChildAt(index);
 
             if (nextChip.isChecked()) {
-                 str  =  str + (String) ((TextView) nextChip).getText() +  "+";
+                str = str + (String) ((TextView) nextChip).getText() + "+";
             }
 
             index++;
         }
-        stock.setTags(str.substring(0, str.length()-1));
+        stock.setTags(str);
 
         helper.update(stock, this);
         super.onDestroy();

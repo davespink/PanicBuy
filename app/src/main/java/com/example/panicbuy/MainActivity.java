@@ -54,7 +54,8 @@ Need to allow for a show to buy only.
 Should we change tobuy into a number? Could indicate order qty.
 
 
-
+Idea: Create a meta table in the database. Use to store possible tags.
+key + data pair.
 
  */
 
