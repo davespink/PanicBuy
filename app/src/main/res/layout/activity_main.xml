@@ -107,7 +107,9 @@
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-   `         <Button
+            `
+
+            <Button
                 android:id="@+id/button_p"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
@@ -186,16 +188,19 @@
                 android:src="@drawable/delete"
                 tools:ignore="SpeakableTextPresentCheck" />
 
-
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/buttonLine"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-        </LinearLayout>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"></com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
 
         <LinearLayout
             android:id="@+id/purpleLayout"

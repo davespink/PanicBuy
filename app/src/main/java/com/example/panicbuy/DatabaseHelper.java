@@ -187,11 +187,30 @@ class DatabaseHelper extends SQLiteOpenHelper {
             return true;
         }
 
-
     }
 
-}
+    public boolean setMeta(String mKey, String mValue) {
+        return true;
+    }
 
+    public String getMeta(String mKey) {
+        try (SQLiteDatabase db = getReadableDatabase()) {
+            String sql = String.format("Select * from meta where m_key = '%s'", mKey);
+            Cursor cursor =
+                    db.rawQuery(sql, null);
+            if (cursor.getCount() < 1) {
+              //  Toast.makeText(this, "NOT FOUND", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+            cursor.moveToFirst();
+            String m_value =  cursor.getString(1);
+
+            cursor.close();
+            db.close();
+            return m_value;
+        }
+    }
+}
 
 
 

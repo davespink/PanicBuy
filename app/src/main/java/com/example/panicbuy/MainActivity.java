@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //import com.google.ml-kit.vision.barcode.common.Barcode;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
@@ -75,24 +77,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        LinearLayout bLine = (LinearLayout) findViewById(R.id.buttonLine);
-
-
-        String[] tags = {"fish", "meat", "fruit", "veg", "cans"};
-        Button b;
-
-        for (int i = 0; i < tags.length; i++) {
-            b = new com.google.android.material.chip.Chip(this);
-            b.setText(tags[i]);
-
-            bLine.addView(b);
-        }
+        Chip chip;
 
         ListView mListView = findViewById(R.id.userlist);
         stockList = new ArrayList<>();
 
         helper = new DatabaseHelper(this);
+
+        String str = helper.getMeta("tags");
+        String[] tags = str.split(",");
+
+        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        chipGroup.setSingleLine(true);
+        for (int i = 0; i < tags.length; i++) {
+            chip = new Chip(this);
+            chip.setText(tags[i]);
+            chip.setChipEndPadding((float) .5);
+            chip.setChipStartPadding((float) 1.5);
+            //    b.setOnClickListener(SecondActivity::onClick); //wtf??
+       //     chip.setOnClickListener(this::onClick); //wtf??
+        //    chip.setCheckable(true);
+         //   if (sTags.contains(tags[i]))
+         //       chip.setChecked(true);
+         chipGroup.addView(chip);
+        }
+
         //   setUp();
         helper.readAll(this, stockList);
 
