@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
     String sFilter;
 
+    String listState = "DEF";
+
     DatabaseHelper helper;
 
     //
@@ -153,9 +155,9 @@ public class MainActivity extends AppCompatActivity {
             thisChild = ((ViewGroup) view).getChildAt(3);
             String sStockLevel = (String) ((TextView) thisChild).getText();
 
-            boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
-            //boolean shopping = true;
-            if (shopping) {
+            //  boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
+            //    boolean shopping = false;
+            if (listState.equals("SHOP") || listState.equals("LIST")) {
                 boolean bToBuy = helper.toggleToBuy(sBarcode, this);
 
                 if (bToBuy) {
@@ -245,10 +247,8 @@ public class MainActivity extends AppCompatActivity {
     public void actionButton(View v) {
 
         String viewID = getResources().getResourceName(v.getId());
-        int l = viewID.length();
-        viewID = viewID.substring(l - 1, l);
-        String thisKey = viewID;
-
+        String[] str = viewID.split("_");
+        String thisKey = str[1];
 
         // Lets construct a stock object
         String sBarcode = ((TextView) (findViewById(R.id.barcodeResultView))).getText().toString();
@@ -306,13 +306,50 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.editTextDescription)).setText("");
                 ((TextView) findViewById(R.id.editTextQty)).setText("1");
                 ((TextView) findViewById(R.id.textViewStockLevel)).setText("0");
+                break;
 
+
+            case "def":
+            case "list":
+            case "shop":
+
+                triState(thisKey);
 
                 break;
+
+
             default:
                 Toast.makeText(this, "Unknown button " + thisKey, Toast.LENGTH_SHORT).show();
 
         }
+
+    }
+
+
+    private void triState(String bString) {
+        Button bDef = (Button) findViewById(R.id.button_def);
+        Button bList = (Button) findViewById(R.id.button_list);
+        Button bShop = (Button) findViewById(R.id.button_shop);
+
+        bDef.setVisibility(View.GONE);
+        bList.setVisibility(View.GONE);
+        bShop.setVisibility(View.GONE);
+
+        if (bString.equals("def")) {
+            bList.setVisibility(View.VISIBLE);
+            listState = "LIST";
+        }
+        if (bString.equals("list")) {
+            bShop.setVisibility(View.VISIBLE);
+            listState = "SHOP";
+        }
+        if (bString.equals("shop")) {
+            bDef.setVisibility(View.VISIBLE);
+            listState = "DEF";
+        }
+
+
+        refreshDataset();
 
     }
 }

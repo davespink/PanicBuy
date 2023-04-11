@@ -14,5 +14,10 @@
     <string name="text_header">HEADER</string>
     <string name="chip">CHIP</string>
     <string name="fish">FISH</string>
+    <string name="pirates">Pirates</string>
+    <string name="ninjas">Ninjas</string>
+    <string name="list">List</string>
+    <string name="def">Def</string>
+    <string name="shop">Shop</string>
 
 </resources>

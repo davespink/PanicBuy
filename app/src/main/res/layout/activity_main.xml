@@ -45,8 +45,8 @@
                 android:id="@+id/button_c"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/button_color"
                 android:layout_marginLeft="10dp"
+                android:backgroundTint="@color/button_color"
                 android:onClick="actionButton"
                 android:text="C" />
 
@@ -69,8 +69,8 @@
                 android:id="@+id/second_a"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/button_color"
                 android:layout_marginLeft="20dp"
+                android:backgroundTint="@color/button_color"
                 android:onClick="launchSecondActivity"
                 android:text="..." />
 
@@ -142,15 +142,33 @@
             android:background="#EEF3EF"
             android:backgroundTint="#BC8F8C">
 
-            <CheckBox
-                android:id="@+id/checkBox2"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/button_def"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginTop="20dp"
-                android:onClick="refreshDataset"
-                android:text="Shop"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+                android:layout_marginLeft="10dp"
+                android:onClick="actionButton"
+                android:text="@string/def" />
+
+            <Button
+                android:id="@+id/button_list"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginLeft="10dp"
+                android:onClick="actionButton"
+                android:text="@string/list" />
+
+            <Button
+                android:id="@+id/button_shop"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginLeft="10dp"
+                android:onClick="actionButton"
+                android:text="@string/shop" />
+
 
 
             <ImageButton

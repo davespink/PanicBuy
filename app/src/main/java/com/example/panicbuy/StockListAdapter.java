@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -61,7 +62,7 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         String tobuy = getItem(position).getToBuy();
 
         //Create the stock object with the information
-        Stock stock = new Stock(my_id, barcode, description, stocklevel, tobuy, "0", "","","");
+        Stock stock = new Stock(my_id, barcode, description, stocklevel, tobuy, "0", "", "", "");
 
         //create the view result for showing the animation
         final View result;
@@ -104,16 +105,18 @@ public class StockListAdapter extends ArrayAdapter<Stock> {
         holder.toBuy.setText(stock.getToBuy());
 
         Activity activity = (Activity) mContext;
-        View vC = activity.findViewById(R.id.checkBox2);
-        boolean shopping = ((CheckBox)vC).isChecked();
+        boolean shopping = true;
+        Button b = (Button) activity.findViewById(R.id.button_def);
 
+        if (b.getVisibility() == View.VISIBLE)
+            shopping = false;
         View v = (View) holder.my_id.getParent();
-        if(shopping) {
+        if (shopping) {
             if (stock.getToBuy().equals("Y"))
                 v.setBackgroundColor(0x5F00FF00);
             else
                 v.setBackgroundColor(0xFFFFFFFF);
-        }else    v.setBackgroundColor(0xFFFFFFFF);
+        } else v.setBackgroundColor(0xFFFFFFFF);
 
         return convertView;
     }

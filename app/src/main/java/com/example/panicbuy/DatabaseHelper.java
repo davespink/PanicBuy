@@ -1,6 +1,7 @@
 package com.example.panicbuy;
 
 
+import android.app.Activity;
 import android.content.ContentValues;
 
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -178,6 +181,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
                 }
             }
+
+            Activity activity = (Activity) context;
+            Button b = (Button) activity.findViewById(R.id.button_shop);
+            if(b.getVisibility()== View.VISIBLE)
+            {
+                sWhere = sWhere + " AND tobuy = " + "\"Y" + "\"";
+            }
+
 
             String sql = "Select * from stock where " + sWhere + " order by  description  COLLATE NOCASE ASC";
 
