@@ -58,16 +58,18 @@ class DatabaseHelper extends SQLiteOpenHelper {
         newValues.put("barcode", stock.getBarcode());
         newValues.put("description", stock.getDescription());
         newValues.put("stocklevel", stock.getStockLevel());
-        newValues.put("tobuy", stock.getToBuy());
-        newValues.put("notes", stock.getNotes());
-        newValues.put("tags", stock.getTags());
+
 
         String[] whereArgs = {stock.getBarcode()};
 
         if (cursor != null) {
             try {
-                if (cursor.getCount() == 0)
+                if (cursor.getCount() == 0){
+                    newValues.put("tobuy", stock.getToBuy());
+                    newValues.put("notes", stock.getNotes());
+                    newValues.put("tags", stock.getTags());
                     db.insert("stock", null, newValues);
+                }
                 else
                     db.update("stock", newValues, "barcode = ?", whereArgs);
             } catch (Exception e) {
@@ -81,7 +83,41 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+    public boolean update2(Stock stock, Context context) {
 
+        SQLiteDatabase db = getWritableDatabase();
+
+        String sql = String.format("Select * from stock where barcode = '%s'", stock.getBarcode());
+        Cursor cursor = null;
+        try {
+            cursor =
+                    db.rawQuery(sql, null);
+        } catch (Exception e) {
+            String error = e.toString();
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        }
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("notes", stock.getNotes());
+        newValues.put("tags", stock.getTags());
+
+
+        String[] whereArgs = {stock.getBarcode()};
+
+        if (cursor != null) {
+            try {
+                db.update("stock", newValues, "barcode = ?", whereArgs);
+            } catch (Exception e) {
+                String error = e.toString();
+                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            } finally {
+                cursor.close();
+            }
+            db.close();
+            return true;
+        }
+        return false;
+    }
     public Stock findBarcode(String barcode, Context context) {
 
         try (SQLiteDatabase db = getReadableDatabase()) {
@@ -120,16 +156,31 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean readAll(Context context, ArrayList<Stock> stockList) {
+    public boolean readAll(Context context, ArrayList<Stock> stockList, String sFilter) {
 
         SQLiteDatabase db = getReadableDatabase();
 
         try {
 
+            String sWhere = "1";
+            String sOr = "";
 
-            //     String sql = "update stock set tags = none";
+            if (sFilter != null) {
+                if (sFilter.length() > 0) {
+                    sWhere = "";
+                    String[] sTags = sFilter.split(",");
+                    for (int i = 0; i < sTags.length ; i++) {
 
-            String sql = "Select * from stock where 1 order by  description  COLLATE NOCASE ASC";
+                        sWhere = sWhere + sOr +  " tags like " + "\"%" + sTags[i] + "%\" ";
+                      //  if(sOr.length()==0)
+                            sOr = " OR ";
+                    }
+
+                }
+            }
+
+            String sql = "Select * from stock where " + sWhere + " order by  description  COLLATE NOCASE ASC";
+
             Cursor cursor =
                     db.rawQuery(sql, null);
 
@@ -141,7 +192,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                         cursor.getString(2), cursor.getString(3),
                         cursor.getString(4), cursor.getString(5),
                         cursor.getString(6), cursor.getString(7),
-                        "tags");
+                        cursor.getString(8));
 
                 stockList.add(record);
                 cursor.moveToNext();
@@ -199,11 +250,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
             Cursor cursor =
                     db.rawQuery(sql, null);
             if (cursor.getCount() < 1) {
-              //  Toast.makeText(this, "NOT FOUND", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(this, "NOT FOUND", Toast.LENGTH_SHORT).show();
                 return null;
             }
             cursor.moveToFirst();
-            String m_value =  cursor.getString(1);
+            String m_value = cursor.getString(1);
 
             cursor.close();
             db.close();

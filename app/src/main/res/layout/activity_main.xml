@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/design_default_color_surface"
         android:orientation="vertical">
 
         <LinearLayout
@@ -44,7 +45,7 @@
                 android:id="@+id/button_c"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-
+                android:backgroundTint="@color/button_color"
                 android:layout_marginLeft="10dp"
                 android:onClick="actionButton"
                 android:text="C" />
@@ -68,7 +69,7 @@
                 android:id="@+id/second_a"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-
+                android:backgroundTint="@color/button_color"
                 android:layout_marginLeft="20dp"
                 android:onClick="launchSecondActivity"
                 android:text="..." />
@@ -191,6 +192,7 @@
         </LinearLayout>
 
         <HorizontalScrollView
+            android:id="@+id/chipshop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

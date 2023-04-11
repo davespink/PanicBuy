@@ -2,12 +2,17 @@ package com.example.panicbuy;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.WindowDecorActionBar;
+import androidx.core.graphics.drawable.ColorDrawableKt;
 
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +36,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /*
@@ -67,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Stock> stockList;
     StockListAdapter adapter;
 
+    String sFilter;
+
     DatabaseHelper helper;
 
     //
@@ -81,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView mListView = findViewById(R.id.userlist);
         stockList = new ArrayList<>();
+        sFilter = new String("");
 
         helper = new DatabaseHelper(this);
 
@@ -94,30 +103,49 @@ public class MainActivity extends AppCompatActivity {
             chip.setText(tags[i]);
             chip.setChipEndPadding((float) .5);
             chip.setChipStartPadding((float) 1.5);
+
+            chip.setCheckable(true);
+
             //    b.setOnClickListener(SecondActivity::onClick); //wtf??
-       //     chip.setOnClickListener(this::onClick); //wtf??
-        //    chip.setCheckable(true);
-         //   if (sTags.contains(tags[i]))
-         //       chip.setChecked(true);
-         chipGroup.addView(chip);
+            //     chip.setOnClickListener(this::onClick); //wtf??
+            //    chip.setCheckable(true);
+            //   if (sTags.contains(tags[i]))
+            //       chip.setChecked(true);
+            chipGroup.addView(chip);
         }
 
+        // setOnCheckedChangeListener
+        chipGroup.setOnCheckedStateChangeListener((ChipGroup group, List<Integer> checkedId) -> {
+
+            Log.d(LOG_TAG, "Chip clicked now!");
+
+            int index = 0;
+            this.sFilter = "";
+            while (index < ((ViewGroup) group).getChildCount()) {
+                Chip nextChip = (Chip) ((ViewGroup) group).getChildAt(index);
+
+                if (nextChip.isChecked()) {
+                    sFilter = sFilter + (String) ((TextView) nextChip).getText() + ",";
+                }
+                index++;
+            }
+            if (sFilter.length() > 0)
+                sFilter = sFilter.substring(0, sFilter.length() - 1);
+
+            refreshDataset();
+
+        });
+
+
         //   setUp();
-        helper.readAll(this, stockList);
+
+        helper.readAll(this, stockList, null);
 
         adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
 
-/*
-            for(int index = 0; index < ((ViewGroup) view ).getChildCount(); index++) {
-                View nextChild = ((ViewGroup) view ).getChildAt(index);
-                String s = (String) ((TextView)nextChild).getText();
-                String t = s;
-            }
-
- */
             View thisChild = ((ViewGroup) view).getChildAt(1);
             String sBarcode = (String) ((TextView) thisChild).getText();
             thisChild = ((ViewGroup) view).getChildAt(2);
@@ -156,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.class.getSimpleName();
 
     public void launchSecondActivity(View view) {
-        Log.d(LOG_TAG, "Button clicked!");
+        //  Log.d(LOG_TAG, "Button clicked!");
 
         Intent intent = new Intent(this, SecondActivity.class);
         TextView v = (TextView) findViewById(R.id.barcodeResultView);
@@ -168,7 +196,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshDataset() {
-        helper.readAll(this, stockList);
+
+        helper.readAll(this, stockList, sFilter);
         adapter.notifyDataSetChanged();
     }
 
@@ -179,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         int x = 0;
         for (int i = 0; i < arr.length; i++) {
             String d = "Fresh " + arr[i];
-            Stock s = new Stock("1", "", d, "0", "N", "0", "","","");
+            Stock s = new Stock("1", "", d, "0", "N", "0", "", "", "");
             helper.update(s, this);
             x = 0;
         }
@@ -243,9 +272,10 @@ public class MainActivity extends AppCompatActivity {
                 String sNewStockLevel = String.valueOf(Integer.parseInt(sStockLevel) + Integer.parseInt(sQty));
                 ((TextView) findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
 
-                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "0", "n", "","","");
+                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "n", "0", "", "", "");
                 helper.update(stock, this);
-                helper.readAll(this, stockList);
+
+                helper.readAll(this, stockList, null);
                 refreshDataset();
                 Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_LONG).show();
                 break;

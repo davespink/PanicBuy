@@ -38,15 +38,21 @@ public class SecondActivity extends AppCompatActivity {
         String sBarcode = intent.getStringExtra("barcode");
         helper = new DatabaseHelper(this);
         stock = helper.findBarcode(sBarcode, this);
-
         setContentView(R.layout.activity_second);
+
+        if (stock == null) {
+            ((TextView) findViewById(R.id.text_header)).setText("Not found");
+            return;
+        }
+
 
         ((TextView) findViewById(R.id.text_header)).setText(stock.getDescription());
         ((EditText) findViewById(R.id.notes)).setText(stock.getNotes());
-        String sTags = stock.getTags();
+        String sStockTags = stock.getTags();
 
-        String[] tags = {"fish", "meat", "fruit", "veg", "cans", "diary", "beer", "frozen", "soap"};
-
+        //     String[] tags = {"fish", "meat", "fruit", "veg", "cans", "diary", "beer", "frozen", "soap"};
+        String sTags = helper.getMeta("tags");
+        String[] tags = sTags.split(",");
         Chip chip;
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
@@ -58,7 +64,7 @@ public class SecondActivity extends AppCompatActivity {
             //    b.setOnClickListener(SecondActivity::onClick); //wtf??
             chip.setOnClickListener(this::onClick); //wtf??
             chip.setCheckable(true);
-            if (sTags.contains(tags[i]))
+            if (sStockTags.contains(tags[i]))
                 chip.setChecked(true);
             chipGroup.addView(chip);
         }
@@ -72,21 +78,24 @@ public class SecondActivity extends AppCompatActivity {
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
 
-        String str = "+";
+        String str = "";
 
         int index = 0;
         while (index < ((ViewGroup) chipGroup).getChildCount()) {
             Chip nextChip = (Chip) ((ViewGroup) chipGroup).getChildAt(index);
 
             if (nextChip.isChecked()) {
-                str = str + (String) ((TextView) nextChip).getText() + "+";
+                str = str + (String) ((TextView) nextChip).getText() + ",";
             }
-
             index++;
         }
+
+        if (str.length() > 0)
+            str = str.substring(0, str.length() - 1);
+
         stock.setTags(str);
 
-        helper.update(stock, this);
+        helper.update2(stock, this);
         super.onDestroy();
     }
 
