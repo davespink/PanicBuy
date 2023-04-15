@@ -65,6 +65,8 @@ Should we change tobuy into a number? Could indicate order qty.
 Idea: Create a meta table in the database. Use to store possible tags.
 key + data pair.
 
+Bug: After delete click the "c" button to clear the fields
+
  */
 
 
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         helper = new DatabaseHelper(this);
 
-        String str = helper.getMeta("tags");
+        String str = "All," + helper.getMeta("tags");
         String[] tags = str.split(",");
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
@@ -176,10 +178,19 @@ public class MainActivity extends AppCompatActivity {
             ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sStockLevel);
             ((TextView) (findViewById(R.id.editTextQty))).setText("0");
 
+
+            refreshDataset();
         });
 
 
-        refreshDataset();
+        (findViewById(R.id.button_c)).setOnLongClickListener((l) -> {
+
+            Toast.makeText(this, "Long Press Detected!", Toast.LENGTH_SHORT).show();
+            return true;
+
+        });
+
+
     }
 
     private static final String LOG_TAG =
@@ -218,9 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void refreshDataset(View v) {
-        refreshDataset();
-    }
 
     public void readBarcode() {
 
@@ -278,6 +286,10 @@ public class MainActivity extends AppCompatActivity {
                 helper.readAll(this, stockList, null);
                 refreshDataset();
                 Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_LONG).show();
+
+                // In case its a new one....
+                String st = stock.getBarcode();
+                ((TextView) findViewById(R.id.barcodeResultView)).setText(stock.getBarcode());
                 break;
             case "s":
                 readBarcode();
@@ -298,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
             case "d":
                 helper.deleteBarcode(sBarcode, this);
                 refreshDataset();
+                ((Button) (findViewById(R.id.button_c))).performClick();
                 break;
 
             case "c":

@@ -168,15 +168,17 @@ class DatabaseHelper extends SQLiteOpenHelper {
             String sWhere = "1";
             String sOr = "";
 
+            // is "All" in the filter
+
+// TODO Dont rely on the string. Call with a null is better.
             if (sFilter != null) {
-                if (sFilter.length() > 0) {
+                if (sFilter.length() > 0 && !sFilter.contains("All")) {
                     sWhere = "";
                     String[] sTags = sFilter.split(",");
-                    for (int i = 0; i < sTags.length ; i++) {
+                    for (String sTag : sTags) {
+                        sWhere = sWhere + sOr + " tags like  \"%" + sTag + "%\" ";
 
-                        sWhere = sWhere + sOr +  " tags like " + "\"%" + sTags[i] + "%\" ";
-                      //  if(sOr.length()==0)
-                            sOr = " OR ";
+                        sOr = " OR ";
                     }
 
                 }
@@ -227,7 +229,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 return true;
             }
             cursor.moveToFirst();
-            String toBuy = "";
+            String toBuy;
 
             toBuy = cursor.getString(0);
             if (toBuy.equals("Y")) toBuy = "N";
@@ -242,8 +244,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
 
-            if (toBuy == "Y") return true;
-            else return false;
+            return toBuy == "Y";
         } catch (Exception e) {
             Toast.makeText(context, "Error in toggle tobuy", Toast.LENGTH_SHORT).show();
             return true;

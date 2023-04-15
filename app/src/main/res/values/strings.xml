@@ -19,5 +19,11 @@
     <string name="list">List</string>
     <string name="def">Def</string>
     <string name="shop">Shop</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="username">User Name</string>
+    <string name="password">Password</string>
+    <string name="signin">SIGNIN</string>
+    <string name="tagname">tag name</string>
 
 </resources>
