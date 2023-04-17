@@ -13,13 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+
 
 class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "panicData";
     public static final String STOCK_TABLE_NAME = "stock";
 
-
+    public static final String META_TABLE_NAME = "meta";
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
 
@@ -42,7 +42,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public boolean update(Stock stock, Context context) {
-
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -159,13 +158,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean readAll(Context context, ArrayList<Stock> stockList, String sFilter) {
+    public Cursor readAll(Context context,  String sFilter) {
 
         SQLiteDatabase db = getReadableDatabase();
-
+        Cursor cursor;
         try {
 
-            String sWhere = "1";
+            StringBuilder sWhere = new StringBuilder("1");
             String sOr = "";
 
             // is "All" in the filter
@@ -173,10 +172,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
 // TODO Dont rely on the string. Call with a null is better.
             if (sFilter != null) {
                 if (sFilter.length() > 0 && !sFilter.contains("All")) {
-                    sWhere = "";
+                    sWhere = new StringBuilder();
                     String[] sTags = sFilter.split(",");
                     for (String sTag : sTags) {
-                        sWhere = sWhere + sOr + " tags like  \"%" + sTag + "%\" ";
+                        sWhere.append(sOr).append(" tags like  \"%").append(sTag).append("%\" ");
 
                         sOr = " OR ";
                     }
@@ -188,35 +187,22 @@ class DatabaseHelper extends SQLiteOpenHelper {
             Button b = (Button) activity.findViewById(R.id.button_shop);
             if(b.getVisibility()== View.VISIBLE)
             {
-                sWhere = sWhere + " AND tobuy = " + "\"Y" + "\"";
+                sWhere.append(" AND tobuy = ").append("\"Y").append("\"");
             }
-
 
             String sql = "Select * from stock where " + sWhere + " order by  description  COLLATE NOCASE ASC";
 
-            Cursor cursor =
+            cursor =
                     db.rawQuery(sql, null);
 
             cursor.moveToFirst();
 
-            stockList.clear();
-            while (!cursor.isAfterLast()) {
-                Stock record = new Stock(cursor.getString(0), cursor.getString(1),
-                        cursor.getString(2), cursor.getString(3),
-                        cursor.getString(4), cursor.getString(5),
-                        cursor.getString(6), cursor.getString(7),
-                        cursor.getString(8));
-
-                stockList.add(record);
-                cursor.moveToNext();
-            }
-            cursor.close();
         } catch (Exception e) {
             Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
-            return false;
+            return null;
         }
 
-        return true;
+        return cursor;
     }
 
     public boolean toggleToBuy(String barcode, Context context) {
@@ -244,7 +230,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
 
-            return toBuy == "Y";
+            return toBuy.equals("Y");
         } catch (Exception e) {
             Toast.makeText(context, "Error in toggle tobuy", Toast.LENGTH_SHORT).show();
             return true;
@@ -258,7 +244,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     public String getMeta(String mKey) {
         try (SQLiteDatabase db = getReadableDatabase()) {
-            String sql = String.format("Select * from meta where m_key = '%s'", mKey);
+            String sql = String.format("Select * from " + META_TABLE_NAME + " where m_key = '%s'", mKey);
             Cursor cursor =
                     db.rawQuery(sql, null);
             if (cursor.getCount() < 1) {

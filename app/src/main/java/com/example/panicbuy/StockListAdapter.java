@@ -1,125 +1,57 @@
 package com.example.panicbuy;
 
-import android.app.Activity;
-import android.content.Context;
+//import android.view.animation.Animation;
+//import android.view.animation.AnimationUtils;
 
+
+//import java.util.ArrayList;
+
+
+import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+
 
 
 /**
  * Created by User on 3/14/2017.
  */
 
-public class StockListAdapter extends ArrayAdapter<Stock> {
-
-    private Context mContext;
-    private int mResource;
-    private int lastPosition = -1;
-
-    /**
-     * Holds variables in a View
-     */
-    private static class ViewHolder {
-
-        TextView my_id;
-        TextView barcode;
-        TextView description;
-        TextView stockLevel;
-        TextView toBuy;
+public class StockListAdapter extends CursorAdapter {
+    public StockListAdapter(Context context, Cursor cursor) {
+        super(context, cursor, 0);
     }
-
-    /**
-     * Default constructor for the StockListAdapter
-     *
-     * @param context
-     * @param resource
-     * @param objects
-     */
-    public StockListAdapter(Context context, int resource, ArrayList<Stock> objects) {
-        super(context, resource, objects);
-        mContext = context;
-        mResource = resource;
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent){
+        return LayoutInflater.from(context).inflate(R.layout.adapter_view_layout,parent,false);
     }
-
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //get the persons information
-        String my_id = getItem(position).getMy_id();
-        String barcode = getItem(position).getBarcode();
-        String description = getItem(position).getDescription();
-        String stocklevel = getItem(position).getStockLevel();
-        String tobuy = getItem(position).getToBuy();
+    public void bindView(View view, Context context, Cursor cursor) {
+        // Find fields to populate in inflated template
+        TextView tvBarcode = (TextView) view.findViewById(R.id.textView_barcode);
+        TextView tvDescription = (TextView) view.findViewById(R.id.textView_description);
+        TextView tvStockLevel = (TextView) view.findViewById(R.id.textView_stocklevel);
+        TextView tvToBuy = (TextView) view.findViewById(R.id.textView_toBuy);
+        // Extract properties from cursor
+        String barcode = cursor.getString(cursor.getColumnIndexOrThrow("barcode"));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
 
-        //Create the stock object with the information
-        Stock stock = new Stock(my_id, barcode, description, stocklevel, tobuy, "0", "", "", "");
+        String stockLevel = cursor.getString(cursor.getColumnIndexOrThrow("stocklevel"));
+        String toBuy = cursor.getString(cursor.getColumnIndexOrThrow("tobuy"));
 
-        //create the view result for showing the animation
-        final View result;
-
-        //ViewHolder object
-        ViewHolder holder;
-
-
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(mResource, parent, false);
-            holder = new ViewHolder();
-
-            holder.my_id = convertView.findViewById(R.id.textView_my_id);
-            holder.barcode = convertView.findViewById(R.id.textView_barcode);
-            holder.description = convertView.findViewById(R.id.textView_description);
-            holder.stockLevel = convertView.findViewById(R.id.textView_stocklevel);
-            holder.toBuy = convertView.findViewById(R.id.textView_toBuy);
-
-            result = convertView;
-
-            convertView.setTag(holder);
-
-
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-            result = convertView;
-        }
-
-
-        Animation animation = AnimationUtils.loadAnimation(mContext,
-                (position > lastPosition) ? R.anim.load_down_anim : R.anim.load_up_anim);
-        result.startAnimation(animation);
-        lastPosition = position;
-
-        holder.my_id.setText(stock.getMy_id());
-        holder.barcode.setText(stock.getBarcode());
-        holder.description.setText(stock.getDescription());
-        holder.stockLevel.setText(stock.getStockLevel());
-        holder.toBuy.setText(stock.getToBuy());
-
-        Activity activity = (Activity) mContext;
-        boolean shopping = true;
-        Button b = (Button) activity.findViewById(R.id.button_def);
-
-        if (b.getVisibility() == View.VISIBLE)
-            shopping = false;
-        View v = (View) holder.my_id.getParent();
-        if (shopping) {
-            if (stock.getToBuy().equals("Y"))
-                v.setBackgroundColor(0x5F00FF00);
-            else
-                v.setBackgroundColor(0xFFFFFFFF);
-        } else v.setBackgroundColor(0xFFFFFFFF);
-
-        return convertView;
+        // Populate fields with extracted properties
+        tvBarcode.setText(barcode);
+        tvDescription.setText( description);
+        tvStockLevel.setText(stockLevel);
+        tvToBuy.setText(toBuy);
     }
+
 }
 
 

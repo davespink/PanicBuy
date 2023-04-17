@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -65,7 +66,6 @@ Should we change tobuy into a number? Could indicate order qty.
 Idea: Create a meta table in the database. Use to store possible tags.
 key + data pair.
 
-Bug: After delete click the "c" button to clear the fields
 
  */
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     String listState = "DEF";
 
     DatabaseHelper helper;
-
+    Cursor cursor;
     //
     // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
     //
@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         Chip chip;
 
-        ListView mListView = findViewById(R.id.userlist);
-        stockList = new ArrayList<>();
         sFilter = new String("");
 
         helper = new DatabaseHelper(this);
@@ -140,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
         //   setUp();
 
-        helper.readAll(this, stockList, null);
+        cursor = helper.readAll(this, null);
 
-        adapter = new StockListAdapter(this, R.layout.adapter_view_layout, stockList);
+        adapter = new StockListAdapter(this, cursor);
+        ListView mListView = findViewById(R.id.stocklist);
         mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener((adapterView, view, position, l) -> {
@@ -182,14 +180,12 @@ public class MainActivity extends AppCompatActivity {
             refreshDataset();
         });
 
-
         (findViewById(R.id.button_c)).setOnLongClickListener((l) -> {
 
             Toast.makeText(this, "Long Press Detected!", Toast.LENGTH_SHORT).show();
             return true;
 
         });
-
 
     }
 
@@ -209,9 +205,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshDataset() {
-
-        helper.readAll(this, stockList, sFilter);
-        adapter.notifyDataSetChanged();
+      cursor = helper.readAll(this,  sFilter);
+      adapter.changeCursor(cursor);
     }
 
     public void setUp() {
@@ -283,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
                 Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "n", "0", "", "", "");
                 helper.update(stock, this);
 
-                helper.readAll(this, stockList, null);
                 refreshDataset();
                 Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_LONG).show();
 

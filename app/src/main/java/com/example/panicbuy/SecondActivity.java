@@ -31,21 +31,17 @@ import com.google.android.material.snackbar.Snackbar;
 public class SecondActivity extends AppCompatActivity {
     private static final String LOG_TAG =
             SecondActivity.class.getSimpleName();
-
     private Stock stock;
     private DatabaseHelper helper;
 
     public void onClick(View v) {
         TextView t = (TextView) v;
-
     }
 
     public Bundle m_Bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
 
         m_Bundle = savedInstanceState;
