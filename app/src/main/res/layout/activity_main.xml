@@ -7,13 +7,14 @@
     android:backgroundTint="@color/teal_200"
 
     android:backgroundTintMode="add"
-
+    android:id="@+id/Frame"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/design_default_color_surface"
+        android:id="@+id/myLayout"
         android:orientation="vertical">
 
         <LinearLayout
@@ -46,7 +47,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:backgroundTint="@color/button_color"
+
                 android:onClick="actionButton"
                 android:text="C" />
 
@@ -70,7 +71,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:backgroundTint="@color/button_color"
+
                 android:onClick="launchSecondActivity"
                 android:text="..." />
 
@@ -138,9 +139,7 @@
         <LinearLayout
             android:id="@+id/orangeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#EEF3EF"
-            android:backgroundTint="#BC8F8C">
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/button_def"
@@ -173,38 +172,38 @@
 
             <ImageButton
                 android:id="@+id/button_u"
-                android:layout_width="59dp"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
                 android:onClick="actionButton"
-                android:src="@drawable/save"
+                android:src="@drawable/baseline_check_circle_48"
                 tools:ignore="SpeakableTextPresentCheck" />
 
 
             <ImageButton
                 android:id="@+id/button_f"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="find item"
                 android:onClick="actionButton"
-                android:src="@drawable/find"
+                android:src="@drawable/baseline_manage_search_48"
                 tools:ignore="SpeakableTextPresentCheck" />
 
 
             <ImageButton
                 android:id="@+id/button_d"
-                android:layout_width="wrap_content"
-                android:layout_height="64dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
                 android:onClick="actionButton"
-                android:src="@drawable/delete"
+                android:src="@drawable/baseline_delete_outline_48"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>

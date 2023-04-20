@@ -1,26 +1,70 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="100dp"
-    android:background="#84FFFF"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:src="@drawable/find"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:scaleType="center"
+<?xml version="1.0" encoding="utf-8"?>
 
-        android:background="#B388FF"
-        android:contentDescription="@string/app_name" />
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:background="#BEE0E4"
+    android:orientation="vertical">
+
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp" />
 
     <EditText
         android:id="@+id/tagname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="144dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
-
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:hint="@string/tagname"
         android:inputType="text" />
 
-</LinearLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="30dp">
+
+        <ImageButton
+            android:id="@+id/button_edit"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:onClick="dialogButton"
+            android:layout_marginStart="18dp"
+
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/baseline_edit_48" />
+
+        <ImageButton
+            android:id="@+id/button_delete"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="18dp"
+
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/baseline_delete_outline_48" />
+
+        <ImageButton
+            android:id="@+id/button_cancel"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="18dp"
+
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/baseline_cancel_48" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>
+
+
+
+
+

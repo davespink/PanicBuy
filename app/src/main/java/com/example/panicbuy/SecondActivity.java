@@ -33,9 +33,25 @@ public class SecondActivity extends AppCompatActivity {
             SecondActivity.class.getSimpleName();
     private Stock stock;
     private DatabaseHelper helper;
+    private AlertDialog dialog;
 
     public void onClick(View v) {
-        TextView t = (TextView) v;
+
+    }
+
+    public void dialogButton(View v) {
+
+        String viewID = getResources().getResourceName(v.getId());
+
+        if (viewID.equals("button_edit")) {
+
+
+        } else if ((viewID.equals("button_delete"))) {
+
+        }
+
+        dialog.cancel();
+
     }
 
     public Bundle m_Bundle;
@@ -72,7 +88,7 @@ public class SecondActivity extends AppCompatActivity {
             chip.setChipEndPadding((float) .5);
             chip.setChipStartPadding((float) 1.5);
             //    b.setOnClickListener(SecondActivity::onClick); //wtf??
-            chip.setOnClickListener(this::onClick); //wtf??
+            //  chip.setOnClickListener(this::onClick); //wtf??
             chip.setCheckable(true);
             if (sStockTags.contains(tags[i]))
                 chip.setChecked(true);
@@ -92,7 +108,7 @@ public class SecondActivity extends AppCompatActivity {
         chip.setChipEndPadding((float) .5);
         chip.setChipStartPadding((float) 1.5);
 
-        chip.setOnClickListener(this::onClick); //wtf??
+        //    chip.setOnClickListener(this::onClick); //wtf??
         chip.setCheckable(true);
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
@@ -104,25 +120,20 @@ public class SecondActivity extends AppCompatActivity {
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-            }
-        });
+
 
         builder.setView(R.layout.dialog_tags);
         // Add action buttons
 
-        AlertDialog dialog = builder.create();
+        builder.setCancelable(false);
+
+        dialog = builder.create();
         dialog.show();
-        WindowManager.LayoutParams mLayoutParams = dialog.getWindow().getAttributes();
-        mLayoutParams.width = 500;
-        dialog.getWindow().setAttributes(mLayoutParams);
+
+        // black magic..
+        //  WindowManager.LayoutParams mLayoutParams = dialog.getWindow().getAttributes();
+        //  mLayoutParams.width = 500;
+        //  dialog.getWindow().setAttributes(mLayoutParams);
     }
 
     protected void onDestroy() {

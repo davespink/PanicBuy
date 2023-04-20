@@ -3,6 +3,8 @@ package com.example.panicbuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.WindowDecorActionBar;
+import androidx.appcompat.widget.ContentFrameLayout;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.graphics.drawable.ColorDrawableKt;
 
 
@@ -67,6 +69,42 @@ Idea: Create a meta table in the database. Use to store possible tags.
 key + data pair.
 
 
+Some code to get all view maybe debugger addon
+  ContentFrameLayout x = (ContentFrameLayout) findViewById(android.R.id.content);
+        LinearLayoutCompat y = (LinearLayoutCompat) x.getChildAt(0);
+        LinearLayout layout = (LinearLayout) y.getChildAt(0);
+
+        //  LinearLayout layout = findViewById(R.id.myLayout);
+
+        int count = layout.getChildCount();
+        int j = 0;
+        View v = null;
+        String idString;
+
+        for (int i = 0; i < count; i++) {
+            v = layout.getChildAt(i);
+
+            j = ((ViewGroup) v).getChildCount();
+            if (j > 1) {
+
+                for (int k = 0; k < j; k++) {
+                    View c = ((ViewGroup) v).getChildAt(k);
+                    int id = v.getId();
+                    if (id > 0)
+                        idString = v.getResources().getResourceEntryName(id);
+                    int m = ((ViewGroup) c).getChildCount();
+
+
+                    }
+
+                }
+
+            }
+
+
+
+
+
  */
 
 
@@ -81,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHelper helper;
     Cursor cursor;
+
     //
     // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
     //
@@ -131,8 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 index++;
             }
-            if (sFilter.length() > 0)
-                sFilter = sFilter.substring(0, sFilter.length() - 1);
+            if (sFilter.length() > 0) sFilter = sFilter.substring(0, sFilter.length() - 1);
 
             refreshDataset();
 
@@ -157,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
             //  boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
             //    boolean shopping = false;
+
             if (listState.equals("SHOP") || listState.equals("LIST")) {
                 boolean bToBuy = helper.toggleToBuy(sBarcode, this);
 
@@ -189,8 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private static final String LOG_TAG =
-            MainActivity.class.getSimpleName();
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     public void launchSecondActivity(View view) {
         //  Log.d(LOG_TAG, "Button clicked!");
@@ -205,8 +243,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshDataset() {
-      cursor = helper.readAll(this,  sFilter);
-      adapter.changeCursor(cursor);
+        cursor = helper.readAll(this, sFilter);
+        adapter.changeCursor(cursor);
     }
 
     public void setUp() {
@@ -237,12 +275,11 @@ public class MainActivity extends AppCompatActivity {
 
         gmsBarcodeScanner = GmsBarcodeScanning.getClient(this, optionsBuilder.build());
 
-        gmsBarcodeScanner.startScan().addOnSuccessListener(
-                (barcode) -> {
-                    vDisplay.setText(barcode.getDisplayValue());
-                    bFind.performClick();
-                    ;
-                }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
+        gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
+            vDisplay.setText(barcode.getDisplayValue());
+            bFind.performClick();
+            ;
+        }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
 
     }
 
@@ -263,11 +300,9 @@ public class MainActivity extends AppCompatActivity {
             case "m":
             case "p":
                 int iQty = Integer.parseInt(sQty);
-                if (thisKey.equals("m"))
-                    iQty--;
+                if (thisKey.equals("m")) iQty--;
                 else iQty++;
-                @SuppressLint("CutPasteId")
-                TextView eQty = findViewById(R.id.editTextQty);
+                @SuppressLint("CutPasteId") TextView eQty = findViewById(R.id.editTextQty);
                 eQty.setText(String.valueOf(iQty));
                 break;
 

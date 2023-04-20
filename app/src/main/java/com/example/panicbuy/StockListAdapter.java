@@ -7,15 +7,15 @@ package com.example.panicbuy;
 //import java.util.ArrayList;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-
-
 
 
 /**
@@ -23,16 +23,24 @@ import android.widget.TextView;
  */
 
 public class StockListAdapter extends CursorAdapter {
+
+
+
     public StockListAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
     }
+
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent){
-        return LayoutInflater.from(context).inflate(R.layout.adapter_view_layout,parent,false);
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        return LayoutInflater.from(context).inflate(R.layout.adapter_view_layout, parent, false);
+
+
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        // Find fields to populate in inflated template
+
         // Find fields to populate in inflated template
         TextView tvBarcode = (TextView) view.findViewById(R.id.textView_barcode);
         TextView tvDescription = (TextView) view.findViewById(R.id.textView_description);
@@ -47,9 +55,25 @@ public class StockListAdapter extends CursorAdapter {
 
         // Populate fields with extracted properties
         tvBarcode.setText(barcode);
-        tvDescription.setText( description);
+        tvDescription.setText(description);
         tvStockLevel.setText(stockLevel);
         tvToBuy.setText(toBuy);
+
+        Activity activity = (Activity) context;
+        boolean shopping = true;
+        Button b = (Button) activity.findViewById(R.id.button_def);
+
+        if (b.getVisibility() == View.VISIBLE)
+            shopping = false;
+        View v = (View) tvBarcode.getParent();
+        if (shopping) {
+            if (toBuy.equals("Y"))
+                v.setBackgroundColor(0x5F00FF00);
+            else
+                v.setBackgroundColor(0xFFFFFFFF);
+        } else v.setBackgroundColor(0xFFFFFFFF);
+
+
     }
 
 }
