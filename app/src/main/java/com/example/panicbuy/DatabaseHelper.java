@@ -14,12 +14,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-
 class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "panicData";
     public static final String STOCK_TABLE_NAME = "stock";
 
     public static final String META_TABLE_NAME = "meta";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
 
@@ -28,10 +28,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(
-                "create table "
-                        + STOCK_TABLE_NAME + "(id integer primary key, barcode text,description text,stocklevel integer,tobuy char,minstock int,lastupdate date)"
-        );
+        db.execSQL("create table " + STOCK_TABLE_NAME + "(id integer primary key, barcode text,description text,stocklevel integer,tobuy char,minstock int,lastupdate date)");
     }
 
     @Override
@@ -48,8 +45,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         String sql = String.format("Select * from stock where barcode = '%s'", stock.getBarcode());
         Cursor cursor = null;
         try {
-            cursor =
-                    db.rawQuery(sql, null);
+            cursor = db.rawQuery(sql, null);
         } catch (Exception e) {
             String error = e.toString();
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
@@ -66,14 +62,12 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor != null) {
             try {
-                if (cursor.getCount() == 0){
+                if (cursor.getCount() == 0) {
                     newValues.put("tobuy", stock.getToBuy());
                     newValues.put("notes", stock.getNotes());
                     newValues.put("tags", stock.getTags());
                     db.insert("stock", null, newValues);
-                }
-                else
-                    db.update("stock", newValues, "barcode = ?", whereArgs);
+                } else db.update("stock", newValues, "barcode = ?", whereArgs);
             } catch (Exception e) {
                 String error = e.toString();
                 Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
@@ -85,6 +79,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+
     public boolean update2(Stock stock, Context context) {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -92,8 +87,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         String sql = String.format("Select * from stock where barcode = '%s'", stock.getBarcode());
         Cursor cursor = null;
         try {
-            cursor =
-                    db.rawQuery(sql, null);
+            cursor = db.rawQuery(sql, null);
         } catch (Exception e) {
             String error = e.toString();
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
@@ -120,23 +114,18 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+
     public Stock findBarcode(String barcode, Context context) {
 
         try (SQLiteDatabase db = getReadableDatabase()) {
             String sql = String.format("Select * from stock where barcode = '%s'", barcode);
-            Cursor cursor =
-                    db.rawQuery(sql, null);
+            Cursor cursor = db.rawQuery(sql, null);
             if (cursor.getCount() < 1) {
                 Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
                 return null;
             }
             cursor.moveToFirst();
-            Stock s = new Stock(cursor.getString(0),
-                    cursor.getString(1), cursor.getString(2),
-                    cursor.getString(3), cursor.getString(4),
-                    cursor.getString(5), cursor.getString(6),
-                    cursor.getString(7), cursor.getString(8)
-            );
+            Stock s = new Stock(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8));
             cursor.close();
             db.close();
             return s;
@@ -158,7 +147,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor readAll(Context context,  String sFilter) {
+    public Cursor readAll(Context context, String sFilter) {
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor;
@@ -185,15 +174,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             Activity activity = (Activity) context;
             Button b = (Button) activity.findViewById(R.id.button_shop);
-            if(b.getVisibility()== View.VISIBLE)
-            {
+            if (b.getVisibility() == View.VISIBLE) {
                 sWhere.append(" AND tobuy = ").append("\"Y").append("\"");
             }
 
             String sql = "Select * from stock where " + sWhere + " order by  description  COLLATE NOCASE ASC";
 
-            cursor =
-                    db.rawQuery(sql, null);
+            cursor = db.rawQuery(sql, null);
 
             cursor.moveToFirst();
 
@@ -208,8 +195,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public boolean toggleToBuy(String barcode, Context context) {
         try (SQLiteDatabase db = getWritableDatabase()) {
             String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
-            Cursor cursor =
-                    db.rawQuery(sql, null);
+            Cursor cursor = db.rawQuery(sql, null);
             if (cursor.getCount() < 1) {
                 Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
                 return true;
@@ -238,15 +224,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean setMeta(String mKey, String mValue) {
-        return true;
-    }
 
     public String getMeta(String mKey) {
         try (SQLiteDatabase db = getReadableDatabase()) {
             String sql = String.format("Select * from " + META_TABLE_NAME + " where m_key = '%s'", mKey);
-            Cursor cursor =
-                    db.rawQuery(sql, null);
+            Cursor cursor = db.rawQuery(sql, null);
             if (cursor.getCount() < 1) {
                 //  Toast.makeText(this, "NOT FOUND", Toast.LENGTH_SHORT).show();
                 return null;
@@ -259,7 +241,26 @@ class DatabaseHelper extends SQLiteOpenHelper {
             return m_value;
         }
     }
+
+    public boolean setMeta(Context context, String mKey, String data) {
+        try (SQLiteDatabase db = getWritableDatabase()) {
+            String sql = String.format("Update %s set m_value = '%s' where m_key = '%s'", META_TABLE_NAME,data,mKey);
+
+            db.execSQL(sql);
+
+            db.close();
+
+       //     String value = getMeta("tags");
+
+            return true;
+        } catch (Exception e) {
+
+            return false;
+        }
+
+    }
 }
+
 
 
 

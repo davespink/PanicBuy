@@ -5,8 +5,8 @@
     android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:background="#BEE0E4"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:id = "@+id/dialog">
 
     <com.google.android.material.chip.Chip
         android:id="@+id/chip"
@@ -48,7 +48,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="18dp"
-
+            android:onClick="dialogButton"
             android:layout_marginBottom="8dp"
             android:src="@drawable/baseline_delete_outline_48" />
 
@@ -57,7 +57,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="18dp"
-
+            android:onClick="dialogButton"
             android:layout_marginBottom="8dp"
             android:src="@drawable/baseline_cancel_48" />
     </androidx.appcompat.widget.LinearLayoutCompat>

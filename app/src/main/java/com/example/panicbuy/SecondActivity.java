@@ -33,24 +33,37 @@ public class SecondActivity extends AppCompatActivity {
             SecondActivity.class.getSimpleName();
     private Stock stock;
     private DatabaseHelper helper;
-    private AlertDialog dialog;
+    private MyAlertDialog dialog;
 
-    public void onClick(View v) {
-
-    }
+    private ChipGroup chipGroup;
 
     public void dialogButton(View v) {
 
-        String viewID = getResources().getResourceName(v.getId());
+        String oldTag = dialog.getText();
+        Chip thisChip = null;
 
-        if (viewID.equals("button_edit")) {
-
-
-        } else if ((viewID.equals("button_delete"))) {
-
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            String str = chip.getText().toString();
+            if (oldTag.equals(str)) {
+                thisChip = chip;
+                break;
+            }
         }
 
         dialog.cancel();
+        String newTag = dialog.getText();
+
+        String viewID = getResources().getResourceName(v.getId());
+        String[] str = viewID.split("_");
+        String action = str[1];
+        if (action.equals("edit")) {
+            thisChip.setText(newTag);
+
+        } else if ((action.equals("delete"))) {
+            chipGroup.removeView(thisChip);
+        }
+
 
     }
 
@@ -76,17 +89,19 @@ public class SecondActivity extends AppCompatActivity {
         ((EditText) findViewById(R.id.notes)).setText(stock.getNotes());
         String sStockTags = stock.getTags();
 
-        //     String[] tags = {"fish", "meat", "fruit", "veg", "cans", "diary", "beer", "frozen", "soap"};
         String sTags = helper.getMeta("tags");
         String[] tags = sTags.split(",");
         Chip chip;
 
-        ChipGroup chipGroup = findViewById(R.id.chipGroup);
+        chipGroup = findViewById(R.id.chipGroup);
+
+        chipGroup.setChipSpacingVerticalResource(R.dimen.space);
+
         for (int i = 0; i < tags.length; i++) {
             chip = new Chip(this);
             chip.setText(tags[i]);
-            chip.setChipEndPadding((float) .5);
-            chip.setChipStartPadding((float) 1.5);
+            chip.setChipEndPadding((float) 1.0);
+            chip.setChipStartPadding((float) 1.0);
             //    b.setOnClickListener(SecondActivity::onClick); //wtf??
             //  chip.setOnClickListener(this::onClick); //wtf??
             chip.setCheckable(true);
@@ -94,13 +109,37 @@ public class SecondActivity extends AppCompatActivity {
                 chip.setChecked(true);
 
             chip.setOnLongClickListener((l) -> {
-                Toast.makeText(this, "Long Press Detected!", Toast.LENGTH_SHORT).show();
+                TextView v = (TextView) l;
+                String sTag = v.getText().toString();
+
+                //    chipGroup.removeView(l);
+
+
+                dialog = new MyAlertDialog(this, sTag);
+                dialog.show();
+
+                Chip thisChip = (Chip) l;
+                //   thisChip.getText();
+
+                //         View temp = findViewById(R.id.tagname);
+
+                //  ((EditText) findViewById(R.id.tagname)).setText(thisChip.getText());
+
+                //             String s1 = chip.getText().toString();
+
+                // black magic..
+                //  WindowManager.LayoutParams mLayoutParams = dialog.getWindow().getAttributes();
+                //  mLayoutParams.width = 500;
+                //  dialog.getWindow().setAttributes(mLayoutParams);
+
+                //     Toast.makeText(this, "Long Press Detected! " + s, Toast.LENGTH_SHORT).show();
                 return true;
             });
 
             chipGroup.addView(chip);
         }
     }
+
 
     public void actionButton(View v) {
         Chip chip = new Chip(this);
@@ -119,21 +158,7 @@ public class SecondActivity extends AppCompatActivity {
             return true;
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-
-        builder.setView(R.layout.dialog_tags);
-        // Add action buttons
-
-        builder.setCancelable(false);
-
-        dialog = builder.create();
-        dialog.show();
-
-        // black magic..
-        //  WindowManager.LayoutParams mLayoutParams = dialog.getWindow().getAttributes();
-        //  mLayoutParams.width = 500;
-        //  dialog.getWindow().setAttributes(mLayoutParams);
     }
 
     protected void onDestroy() {
@@ -143,6 +168,7 @@ public class SecondActivity extends AppCompatActivity {
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
 
         String str = "";
+        String strMeta = "";
 
         int index = 0;
         while (index < ((ViewGroup) chipGroup).getChildCount()) {
@@ -151,15 +177,22 @@ public class SecondActivity extends AppCompatActivity {
             if (nextChip.isChecked()) {
                 str = str + (String) ((TextView) nextChip).getText() + ",";
             }
+            strMeta = strMeta + (String) ((TextView) nextChip).getText() + ",";
+            // Remove trailing ,
             index++;
         }
 
         if (str.length() > 0)
             str = str.substring(0, str.length() - 1);
+        if (strMeta.length() > 0)
+            strMeta = strMeta.substring(0, strMeta.length() - 1);
 
         stock.setTags(str);
-
         helper.update2(stock, this);
+
+        // persist possible tags
+        helper.setMeta(this, "tags", strMeta);
+
         super.onDestroy();
     }
 

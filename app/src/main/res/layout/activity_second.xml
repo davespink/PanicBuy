@@ -66,9 +66,10 @@
         android:id="@+id/chipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="1dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="1dp">
 
         <!-- Chips can be declared here, or added dynamically. -->
 
