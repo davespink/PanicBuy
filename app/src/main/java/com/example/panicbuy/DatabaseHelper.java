@@ -9,9 +9,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 class DatabaseHelper extends SQLiteOpenHelper {
@@ -19,10 +29,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String STOCK_TABLE_NAME = "stock";
 
     public static final String META_TABLE_NAME = "meta";
+    private Context m_context;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
-
+        m_context = context;
 
     }
 
@@ -244,13 +255,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean setMeta(Context context, String mKey, String data) {
         try (SQLiteDatabase db = getWritableDatabase()) {
-            String sql = String.format("Update %s set m_value = '%s' where m_key = '%s'", META_TABLE_NAME,data,mKey);
+            String sql = String.format("Update %s set m_value = '%s' where m_key = '%s'", META_TABLE_NAME, data, mKey);
 
             db.execSQL(sql);
 
             db.close();
 
-       //     String value = getMeta("tags");
+            //     String value = getMeta("tags");
 
             return true;
         } catch (Exception e) {
@@ -259,7 +270,78 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
 
     }
+
+
+    public boolean downloadDb() {
+        String sourcePath = "/data/data/com.example.panicbuy/databases/panicData"; // Path of file in app folder
+        String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/panicData.db";
+        File sourceFile = new File(sourcePath);
+        File destinationFile = new File(destinationPath);
+
+        try {
+            FileInputStream inputStream = new FileInputStream(sourceFile);
+            FileOutputStream outputStream = new FileOutputStream(destinationFile);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+            inputStream.close();
+            outputStream.close();
+            //   Toast.makeText(this, "File downloaded successfully", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            //  Toast.makeText(this, "Failed to download file", Toast.LENGTH_SHORT).show();
+
+
+        }
+        return true;
+    }
+
+// TODO escape commas etc
+// TODO  extract this process to return SQL or CSV output.
+    public boolean exportDbSQL() {
+        String values = "";
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor;
+
+        String sql = "Select * from Stock where 1";
+        int c = 0;
+        try {
+            cursor = db.rawQuery(sql, null);
+            cursor.moveToFirst();
+            c = cursor.getColumnCount();
+            while (!cursor.isAfterLast()) {
+                for (int i = 0; i < c - 1; i++)
+                    if (i < c - 2)
+                        values = values + cursor.getString(i) + ",";
+                    else
+                        values = values + cursor.getString(i) + "LF";
+
+                cursor.moveToNext();
+            }
+        } catch (Exception e) {
+            Toast.makeText(m_context, "NOT Read", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+
+    public boolean exportDbCSV() {
+        return true;
+    }
+
+
 }
+
+
+
+
+
+
 
 
 
