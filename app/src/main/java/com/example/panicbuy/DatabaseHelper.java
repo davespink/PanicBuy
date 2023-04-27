@@ -288,19 +288,47 @@ class DatabaseHelper extends SQLiteOpenHelper {
             }
             inputStream.close();
             outputStream.close();
-            //   Toast.makeText(this, "File downloaded successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(m_context, "File downloaded successfully", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
-            //  Toast.makeText(this, "Failed to download file", Toast.LENGTH_SHORT).show();
-
-
+            Toast.makeText(m_context, "Failed to download file", Toast.LENGTH_SHORT).show();
         }
+
         return true;
     }
 
 // TODO escape commas etc
 // TODO  extract this process to return SQL or CSV output.
+
+
     public boolean exportDbSQL() {
+
+        String s = getDumpData();
+        String[] sBuff = s.split("\0");
+
+        String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/panicDataDump.sql";
+        File destinationFile = new File(destinationPath);
+
+        try {
+            FileOutputStream outputStream = new FileOutputStream(destinationFile);
+            byte[] buffer;
+
+            for(int i = 0;i< sBuff.length;i++){
+                String sOutput = String.format( "INSERT INTO stock VALUES(%s)%n",sBuff[i]);
+                buffer = sOutput.getBytes();
+                outputStream.write(buffer, 0, sOutput.length());
+            }
+
+            outputStream.close();
+            Toast.makeText(m_context, "File downloaded successfully", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(m_context, "Failed to download file", Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+
+    public String getDumpData() {
         String values = "";
 
         SQLiteDatabase db = getReadableDatabase();
@@ -312,21 +340,29 @@ class DatabaseHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(sql, null);
             cursor.moveToFirst();
             c = cursor.getColumnCount();
+            String val;
+            int rCount = 0;
             while (!cursor.isAfterLast()) {
-                for (int i = 0; i < c - 1; i++)
-                    if (i < c - 2)
-                        values = values + cursor.getString(i) + ",";
-                    else
-                        values = values + cursor.getString(i) + "LF";
+                for (int i = 0; i < c - 1; i++) {
+                    val = cursor.getString(i);
+                    if (val == null)
+                        val = "";
+                    if (i == 0)
+                        values = values + "'" + String.valueOf(rCount) + "'";
 
+                    values = values + "," + "'" + val + "'";
+
+                }
+                values = values + '\0';
                 cursor.moveToNext();
+                rCount++;
             }
         } catch (Exception e) {
             Toast.makeText(m_context, "NOT Read", Toast.LENGTH_SHORT).show();
-            return false;
+            return null;
         }
 
-        return true;
+        return values;
     }
 
 

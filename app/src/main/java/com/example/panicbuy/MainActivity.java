@@ -37,6 +37,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -284,9 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     public void readBarcode() {
-
 
         TextView vDisplay = findViewById(R.id.barcodeResultView);
         ImageButton bFind = (ImageButton) findViewById(R.id.button_f);
@@ -301,7 +300,9 @@ public class MainActivity extends AppCompatActivity {
             vDisplay.setText(barcode.getDisplayValue());
             bFind.performClick();
             ;
-        }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
+        }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this,
+                "Operation cancelled", Toast.LENGTH_LONG).show()).addOnFailureListener((e) -> Toast.makeText(MainActivity.this,
+                "Operation failed" + e.toString(), Toast.LENGTH_LONG).show());
 
     }
 
