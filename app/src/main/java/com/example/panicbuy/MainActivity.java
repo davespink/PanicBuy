@@ -2,11 +2,9 @@ package com.example.panicbuy;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.WindowDecorActionBar;
-import androidx.appcompat.widget.ContentFrameLayout;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.core.graphics.drawable.ColorDrawableKt;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -30,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import android.widget.Toast;
+
 
 //import com.google.ml-kit.vision.barcode.common.Barcode;
 import com.google.android.material.chip.Chip;
@@ -126,7 +125,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            this.getSupportActionBar().hide();
+        } catch (NullPointerException e) {
+        }
+
         setContentView(R.layout.activity_main);
+
 
         Chip chip;
 
@@ -230,6 +236,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+
+    public void finishProcess(View v) {
+
+        finishAffinity();
+
+    }
+
     public void launchSecondActivity(View view) {
         //  Log.d(LOG_TAG, "Button clicked!");
 
@@ -240,6 +253,15 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("barcode", barcode);
             startActivity(intent);
         }
+    }
+
+    public void launchThirdActivity(View view) {
+        //  Log.d(LOG_TAG, "Button clicked!");
+
+        Intent intent = new Intent(this, ThirdActivity.class);
+
+        startActivity(intent);
+
     }
 
     public void refreshDataset() {
@@ -282,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
         }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this, "Operation cancelled", Toast.LENGTH_LONG).show());
 
     }
+
 
 
     public void actionButton(View v) {

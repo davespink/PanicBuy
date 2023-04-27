@@ -2,20 +2,64 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Frame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/teal_200"
 
+    android:backgroundTint="@color/teal_200"
     android:backgroundTintMode="add"
-    android:id="@+id/Frame"
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/myLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/design_default_color_surface"
-        android:id="@+id/myLayout"
         android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarWidget"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/off_white"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
+
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="#00000000"
+                    android:onClick="launchThirdActivity"
+                    android:src="@drawable/baseline_settings_48" />
+
+                <ImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:onClick="finishProcess"
+                    android:src="@drawable/baseline_cancel_48"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,10 +69,8 @@
                 android:id="@+id/button_s"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
-
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-
                 android:onClick="actionButton"
                 android:src="@drawable/scan" />
 
@@ -47,7 +89,6 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-
                 android:onClick="actionButton"
                 android:text="C" />
 
@@ -62,18 +103,18 @@
                 android:layout_width="208dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="55dp"
-
-                android:hint="Unknown"
+                android:hint="@string/unknown"
+                android:inputType="text"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <Button
                 android:id="@+id/second_a"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
 
                 android:onClick="launchSecondActivity"
-                android:text="..." />
+                android:text="@string/dotdotdot" />
 
 
         </LinearLayout>
@@ -87,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="Qty"
+                android:text="@string/qty"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <Button
@@ -95,7 +136,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
 
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:onClick="actionButton"
                 android:text="@string/minus" />
 
@@ -104,7 +145,9 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
 
-                android:text="1"
+                android:inputType="number"
+
+                android:text="@string/one"
 
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -146,7 +189,7 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
 
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:onClick="actionButton"
                 android:text="@string/def" />
 
@@ -154,20 +197,19 @@
                 android:id="@+id/button_list"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:onClick="actionButton"
-                android:text="@string/list" />
+                android:text="@string/list"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/button_shop"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginLeft="10dp"
                 android:onClick="actionButton"
-                android:text="@string/shop" />
-
+                android:text="@string/shop"
+                android:visibility="gone" />
 
 
             <ImageButton
@@ -191,7 +233,7 @@
                 android:layout_marginBottom="8dp"
                 android:contentDescription="find item"
                 android:onClick="actionButton"
-                android:src="@drawable/baseline_manage_search_48"
+                android:src="@drawable/baseline_search_48"
                 tools:ignore="SpeakableTextPresentCheck" />
 
 
@@ -211,14 +253,15 @@
         <HorizontalScrollView
             android:id="@+id/chipshop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp">
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"></com.google.android.material.chip.ChipGroup>
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"></com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
 
         <LinearLayout
@@ -243,6 +286,20 @@
     </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

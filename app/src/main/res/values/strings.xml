@@ -14,8 +14,6 @@
     <string name="text_header">HEADER</string>
     <string name="chip">CHIP</string>
     <string name="fish">FISH</string>
-    <string name="pirates">Pirates</string>
-    <string name="ninjas">Ninjas</string>
     <string name="list">List</string>
     <string name="def">Def</string>
     <string name="shop">Shop</string>
@@ -25,6 +23,13 @@
     <string name="password">Password</string>
     <string name="signin">SIGNIN</string>
     <string name="tagname">tag name</string>
+    <string name="unknown">Unknown</string>
+    <string name="dotdotdot">...</string>
+    <string name="qty">Qty</string>
+    <string name="one">1</string>
+    <string name="raw">RAW</string>
+    <string name="sql">SQL</string>
+    <string name="csv">CSV</string>
 
 
 </resources>
