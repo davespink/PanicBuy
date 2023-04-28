@@ -5,12 +5,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ThirdActivity extends AppCompatActivity {
-    private static final String LOG_TAG =
-            ThirdActivity.class.getSimpleName();
+import java.util.Objects;
 
-    private DatabaseHelper helper;
-    private MyAlertDialog dialog;
+public class ThirdActivity extends AppCompatActivity {
+
 
     public Bundle m_Bundle;
 
@@ -22,8 +20,9 @@ public class ThirdActivity extends AppCompatActivity {
         m_Bundle = savedInstanceState;
 
         try {
-            this.getSupportActionBar().hide();
+            Objects.requireNonNull(this.getSupportActionBar()).hide();
         } catch (NullPointerException e) {
+            throw new RuntimeException(e);
         }
 
         setContentView(R.layout.activity_third);
@@ -37,20 +36,21 @@ public class ThirdActivity extends AppCompatActivity {
 
     // String exportQuery = "SELECT * INTO OUTFILE '/path/to/export/file.csv' FIELDS TERMINATED BY ',' FROM mytable";
     public boolean downloadFile(View v) {
-        helper = new DatabaseHelper(this);
+        DatabaseHelper helper = new DatabaseHelper(this);
 
         String viewID = getResources().getResourceName(v.getId());
         String[] str = viewID.split("_");
         String selectDownload = str[1];
 
-        if (selectDownload.equals("db"))
-            return helper.downloadDb();
-        else if (selectDownload.equals("sql"))
-            return helper.exportDbSQL();
-        else if (selectDownload.equals("csv"))
-            return helper.exportDbCSV();
-        else {
-            return false;
+        switch (selectDownload) {
+            case "db":
+                return helper.downloadDb();
+            case "sql":
+                return helper.exportDbSQL();
+            case "csv":
+                return helper.exportDbCSV();
+            default:
+                return false;
         }
 
         // TODO handle error

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-
-
-
     android:orientation="vertical">
 
     <FrameLayout
@@ -17,7 +15,7 @@
             android:id="@+id/toolbarWidget"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_marginStart="0dp"
+
             android:layout_marginTop="0dp"
             android:background="@color/off_white" />
 
@@ -50,27 +48,13 @@
 
     </FrameLayout>
 
-    <TextView
-
-        android:layout_width="200dp"
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginRight="20dp"
-        android:padding="10dp"
-        android:text="Export your database"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        android:layout_marginStart="10dp"
 
+        android:orientation="vertical">
 
-
-
-    <TableRow android:layout_marginTop="10dp">
-
-        <Button
-            android:id="@+id/button_db"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="downloadFile"
-            android:text="@string/raw" />
 
         <TextView
 
@@ -79,62 +63,85 @@
             android:layout_marginStart="20dp"
             android:layout_marginRight="20dp"
             android:padding="10dp"
-            android:text="Dump database to disc. You can load it into SQLLite for the desktop."
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-    </TableRow>
+            android:text="Export your database"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-    <TableRow android:layout_marginTop="10dp">
 
-        <Button
-            android:id="@+id/button_sql"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="downloadFile"
-            android:text="@string/sql" />
+        <TableRow android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/textViewSQL"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginRight="20dp"
-            android:padding="10dp"
-            android:text="Dump database to disc. You can load it into other
+            <Button
+                android:id="@+id/button_db"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="downloadFile"
+                android:text="@string/raw" />
+
+            <TextView
+
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginRight="20dp"
+                android:padding="10dp"
+                android:text="Dump database to disc. You can load it into SQLLite for the desktop."
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </TableRow>
+
+        <TableRow android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/button_sql"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="downloadFile"
+                android:text="@string/sql" />
+
+            <TextView
+                android:id="@+id/textViewSQL"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginRight="20dp"
+                android:padding="10dp"
+                android:text="Dump database to disc. You can load it into other
             databases"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
-    </TableRow>
+        </TableRow>
 
-    <TableRow android:layout_marginTop="10dp">
+        <TableRow android:layout_marginTop="10dp">
 
-        <Button
-            android:id="@+id/button_csv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="downloadFile"
-            android:text="@string/csv" />
+            <Button
+                android:id="@+id/button_csv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="downloadFile"
+                android:text="@string/csv" />
+
+            <TextView
+                android:id="@+id/textViewCSV"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginRight="20dp"
+                android:padding="10dp"
+                android:text="Dump database to disc. You can load it into Excel."
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </TableRow>
 
         <TextView
-            android:id="@+id/textViewCSV"
-            android:layout_width="200dp"
+            android:id="@+id/textViewRaw"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginRight="20dp"
-            android:padding="10dp"
-            android:text="Dump database to disc. You can load it into Excel."
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-    </TableRow>
-
-    <TextView
-        android:id="@+id/textViewRaw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
 
-        android:gravity="center"
-        android:padding="30dp"
-        android:text="File is saved in Downloads"
+            android:gravity="center"
+            android:padding="30dp"
+            android:text="File is saved in Downloads"
 
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-</TableLayout>
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+    </TableLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

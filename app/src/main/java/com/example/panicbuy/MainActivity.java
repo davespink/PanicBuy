@@ -65,42 +65,6 @@ Need to allow for a show to buy only.
 Should we change tobuy into a number? Could indicate order qty.
 
 
-Idea: Create a meta table in the database. Use to store possible tags.
-key + data pair.
-
-
-Some code to get all view maybe debugger addon
-  ContentFrameLayout x = (ContentFrameLayout) findViewById(android.R.id.content);
-        LinearLayoutCompat y = (LinearLayoutCompat) x.getChildAt(0);
-        LinearLayout layout = (LinearLayout) y.getChildAt(0);
-
-        //  LinearLayout layout = findViewById(R.id.myLayout);
-
-        int count = layout.getChildCount();
-        int j = 0;
-        View v = null;
-        String idString;
-
-        for (int i = 0; i < count; i++) {
-            v = layout.getChildAt(i);
-
-            j = ((ViewGroup) v).getChildCount();
-            if (j > 1) {
-
-                for (int k = 0; k < j; k++) {
-                    View c = ((ViewGroup) v).getChildAt(k);
-                    int id = v.getId();
-                    if (id > 0)
-                        idString = v.getResources().getResourceEntryName(id);
-                    int m = ((ViewGroup) c).getChildCount();
-
-
-                    }
-
-                }
-
-            }
-
 
 
 
@@ -183,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //   setUp();
 
         cursor = helper.readAll(this, null);
 

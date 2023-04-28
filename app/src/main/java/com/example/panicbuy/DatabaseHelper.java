@@ -43,7 +43,17 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + STOCK_TABLE_NAME + "(id integer primary key, barcode text,description text,stocklevel integer,tobuy char,minstock int,lastupdate date)");
+        db.execSQL("create table " + STOCK_TABLE_NAME + "(_id integer primary key, barcode text,description text,stocklevel integer,tobuy char,minstock int,lastupdate date,notes,tags)");
+
+        String strSQL =
+                "INSERT INTO " + STOCK_TABLE_NAME + " VALUES('10','722345','Manzanas','2','0','0','2023-03-22 15:02:48','Add a note','Walmart,Fruit')\n";
+        db.execSQL(strSQL);
+        strSQL = "INSERT INTO " + STOCK_TABLE_NAME + " VALUES('11','12345','Agua Mineral','12','0','0','2023-03-22 15:02:48','Good for you','Drinks,Walmart')\n";
+        db.execSQL(strSQL);
+
+        db.execSQL("create table " + META_TABLE_NAME + "(m_key primary key, m_value text)");
+        strSQL = "INSERT INTO meta VALUES('tags','Drinks,Fruit,Veg,Meat,Frozen,Costco,Walmart')";
+        db.execSQL(strSQL);
     }
 
     @Override
