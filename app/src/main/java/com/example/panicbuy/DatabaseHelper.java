@@ -29,6 +29,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
     public static final String STOCK_TABLE_NAME = "stock";
 
     public static final String META_TABLE_NAME = "meta";
+
+    public static final int EXPORT_TYPE_SQL = 1;
+
+    public static final int EXPORT_TYPE_CSV = 2;
     private Context m_context;
 
     public DatabaseHelper(Context context) {
@@ -297,24 +301,42 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-// TODO escape commas etc
+    // TODO escape commas etc
 // TODO  extract this process to return SQL or CSV output.
-
-
     public boolean exportDbSQL() {
+        return exportDb(EXPORT_TYPE_SQL);
+    }
+
+    public boolean exportDbCSV() {
+        return exportDb(EXPORT_TYPE_CSV);
+    }
+
+    public boolean exportDb(int exportType) {
+
+        String sFormat = "";
+        String sOutputFile = "";
+
+        if (exportType == EXPORT_TYPE_SQL) {
+            sFormat = "INSERT INTO stock VALUES(%s)%n";
+            sOutputFile = "/panicDataDump.sql";
+        } else if (exportType == EXPORT_TYPE_CSV) {
+            sFormat = "%s%n";
+            sOutputFile = "/panicDataDump.csv";
+        }
 
         String s = getDumpData();
         String[] sBuff = s.split("\0");
 
-        String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/panicDataDump.sql";
+        String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + sOutputFile;
         File destinationFile = new File(destinationPath);
 
         try {
             FileOutputStream outputStream = new FileOutputStream(destinationFile);
             byte[] buffer;
 
-            for(int i = 0;i< sBuff.length;i++){
-                String sOutput = String.format( "INSERT INTO stock VALUES(%s)%n",sBuff[i]);
+
+            for (int i = 0; i < sBuff.length; i++) {
+                String sOutput = String.format(sFormat, sBuff[i]);
                 buffer = sOutput.getBytes();
                 outputStream.write(buffer, 0, sOutput.length());
             }
@@ -363,11 +385,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return values;
-    }
-
-
-    public boolean exportDbCSV() {
-        return true;
     }
 
 

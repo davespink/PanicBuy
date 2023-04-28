@@ -21,8 +21,18 @@ public class ThirdActivity extends AppCompatActivity {
 
         m_Bundle = savedInstanceState;
 
+        try {
+            this.getSupportActionBar().hide();
+        } catch (NullPointerException e) {
+        }
+
         setContentView(R.layout.activity_third);
 
+    }
+
+    public void doFinish(View v){
+
+        finish();
     }
 
     // String exportQuery = "SELECT * INTO OUTFILE '/path/to/export/file.csv' FIELDS TERMINATED BY ',' FROM mytable";
@@ -47,34 +57,6 @@ public class ThirdActivity extends AppCompatActivity {
 
     }
 
-    /*
-    public void downloadFile(View v) {
-
-
-        String sourcePath = "/data/data/com.example.panicbuy/databases/panicData"; // Path of file in app folder
-        String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/panicData.db";
-        File sourceFile = new File(sourcePath);
-        File destinationFile = new File(destinationPath);
-
-        try {
-            FileInputStream inputStream = new FileInputStream(sourceFile);
-            FileOutputStream outputStream = new FileOutputStream(destinationFile);
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, length);
-            }
-            inputStream.close();
-            outputStream.close();
-            Toast.makeText(this, "File downloaded successfully", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to download file", Toast.LENGTH_SHORT).show();
-
-
-        }
-    }
-*/
     protected void onDestroy() {
 
         super.onDestroy();
