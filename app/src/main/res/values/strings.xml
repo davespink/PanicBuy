@@ -30,6 +30,9 @@
     <string name="raw">RAW</string>
     <string name="sql">SQL</string>
     <string name="csv">CSV</string>
+    <string name="New_Item">New Item</string>
+    <string name="material_switch">Shopping</string>
+    <string name="panicbuy">PanicBuy!</string>
 
 
 </resources>

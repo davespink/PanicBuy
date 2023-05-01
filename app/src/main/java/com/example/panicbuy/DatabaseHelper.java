@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -198,10 +199,10 @@ class DatabaseHelper extends SQLiteOpenHelper {
             }
 
             Activity activity = (Activity) context;
-            Button b = (Button) activity.findViewById(R.id.button_shop);
-            if (b.getVisibility() == View.VISIBLE) {
+            RadioButton shopping = (RadioButton) activity.findViewById(R.id.shopping);
+            if (shopping.isChecked())
                 sWhere.append(" AND tobuy = ").append("\"Y").append("\"");
-            }
+
 
             String sql = "Select * from stock where " + sWhere + " order by  description  COLLATE NOCASE ASC";
 
@@ -209,7 +210,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
             cursor.moveToFirst();
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             Toast.makeText(context, "NOT Read", Toast.LENGTH_SHORT).show();
             return null;
         }

@@ -35,6 +35,12 @@
         android:text="Description"
         android:layout_marginLeft="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+
+
+
+
+
     <TextView
         android:id="@+id/textView_stocklevel"
         android:layout_width="30dp"

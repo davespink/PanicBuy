@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
@@ -25,6 +26,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -57,13 +59,12 @@ URL.revokeObjectURL(link.href);
 
 Panic Buy:
 
-Bug: Shop button doesn't work right. Shop mode persists when switched off.
-Idea: Use color changes to indicate tags. Green or white.
-
-Need to allow for a show to buy only.
-
-Should we change tobuy into a number? Could indicate order qty.
-
+1. Replace green thing with an asterisk.
+2. List/shop becomes a two state switch
+3. Load database. Change name to .db
+4. Help screen.
+5. Splash screen.
+6. Allow many databases.
 
 
 
@@ -97,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
+
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener((group, id) ->
+        {
+            refreshDataset();
+        });
 
 
         Chip chip;
@@ -165,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
             //  boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
             //    boolean shopping = false;
-
+/*
             if (listState.equals("SHOP") || listState.equals("LIST")) {
                 boolean bToBuy = helper.toggleToBuy(sBarcode, this);
 
@@ -179,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 refreshDataset();
-            }
+            } */
             ((TextView) (findViewById(R.id.barcodeResultView))).setText(sBarcode);
             ((TextView) (findViewById(R.id.editTextDescription))).setText(sDescription);
             ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sStockLevel);
@@ -249,9 +256,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void readBarcode() {
-
+// unused
         TextView vDisplay = findViewById(R.id.barcodeResultView);
-        ImageButton bFind = (ImageButton) findViewById(R.id.button_f);
+        //  ImageButton bFind =   findViewById(R.id.button_list);
 
         GmsBarcodeScannerOptions.Builder optionsBuilder = new GmsBarcodeScannerOptions.Builder();
 
@@ -261,14 +268,13 @@ public class MainActivity extends AppCompatActivity {
 
         gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
             vDisplay.setText(barcode.getDisplayValue());
-            bFind.performClick();
+            //      bFind.performClick();
             ;
         }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this,
                 "Operation cancelled", Toast.LENGTH_LONG).show()).addOnFailureListener((e) -> Toast.makeText(MainActivity.this,
                 "Operation failed" + e.toString(), Toast.LENGTH_LONG).show());
 
     }
-
 
 
     public void actionButton(View v) {
@@ -280,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
         // Lets construct a stock object
         String sBarcode = ((TextView) (findViewById(R.id.barcodeResultView))).getText().toString();
         String sDescription = ((TextView) (findViewById(R.id.editTextDescription))).getText().toString();
+        if (sDescription.length() == 0) sDescription = "New";
         String sQty = ((TextView) (findViewById(R.id.editTextQty))).getText().toString();
         String sStockLevel = ((TextView) (findViewById(R.id.textViewStockLevel))).getText().toString();
 
@@ -346,6 +353,11 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
 
+            case "tobuy":
+                helper.toggleToBuy(sBarcode, this);
+                refreshDataset();
+                break;
+
 
             default:
                 Toast.makeText(this, "Unknown button " + thisKey, Toast.LENGTH_SHORT).show();
@@ -356,6 +368,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void triState(String bString) {
+        /*
         Button bDef = (Button) findViewById(R.id.button_def);
         Button bList = (Button) findViewById(R.id.button_list);
         Button bShop = (Button) findViewById(R.id.button_shop);
@@ -377,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
             listState = "DEF";
         }
 
-
+*/
         refreshDataset();
 
     }

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 
@@ -58,7 +59,7 @@ public class StockListAdapter extends CursorAdapter {
         tvDescription.setText(description);
         tvStockLevel.setText(stockLevel);
         tvToBuy.setText(toBuy);
-
+/*
         Activity activity = (Activity) context;
         boolean shopping = true;
         Button b = (Button) activity.findViewById(R.id.button_def);
@@ -72,8 +73,13 @@ public class StockListAdapter extends CursorAdapter {
             else
                 v.setBackgroundColor(0xFFFFFFFF);
         } else v.setBackgroundColor(0xFFFFFFFF);
+*/
 
-
+        View v = (View) tvBarcode.getParent();
+        if (toBuy.equals("Y"))
+            v.setBackgroundColor(0x5F00FF00);
+        else
+            v.setBackgroundColor(0xFFFFFFFF);
     }
 
 }
