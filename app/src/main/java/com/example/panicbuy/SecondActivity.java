@@ -72,8 +72,14 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         m_Bundle = savedInstanceState;
+
+        try {
+            this.getSupportActionBar().hide();
+        } catch (NullPointerException ignored) {
+        }
+
+
         Intent intent = getIntent();
         String sBarcode = intent.getStringExtra("barcode");
         helper = new DatabaseHelper(this);
@@ -158,6 +164,16 @@ public class SecondActivity extends AppCompatActivity {
             return true;
         });
 
+
+    }
+
+
+    public void launchThirdActivity(View view) {
+
+
+        Intent intent = new Intent(this, ThirdActivity.class);
+
+        startActivity(intent);
 
     }
 

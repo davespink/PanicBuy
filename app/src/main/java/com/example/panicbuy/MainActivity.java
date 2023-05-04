@@ -3,28 +3,21 @@ package com.example.panicbuy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.content.Context;
+
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.util.Log;
 import android.view.View;
 
 import android.view.ViewGroup;
 
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -40,7 +33,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -59,8 +52,7 @@ URL.revokeObjectURL(link.href);
 
 Panic Buy:
 
-1. Replace green thing with an asterisk.
-2. List/shop becomes a two state switch
+1. Bit more work on toolbar
 3. Load database. Change name to .db
 4. Help screen.
 5. Splash screen.
@@ -75,12 +67,11 @@ Panic Buy:
 
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
-    ArrayList<Stock> stockList;
+
     StockListAdapter adapter;
 
     String sFilter;
 
-    String listState = "DEF";
 
     DatabaseHelper helper;
     Cursor cursor;
@@ -94,21 +85,19 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             this.getSupportActionBar().hide();
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
         }
 
         setContentView(R.layout.activity_main);
 
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener((group, id) ->
-        {
-            refreshDataset();
-        });
+                refreshDataset());
 
 
         Chip chip;
 
-        sFilter = new String("");
+        sFilter = "";
 
         helper = new DatabaseHelper(this);
 
@@ -117,19 +106,14 @@ public class MainActivity extends AppCompatActivity {
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);
         chipGroup.setSingleLine(true);
-        for (int i = 0; i < tags.length; i++) {
+        for (String tag : tags) {
             chip = new Chip(this);
-            chip.setText(tags[i]);
+            chip.setText(tag);
             chip.setChipEndPadding((float) .5);
             chip.setChipStartPadding((float) 1.5);
 
             chip.setCheckable(true);
 
-            //    b.setOnClickListener(SecondActivity::onClick); //wtf??
-            //     chip.setOnClickListener(this::onClick); //wtf??
-            //    chip.setCheckable(true);
-            //   if (sTags.contains(tags[i]))
-            //       chip.setChecked(true);
             chipGroup.addView(chip);
         }
 
@@ -140,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
             int index = 0;
             this.sFilter = "";
-            while (index < ((ViewGroup) group).getChildCount()) {
-                Chip nextChip = (Chip) ((ViewGroup) group).getChildAt(index);
+            while (index < group.getChildCount()) {
+                Chip nextChip = (Chip)   group.getChildAt(index);
 
                 if (nextChip.isChecked()) {
-                    sFilter = sFilter + (String) ((TextView) nextChip).getText() + ",";
+                    sFilter = sFilter +   nextChip.getText() + ",";
                 }
                 index++;
             }
@@ -170,23 +154,6 @@ public class MainActivity extends AppCompatActivity {
             thisChild = ((ViewGroup) view).getChildAt(3);
             String sStockLevel = (String) ((TextView) thisChild).getText();
 
-            //  boolean shopping = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
-            //    boolean shopping = false;
-/*
-            if (listState.equals("SHOP") || listState.equals("LIST")) {
-                boolean bToBuy = helper.toggleToBuy(sBarcode, this);
-
-                if (bToBuy) {
-                    thisChild = ((ViewGroup) view).getChildAt(4);
-                    ((TextView) thisChild).setText("Y");
-
-                } else {
-                    thisChild = ((ViewGroup) view).getChildAt(4);
-                    ((TextView) thisChild).setText("N");
-
-                }
-                refreshDataset();
-            } */
             ((TextView) (findViewById(R.id.barcodeResultView))).setText(sBarcode);
             ((TextView) (findViewById(R.id.editTextDescription))).setText(sDescription);
             ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sStockLevel);
@@ -218,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         //  Log.d(LOG_TAG, "Button clicked!");
 
         Intent intent = new Intent(this, SecondActivity.class);
-        TextView v = (TextView) findViewById(R.id.barcodeResultView);
+        TextView v = findViewById(R.id.barcodeResultView);
         String barcode = v.getText().toString();
         if (barcode.length() > 0) {
             intent.putExtra("barcode", barcode);
@@ -244,12 +211,12 @@ public class MainActivity extends AppCompatActivity {
         String list = "Fish, Cauliflower,Tortillas,Chicharones";
         String[] arr = list.split(",");
 
-        int x = 0;
-        for (int i = 0; i < arr.length; i++) {
-            String d = "Fresh " + arr[i];
+
+        for (String value : arr) {
+            String d = "Fresh " + value;
             Stock s = new Stock("1", "", d, "0", "N", "0", "", "", "");
             helper.update(s, this);
-            x = 0;
+
         }
 
 
@@ -268,11 +235,11 @@ public class MainActivity extends AppCompatActivity {
 
         gmsBarcodeScanner.startScan().addOnSuccessListener((barcode) -> {
             vDisplay.setText(barcode.getDisplayValue());
-            //      bFind.performClick();
-            ;
+
+
         }).addOnCanceledListener(() -> Toast.makeText(MainActivity.this,
                 "Operation cancelled", Toast.LENGTH_LONG).show()).addOnFailureListener((e) -> Toast.makeText(MainActivity.this,
-                "Operation failed" + e.toString(), Toast.LENGTH_LONG).show());
+                "Operation failed" + e, Toast.LENGTH_LONG).show());
 
     }
 
@@ -311,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_LONG).show();
 
                 // In case its a new one....
-                String st = stock.getBarcode();
+          //      String st = stock.getBarcode();
                 ((TextView) findViewById(R.id.barcodeResultView)).setText(stock.getBarcode());
                 break;
             case "s":
@@ -333,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
             case "d":
                 helper.deleteBarcode(sBarcode, this);
                 refreshDataset();
-                ((Button) (findViewById(R.id.button_c))).performClick();
+                 findViewById(R.id.button_c).performClick();
                 break;
 
             case "c":
@@ -345,13 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
 
-            case "def":
-            case "list":
-            case "shop":
 
-                triState(thisKey);
-
-                break;
 
             case "tobuy":
                 helper.toggleToBuy(sBarcode, this);
@@ -367,33 +328,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void triState(String bString) {
-        /*
-        Button bDef = (Button) findViewById(R.id.button_def);
-        Button bList = (Button) findViewById(R.id.button_list);
-        Button bShop = (Button) findViewById(R.id.button_shop);
 
-        bDef.setVisibility(View.GONE);
-        bList.setVisibility(View.GONE);
-        bShop.setVisibility(View.GONE);
-
-        if (bString.equals("def")) {
-            bList.setVisibility(View.VISIBLE);
-            listState = "LIST";
-        }
-        if (bString.equals("list")) {
-            bShop.setVisibility(View.VISIBLE);
-            listState = "SHOP";
-        }
-        if (bString.equals("shop")) {
-            bDef.setVisibility(View.VISIBLE);
-            listState = "DEF";
-        }
-
-*/
-        refreshDataset();
-
-    }
 }
 
 

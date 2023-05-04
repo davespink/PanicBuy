@@ -30,7 +30,7 @@
                 android:layout_marginTop="0dp"
                 android:background="@color/off_white"
 
-                android:text="@string/panicbuy"
+
                 app:layout_constraintTop_toTopOf="parent" >
 
                 <TextView
@@ -184,17 +184,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/stock"
+                android:text="@string/equals"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
             <TextView
                 android:id="@+id/textViewStockLevel"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
 
                 android:text="0"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+            <ImageButton
+                android:id="@+id/button_u"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:onClick="actionButton"
+                android:scaleX="-1"
+                android:src="@drawable/baseline_thumb_up_48"
+                tools:ignore="SpeakableTextPresentCheck" />
         </LinearLayout>
 
         <LinearLayout
@@ -205,7 +217,7 @@
             <RadioGroup
                 android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:orientation="vertical">
 
@@ -213,9 +225,9 @@
                     android:id="@+id/counting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:layout_marginTop="-10dp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-10dp"
+                    android:checked="true"
                     android:scaleX="1.2"
                     android:scaleY="1.2"
                     android:text="Counting" /> <!-- displayed text of radio button-->
@@ -223,24 +235,14 @@
                     android:id="@+id/shopping"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-20dp"
-                    android:checked="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-20dp"
+                    android:layout_marginRight="30dp"
+                    android:checked="true"
                     android:scaleX="1.2"
                     android:scaleY="1.2"
                     android:text="Shopping" /> <!-- displayed text of radio button-->
             </RadioGroup>
-
-            <ImageButton
-                android:id="@+id/button_u"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp"
-                android:onClick="actionButton"
-                android:src="@drawable/baseline_check_circle_48"
-                tools:ignore="SpeakableTextPresentCheck" />
 
 
             <ImageButton
