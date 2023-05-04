@@ -124,21 +124,6 @@ public class SecondActivity extends AppCompatActivity {
                 dialog = new MyAlertDialog(this, sTag);
                 dialog.show();
 
-                Chip thisChip = (Chip) l;
-                //   thisChip.getText();
-
-                //         View temp = findViewById(R.id.tagname);
-
-                //  ((EditText) findViewById(R.id.tagname)).setText(thisChip.getText());
-
-                //             String s1 = chip.getText().toString();
-
-                // black magic..
-                //  WindowManager.LayoutParams mLayoutParams = dialog.getWindow().getAttributes();
-                //  mLayoutParams.width = 500;
-                //  dialog.getWindow().setAttributes(mLayoutParams);
-
-                //     Toast.makeText(this, "Long Press Detected! " + s, Toast.LENGTH_SHORT).show();
                 return true;
             });
 
@@ -168,7 +153,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
 
-    public void launchThirdActivity(View view) {
+    public void launchActivity(View view) {
 
 
         Intent intent = new Intent(this, ThirdActivity.class);

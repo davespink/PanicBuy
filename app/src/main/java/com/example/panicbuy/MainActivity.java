@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void launchThirdActivity(View view) {
+    public void launchActivity(View view) {
         //  Log.d(LOG_TAG, "Button clicked!");
 
         Intent intent = new Intent(this, ThirdActivity.class);

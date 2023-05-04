@@ -1,7 +1,15 @@
 package com.example.panicbuy;
 
+
+import static com.example.panicbuy.R.drawable.baseline_settings_48;
+
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +19,7 @@ public class ThirdActivity extends AppCompatActivity {
 
 
     public Bundle m_Bundle;
+
 
 
     @Override
@@ -26,6 +35,11 @@ public class ThirdActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_third);
+
+        ImageButton but  = findViewById(R.id.settings);
+
+        Drawable myDrawable = getResources().getDrawable(R.drawable.baseline_home_48);
+        but.setImageDrawable(myDrawable);
 
     }
 
@@ -56,6 +70,16 @@ public class ThirdActivity extends AppCompatActivity {
         // TODO handle error
 
     }
+
+    public void launchActivity(View view) {
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+
+        startActivity(intent);
+
+    }
+
 
     protected void onDestroy() {
 
