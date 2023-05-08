@@ -219,14 +219,15 @@
                 android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="25dp"
                 android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/counting"
-                    android:layout_width="wrap_content"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="-10dp"
                     android:checked="true"
                     android:scaleX="1.2"
@@ -237,9 +238,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="-20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="-10dp"
                     android:layout_marginRight="30dp"
-                    android:checked="true"
+                    android:checked="false"
                     android:scaleX="1.2"
                     android:scaleY="1.2"
                     android:text="Shopping" /> <!-- displayed text of radio button-->
@@ -250,13 +252,13 @@
                 android:id="@+id/button_tobuy"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="28dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
                 android:onClick="actionButton"
+
                 android:src="@drawable/baseline_shopping_cart_48"
                 tools:ignore="SpeakableTextPresentCheck" />
-
 
             <ImageButton
                 android:id="@+id/button_d"
@@ -266,7 +268,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
                 android:onClick="actionButton"
-                android:src="@drawable/baseline_delete_outline_48"
+                android:src="@drawable/baseline_delete_48"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>

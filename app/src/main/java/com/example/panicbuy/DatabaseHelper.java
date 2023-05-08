@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
 
 
 class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "panicData";
+    public static final String DATABASE_NAME = "panicData.db";
     public static final String STOCK_TABLE_NAME = "stock";
 
     public static final String META_TABLE_NAME = "meta";
