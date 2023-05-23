@@ -138,7 +138,9 @@ public class SecondActivity extends AppCompatActivity {
         chip.setChipEndPadding((float) .5);
         chip.setChipStartPadding((float) 1.5);
 
-        //    chip.setOnClickListener(this::onClick); //wtf??
+       //     chip.setOnClickListener(this::onClick); //wtf??
+
+
         chip.setCheckable(true);
 
         ChipGroup chipGroup = findViewById(R.id.chipGroup);

@@ -17,65 +17,52 @@
         android:background="@color/design_default_color_surface"
         android:orientation="vertical">
 
-        <!--  <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbarWidget"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:background="@color/off_white"
-
-
-                app:layout_constraintTop_toTopOf="parent" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:layout_gravity= "center"
-                    android:text="PanicBuy!"
-                    android:textSize="30dp"
-                    android:textStyle="bold"/>
-
-
-            </androidx.appcompat.widget.Toolbar>
-
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right">
-
-                <ImageButton
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="#00000000"
-                    android:onClick="launchThirdActivity"
-                    android:src="@drawable/baseline_settings_48" />
-
-                <ImageButton
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:background="#00000000"
-                    android:onClick="finishProcess"
-                    android:src="@drawable/baseline_cancel_48"
-
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </LinearLayout>
-
-
-        </FrameLayout> -->
-
         <include layout="@layout/toolbar_layout" />
+
+
+
+<!--        <LinearLayout
+            android:id="@+id/chipshop2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup2"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="SHOP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    app:chipBackgroundColor="@color/teal_700" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="SHOP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    app:chipBackgroundColor="@color/orange" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="SHOP"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    app:chipBackgroundColor="@color/orange" />
+
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout> -->
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,20 +75,18 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:onClick="actionButton"
-                android:visibility="gone"
-                android:src="@drawable/scan" />
+                android:src="@drawable/scan"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/barcodeResultView"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:visibility="gone"
                 android:hint="@string/barcodeResult"
                 android:inputType="text"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -232,7 +217,7 @@
                     android:checked="true"
                     android:scaleX="1.2"
                     android:scaleY="1.2"
-                    android:text="Counting" /> <!-- displayed text of radio button-->
+                    android:text="SHELF" /> <!-- displayed text of radio button-->
                 <RadioButton
                     android:id="@+id/shopping"
                     android:layout_width="wrap_content"
@@ -244,7 +229,7 @@
                     android:checked="false"
                     android:scaleX="1.2"
                     android:scaleY="1.2"
-                    android:text="Shopping" /> <!-- displayed text of radio button-->
+                    android:text="SHOP" /> <!-- displayed text of radio button-->
             </RadioGroup>
 
 

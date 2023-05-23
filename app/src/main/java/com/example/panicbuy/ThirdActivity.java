@@ -55,6 +55,11 @@ public class ThirdActivity extends AppCompatActivity {
 
     public void doFinish(View v){
 
+
+
+
+
+
         finish();
     }
 
