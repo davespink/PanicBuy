@@ -219,7 +219,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public boolean toggleToBuy(String barcode, Context context) {
+    public boolean persistToBuy(String barcode, Context context,String toBuy) {
         try (SQLiteDatabase db = getWritableDatabase()) {
             String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
             Cursor cursor = db.rawQuery(sql, null);
@@ -228,11 +228,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
                 return true;
             }
             cursor.moveToFirst();
-            String toBuy;
-
-            toBuy = cursor.getString(0);
-            if (toBuy.equals("Y")) toBuy = "N";
-            else toBuy = "Y";
 
             ContentValues newValues = new ContentValues();
             newValues.put("tobuy", toBuy);

@@ -4,20 +4,23 @@ package com.example.panicbuy;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-
 import android.annotation.SuppressLint;
 
 import android.content.Intent;
 import android.database.Cursor;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import android.view.ViewGroup;
 
 
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,7 +34,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
-
 
 
 import java.util.List;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     String sFilter;
 
 
+
     DatabaseHelper helper;
     Cursor cursor;
 
@@ -89,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
+
 
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener((group, id) ->
@@ -125,10 +129,10 @@ public class MainActivity extends AppCompatActivity {
             int index = 0;
             this.sFilter = "";
             while (index < group.getChildCount()) {
-                Chip nextChip = (Chip)   group.getChildAt(index);
+                Chip nextChip = (Chip) group.getChildAt(index);
 
                 if (nextChip.isChecked()) {
-                    sFilter = sFilter +   nextChip.getText() + ",";
+                    sFilter = sFilter + nextChip.getText() + ",";
                 }
                 index++;
             }
@@ -149,18 +153,10 @@ public class MainActivity extends AppCompatActivity {
 
             View thisChild = ((ViewGroup) view).getChildAt(1);
             String sBarcode = (String) ((TextView) thisChild).getText();
-            thisChild = ((ViewGroup) view).getChildAt(2);
-            String sDescription = (String) ((TextView) thisChild).getText();
-            thisChild = ((ViewGroup) view).getChildAt(3);
-            String sStockLevel = (String) ((TextView) thisChild).getText();
 
-            ((TextView) (findViewById(R.id.barcodeResultView))).setText(sBarcode);
-            ((TextView) (findViewById(R.id.editTextDescription))).setText(sDescription);
-            ((TextView) (findViewById(R.id.textViewStockLevel))).setText(sStockLevel);
-            ((TextView) (findViewById(R.id.editTextQty))).setText("0");
+            setCurrentItem(sBarcode,null);
 
-
-            refreshDataset();
+            refreshDataset(); //ToDo needed????
         });
 
         (findViewById(R.id.button_c)).setOnLongClickListener((l) -> {
@@ -170,10 +166,24 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
+
     }
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    public void setCurrentItem(String barcode,String toBuy) {
+        Stock s = helper.findBarcode(barcode, this);
+        ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
+        ((TextView) (findViewById(R.id.barcodeResultView))).setText(barcode);
+        ((TextView) (findViewById(R.id.editTextDescription))).setText(s.getDescription());
+        ((TextView) (findViewById(R.id.textViewStockLevel))).setText(s.getStockLevel());
+        ((TextView) (findViewById(R.id.editTextQty))).setText("0");
+        if(toBuy!=null){
+            helper.persistToBuy(barcode,this,toBuy);
+            refreshDataset();
+        }
+    }
 
     public void finishProcess(View v) {
 
@@ -258,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
         String sStockLevel = ((TextView) (findViewById(R.id.textViewStockLevel))).getText().toString();
 
         switch (thisKey) {
+            case "l": {
+                // here we only need to deal with shopping cart
+
+
+                break;
+            }
             case "m":
             case "p":
                 int iQty = Integer.parseInt(sQty);
@@ -278,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_LONG).show();
 
                 // In case its a new one....
-          //      String st = stock.getBarcode();
+                //      String st = stock.getBarcode();
                 ((TextView) findViewById(R.id.barcodeResultView)).setText(stock.getBarcode());
                 break;
             case "s":
@@ -300,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
             case "d":
                 helper.deleteBarcode(sBarcode, this);
                 refreshDataset();
-                 findViewById(R.id.button_c).performClick();
+                findViewById(R.id.button_c).performClick();
                 break;
 
             case "c":
@@ -314,11 +330,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            case "tobuy":
-                helper.toggleToBuy(sBarcode, this);
-                refreshDataset();
-                break;
-
 
             default:
                 Toast.makeText(this, "Unknown button " + thisKey, Toast.LENGTH_SHORT).show();
@@ -328,8 +339,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
 }
+
+
+
+
 
 
 

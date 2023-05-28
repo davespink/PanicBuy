@@ -7,16 +7,22 @@ package com.example.panicbuy;
 //import java.util.ArrayList;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -25,19 +31,25 @@ import android.widget.TextView;
 
 public class StockListAdapter extends CursorAdapter {
 
-
+    Context m_context;
 
     public StockListAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
+
+        m_context = context;
+
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+
         return LayoutInflater.from(context).inflate(R.layout.adapter_view_layout, parent, false);
 
 
     }
 
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // Find fields to populate in inflated template
@@ -47,6 +59,9 @@ public class StockListAdapter extends CursorAdapter {
         TextView tvDescription = (TextView) view.findViewById(R.id.textView_description);
         TextView tvStockLevel = (TextView) view.findViewById(R.id.textView_stocklevel);
         TextView tvToBuy = (TextView) view.findViewById(R.id.textView_toBuy);
+        TextView tvShop = (TextView) view.findViewById(R.id.textView_shop);
+
+
         // Extract properties from cursor
         String barcode = cursor.getString(cursor.getColumnIndexOrThrow("barcode"));
         String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
@@ -57,30 +72,86 @@ public class StockListAdapter extends CursorAdapter {
         // Populate fields with extracted properties
         tvBarcode.setText(barcode);
         tvDescription.setText(description);
+
         tvStockLevel.setText(stockLevel);
         tvToBuy.setText(toBuy);
-/*
-        Activity activity = (Activity) context;
-        boolean shopping = true;
-        Button b = (Button) activity.findViewById(R.id.button_def);
 
-        if (b.getVisibility() == View.VISIBLE)
-            shopping = false;
-        View v = (View) tvBarcode.getParent();
-        if (shopping) {
-            if (toBuy.equals("Y"))
-                v.setBackgroundColor(0x5F00FF00);
-            else
-                v.setBackgroundColor(0xFFFFFFFF);
-        } else v.setBackgroundColor(0xFFFFFFFF);
-*/
-
-        View v = (View) tvBarcode.getParent();
-        if (toBuy.equals("Y"))
-            v.setBackgroundColor(0x5F00FF00);
+        if(toBuy.equals("Y"))
+            view.setBackgroundColor(0x5F00FF00);
         else
-            v.setBackgroundColor(0xFFFFFFFF);
+            view.setBackgroundColor(0xFFFFFFFF);
+
+
+
+
+        // tvToBuy.setOnTouchListener((View v, MotionEvent e) -> {
+        tvShop.setOnClickListener((View v) -> {
+            View vP = (View) v.getParent();
+
+         //   View thisChild = ((ViewGroup) vP).getChildAt(1);
+         //   String sBarcode = (String) ((TextView) thisChild).getText();
+
+            TextView  vToBuy = (TextView)((ViewGroup) vP).getChildAt(4);
+
+
+
+
+            TextView tv = (TextView) v;
+
+            MainActivity ma = (MainActivity) m_context;
+
+
+           // vGP.performContextClick();
+            if (vToBuy.getText().toString().equals("N")) {
+                vP.setBackgroundColor(0x5F00FF00);
+                vToBuy.setText("Y");
+                ma.setCurrentItem(barcode,"Y");
+            } else {
+                vP.setBackgroundColor(0xFFFFFFFF);
+                vToBuy.setText("N");
+                ma.setCurrentItem(barcode,"N");
+            }
+
+            //   return false;
+        });
+
+
     }
+/*
+    public boolean toggleToBuy(String barcode) {
+        try (SQLiteDatabase db = getWritableDatabase()) {
+            String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
+            Cursor cursor = db.rawQuery(sql, null);
+            if (cursor.getCount() < 1) {
+                Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            cursor.moveToFirst();
+            String toBuy;
+
+            toBuy = cursor.getString(0);
+            if (toBuy.equals("Y")) toBuy = "N";
+            else toBuy = "Y";
+
+            ContentValues newValues = new ContentValues();
+            newValues.put("tobuy", toBuy);
+
+            String[] whereArgs = {barcode};
+            db.update("stock", newValues, "barcode = ?", whereArgs);
+
+            cursor.close();
+            db.close();
+
+            return toBuy.equals("Y");
+        } catch (Exception e) {
+            Toast.makeText(context, "Error in toggle tobuy", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+    }
+
+ */
+
 
 }
 
