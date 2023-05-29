@@ -284,11 +284,11 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public boolean downloadDb() {
-        String sourcePath = "/data/data/com.example.panicbuy/databases/panicData"; // Path of file in app folder
+        String sourcePath = "/data/data/com.example.panicbuy/databases/panicData.db"; // Path of file in app folder
         String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/panicData.db";
         File sourceFile = new File(sourcePath);
         File destinationFile = new File(destinationPath);
-
+ //  TODO deal with overwriting existing file
         try {
             FileInputStream inputStream = new FileInputStream(sourceFile);
             FileOutputStream outputStream = new FileOutputStream(destinationFile);

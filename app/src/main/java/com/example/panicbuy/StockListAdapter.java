@@ -76,44 +76,44 @@ public class StockListAdapter extends CursorAdapter {
         tvStockLevel.setText(stockLevel);
         tvToBuy.setText(toBuy);
 
-        if(toBuy.equals("Y"))
+        if (toBuy.equals("Y"))
             view.setBackgroundColor(0x5F00FF00);
         else
             view.setBackgroundColor(0xFFFFFFFF);
 
 
+        tvShop.setOnLongClickListener((l) -> {
+            Toast.makeText(m_context, "Long Press Detected!", Toast.LENGTH_SHORT).show();
+            return true;
+        });
 
 
         // tvToBuy.setOnTouchListener((View v, MotionEvent e) -> {
         tvShop.setOnClickListener((View v) -> {
             View vP = (View) v.getParent();
 
-         //   View thisChild = ((ViewGroup) vP).getChildAt(1);
-         //   String sBarcode = (String) ((TextView) thisChild).getText();
+            //   View thisChild = ((ViewGroup) vP).getChildAt(1);
+            //   String sBarcode = (String) ((TextView) thisChild).getText();
 
-            TextView  vToBuy = (TextView)((ViewGroup) vP).getChildAt(4);
-
-
-
-
-            TextView tv = (TextView) v;
+            TextView vToBuy = (TextView) ((ViewGroup) vP).getChildAt(4);
+;
 
             MainActivity ma = (MainActivity) m_context;
 
 
-           // vGP.performContextClick();
             if (vToBuy.getText().toString().equals("N")) {
                 vP.setBackgroundColor(0x5F00FF00);
                 vToBuy.setText("Y");
-                ma.setCurrentItem(barcode,"Y");
+                ma.setCurrentItem(barcode, "Y");
             } else {
                 vP.setBackgroundColor(0xFFFFFFFF);
                 vToBuy.setText("N");
-                ma.setCurrentItem(barcode,"N");
+                ma.setCurrentItem(barcode, "N");
             }
 
-            //   return false;
-        });
+            });
+
+
 
 
     }
