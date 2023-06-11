@@ -33,7 +33,7 @@ public class SecondActivity extends AppCompatActivity {
             SecondActivity.class.getSimpleName();
     private Stock stock;
     private DatabaseHelper helper;
-    private MyAlertDialog dialog;
+    private TagDialog dialog;
 
     private ChipGroup chipGroup;
 
@@ -118,10 +118,7 @@ public class SecondActivity extends AppCompatActivity {
                 TextView v = (TextView) l;
                 String sTag = v.getText().toString();
 
-                //    chipGroup.removeView(l);
-
-
-                dialog = new MyAlertDialog(this, sTag);
+                dialog = new TagDialog(this, sTag);
                 dialog.show();
 
                 return true;
@@ -147,7 +144,12 @@ public class SecondActivity extends AppCompatActivity {
         chipGroup.addView(chip);
 
         chip.setOnLongClickListener((l) -> {
-            Toast.makeText(this, "Long Press Detected!", Toast.LENGTH_SHORT).show();
+            TextView v2 = (TextView) l;
+            String sTag = v2.getText().toString();
+
+            dialog = new TagDialog(this, sTag);
+            dialog.show();
+
             return true;
         });
 

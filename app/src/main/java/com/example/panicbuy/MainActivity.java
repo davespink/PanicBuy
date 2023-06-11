@@ -74,14 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
     String sFilter;
 
-
-
+    private BuyDialog dialog;
+//    private TagDialog dialog;
     DatabaseHelper helper;
     Cursor cursor;
 
-    //
-    // see https://guides.codepath.com/android/Populating-a-ListView-with-a-CursorAdapter
-    //
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,7 +159,9 @@ public class MainActivity extends AppCompatActivity {
 
         (findViewById(R.id.button_c)).setOnLongClickListener((l) -> {
 
-            Toast.makeText(this, "Long Press Detected!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Long Press Detected! buttons", Toast.LENGTH_SHORT).show();
+
+
             return true;
 
         });
@@ -171,6 +171,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    public void doBuyDialog(String description) {
+        dialog = new BuyDialog(this, description);
+        dialog.show();
+    }
+
+
+    public void dialogButton(View v) {
+
+        dialog.cancel();
+
+
+
+    }
+
 
     public void setCurrentItem(String barcode,String toBuy) {
         Stock s = helper.findBarcode(barcode, this);

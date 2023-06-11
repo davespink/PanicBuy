@@ -201,7 +201,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             Activity activity = (Activity) context;
             RadioButton shopping = (RadioButton) activity.findViewById(R.id.shopping);
             if (shopping.isChecked())
-                sWhere.append(" AND tobuy = ").append("\"Y").append("\"");
+                sWhere.append(" AND tobuy > ").append("\"0").append("\"");
 
 
             String sql = "Select * from stock where " + sWhere + " order by  description  COLLATE NOCASE ASC";
@@ -238,7 +238,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
             db.close();
 
-            return toBuy.equals("Y");
+            return !toBuy.equals("0");
         } catch (Exception e) {
             Toast.makeText(context, "Error in toggle tobuy", Toast.LENGTH_SHORT).show();
             return true;

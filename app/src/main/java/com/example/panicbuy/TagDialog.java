@@ -7,10 +7,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
-public class MyAlertDialog extends AlertDialog {
+public class TagDialog extends AlertDialog {
     private String mText;
 
-    protected MyAlertDialog(Context context, String text) {
+    protected TagDialog(Context context, String text) {
         super(context);
         mText = text;
     }

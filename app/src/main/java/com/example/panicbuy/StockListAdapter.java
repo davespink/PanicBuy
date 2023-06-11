@@ -33,6 +33,8 @@ public class StockListAdapter extends CursorAdapter {
 
     Context m_context;
 
+    private BuyDialog dialog;
+
     public StockListAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
 
@@ -71,19 +73,27 @@ public class StockListAdapter extends CursorAdapter {
 
         // Populate fields with extracted properties
         tvBarcode.setText(barcode);
-        tvDescription.setText(description);
+        tvDescription.setText(description + "  BUY " + toBuy);
 
         tvStockLevel.setText(stockLevel);
         tvToBuy.setText(toBuy);
 
-        if (toBuy.equals("Y"))
-            view.setBackgroundColor(0x5F00FF00);
-        else
+        if (toBuy.equals("0"))
             view.setBackgroundColor(0xFFFFFFFF);
-
+        else
+            view.setBackgroundColor(0x5F00FF00);
 
         tvShop.setOnLongClickListener((l) -> {
-            Toast.makeText(m_context, "Long Press Detected!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(m_context, "Long Press Detected sla!", Toast.LENGTH_SHORT).show();
+
+            MainActivity ma = (MainActivity) m_context;
+            ma.doBuyDialog("Bananas");
+
+            //   dialog = new BuyDialog(m_context, "123");
+            //   dialog.show();
+
+            //  String s = dialog.getText();
+
             return true;
         });
 
@@ -96,61 +106,35 @@ public class StockListAdapter extends CursorAdapter {
             //   String sBarcode = (String) ((TextView) thisChild).getText();
 
             TextView vToBuy = (TextView) ((ViewGroup) vP).getChildAt(4);
-;
+            ;
 
             MainActivity ma = (MainActivity) m_context;
 
 
-            if (vToBuy.getText().toString().equals("N")) {
+            //        if (vToBuy.getText().toString().equals("0")) {
+            if (Utils.viewToInt(vToBuy) == 0) {
                 vP.setBackgroundColor(0x5F00FF00);
-                vToBuy.setText("Y");
-                ma.setCurrentItem(barcode, "Y");
+                vToBuy.setText("1");
+                ma.setCurrentItem(barcode, "1");
             } else {
                 vP.setBackgroundColor(0xFFFFFFFF);
-                vToBuy.setText("N");
-                ma.setCurrentItem(barcode, "N");
+                vToBuy.setText("0");
+                ma.setCurrentItem(barcode, "0");
             }
 
-            });
-
-
+        });
 
 
     }
-/*
-    public boolean toggleToBuy(String barcode) {
-        try (SQLiteDatabase db = getWritableDatabase()) {
-            String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
-            Cursor cursor = db.rawQuery(sql, null);
-            if (cursor.getCount() < 1) {
-                Toast.makeText(context, "NOT FOUND", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            cursor.moveToFirst();
-            String toBuy;
 
-            toBuy = cursor.getString(0);
-            if (toBuy.equals("Y")) toBuy = "N";
-            else toBuy = "Y";
 
-            ContentValues newValues = new ContentValues();
-            newValues.put("tobuy", toBuy);
+    public void dialogButton(View v) {
 
-            String[] whereArgs = {barcode};
-            db.update("stock", newValues, "barcode = ?", whereArgs);
 
-            cursor.close();
-            db.close();
+        dialog.cancel();
 
-            return toBuy.equals("Y");
-        } catch (Exception e) {
-            Toast.makeText(context, "Error in toggle tobuy", Toast.LENGTH_SHORT).show();
-            return true;
-        }
 
     }
-
- */
 
 
 }
