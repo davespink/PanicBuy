@@ -87,7 +87,7 @@ public class StockListAdapter extends CursorAdapter {
             Toast.makeText(m_context, "Long Press Detected sla!", Toast.LENGTH_SHORT).show();
 
             MainActivity ma = (MainActivity) m_context;
-            ma.doBuyDialog("Bananas");
+            ma.doBuyDialog(description,barcode,toBuy);
 
             //   dialog = new BuyDialog(m_context, "123");
             //   dialog.show();

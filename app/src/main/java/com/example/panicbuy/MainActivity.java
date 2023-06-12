@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -172,20 +173,15 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    public void doBuyDialog(String description) {
-        dialog = new BuyDialog(this, description);
+    public void doBuyDialog(String description, String barcode,String qty) {
+        dialog = new BuyDialog(this, helper,description,barcode,qty);
         dialog.show();
-    }
 
+    }
 
     public void dialogButton(View v) {
-
         dialog.cancel();
-
-
-
     }
-
 
     public void setCurrentItem(String barcode,String toBuy) {
         Stock s = helper.findBarcode(barcode, this);
@@ -195,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) (findViewById(R.id.textViewStockLevel))).setText(s.getStockLevel());
         ((TextView) (findViewById(R.id.editTextQty))).setText("0");
         if(toBuy!=null){
-            helper.persistToBuy(barcode,this,toBuy);
+            helper.persistToBuy(this,barcode,toBuy);
             refreshDataset();
         }
     }

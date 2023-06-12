@@ -1,6 +1,7 @@
 package com.example.panicbuy;
 
 import android.content.Context;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -9,11 +10,20 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 public class BuyDialog extends AlertDialog {
-    private String mDescription;
+    DatabaseHelper mHelper;
 
-    protected BuyDialog(Context context, String description) {
+    Context mContext;
+    private String mDescription;
+    private String mBarcode;
+    private String mQty;
+
+    protected BuyDialog(Context context,DatabaseHelper helper,  String description, String barcode, String qty) {
         super(context);
+        mContext = context;
+        mHelper = helper;
         mDescription = description;
+        mBarcode = barcode;
+        mQty = qty;
     }
 
 
@@ -22,21 +32,35 @@ public class BuyDialog extends AlertDialog {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.dialog_buy, null);
 
-        TextView textView = view.findViewById(R.id.stock_desc);
-        textView.setText(mDescription);
+        TextView tvDescription = view.findViewById(R.id.stock_desc);
+        tvDescription.setText(mDescription);
 
-        // ImageButton iButton = view.findViewById(R.id.button_edit);
+        TextView tvQty = view.findViewById(R.id.stock_qty);
+        tvQty.setText(mQty);
 
+        ImageButton bEdit = view.findViewById(R.id.button_edit);
+        ImageButton bCancel = view.findViewById(R.id.button_cancel);
 
-        //  iButton.setOnClickListener((View v) -> {
-        //      mText = "Result";
-        //       super.cancel();
-        //     });
+        bCancel.setOnClickListener((View v) -> {
+
+            super.cancel();
+        });
+
+        bEdit.setOnClickListener((View v) -> {
+           // int qty = Utils.viewToInt(tvQty);
+
+            mHelper.persistToBuy(mContext,mBarcode,tvQty.getText().toString());
+            MainActivity ma = (MainActivity) mContext;
+            ma.refreshDataset();
+            super.cancel();
+        });
 
         setView(view);
 
         super.show();
     }
+
+
 
     @Override
     public void cancel() {
@@ -44,10 +68,6 @@ public class BuyDialog extends AlertDialog {
         //    mText = textView.getText().toString();
 
         super.cancel();
-    }
-
-    public String getText() {
-        return mDescription;
     }
 
 

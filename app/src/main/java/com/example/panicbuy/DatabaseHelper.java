@@ -219,7 +219,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public boolean persistToBuy(String barcode, Context context,String toBuy) {
+    public boolean persistToBuy(Context context,String barcode, String toBuy) {
         try (SQLiteDatabase db = getWritableDatabase()) {
             String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
             Cursor cursor = db.rawQuery(sql, null);

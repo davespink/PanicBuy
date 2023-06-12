@@ -19,19 +19,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginLeft="40dp"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="@string/qtytobuy"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <EditText
             android:id="@+id/stock_qty"
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="#ffffff"
             android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
             android:inputType="number" />
     </LinearLayout>
@@ -40,7 +43,7 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="20dp">
 
         <ImageButton
