@@ -201,7 +201,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
             Activity activity = (Activity) context;
             RadioButton shopping = (RadioButton) activity.findViewById(R.id.shopping);
             if (shopping.isChecked())
-                sWhere.append(" AND tobuy > ").append("\"0").append("\"");
+                sWhere.append(" AND tobuy != 0");
 
 
             String sql = "Select * from stock where " + sWhere + " order by  description  COLLATE NOCASE ASC";
@@ -219,7 +219,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public boolean persistToBuy(Context context,String barcode, String toBuy) {
+    public boolean persistToBuy(Context context, String barcode, String toBuy) {
         try (SQLiteDatabase db = getWritableDatabase()) {
             String sql = String.format("Select tobuy from stock where barcode = '%s'", barcode);
             Cursor cursor = db.rawQuery(sql, null);
@@ -288,7 +288,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
         String destinationPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "/panicData.db";
         File sourceFile = new File(sourcePath);
         File destinationFile = new File(destinationPath);
- //  TODO deal with overwriting existing file
+        //  TODO deal with overwriting existing file
         try {
             FileInputStream inputStream = new FileInputStream(sourceFile);
             FileOutputStream outputStream = new FileOutputStream(destinationFile);

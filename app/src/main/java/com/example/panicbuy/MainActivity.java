@@ -71,6 +71,7 @@ Panic Buy:
 public class MainActivity extends AppCompatActivity {
     GmsBarcodeScanner gmsBarcodeScanner;
 
+
     StockListAdapter adapter;
 
     String sFilter;
@@ -89,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
             this.getSupportActionBar().hide();
         } catch (NullPointerException ignored) {
         }
+
+
+
 
         setContentView(R.layout.activity_main);
 
@@ -235,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (String value : arr) {
             String d = "Fresh " + value;
-            Stock s = new Stock("1", "", d, "0", "N", "0", "", "", "");
+            Stock s = new Stock("1", "", d, "0", "0", "0", "", "", "");
             helper.update(s, this);
 
         }
@@ -298,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                 String sNewStockLevel = String.valueOf(Integer.parseInt(sStockLevel) + Integer.parseInt(sQty));
                 ((TextView) findViewById(R.id.textViewStockLevel)).setText(sNewStockLevel);
 
-                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "n", "0", "", "", "");
+                Stock stock = new Stock("0", sBarcode, sDescription, sNewStockLevel, "0", "0", "", "", "");
                 helper.update(stock, this);
 
                 refreshDataset();

@@ -46,8 +46,6 @@ public class StockListAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
         return LayoutInflater.from(context).inflate(R.layout.adapter_view_layout, parent, false);
-
-
     }
 
 
@@ -73,12 +71,22 @@ public class StockListAdapter extends CursorAdapter {
 
         // Populate fields with extracted properties
         tvBarcode.setText(barcode);
-        tvDescription.setText(description + "  BUY " + toBuy);
+
+        int iToBuy;
+        try {
+            iToBuy = Integer.parseInt(toBuy);
+        } catch (Exception e) {
+            iToBuy = 0;
+        }
+        if (iToBuy > 0)
+            tvDescription.setText(description + "  BUY " + toBuy);
+        else
+            tvDescription.setText(description);
 
         tvStockLevel.setText(stockLevel);
         tvToBuy.setText(toBuy);
 
-        if (toBuy.equals("0"))
+        if (iToBuy == 0)
             view.setBackgroundColor(0xFFFFFFFF);
         else
             view.setBackgroundColor(0x5F00FF00);
@@ -87,7 +95,7 @@ public class StockListAdapter extends CursorAdapter {
             Toast.makeText(m_context, "Long Press Detected sla!", Toast.LENGTH_SHORT).show();
 
             MainActivity ma = (MainActivity) m_context;
-            ma.doBuyDialog(description,barcode,toBuy);
+            ma.doBuyDialog(description, barcode, toBuy);
 
             //   dialog = new BuyDialog(m_context, "123");
             //   dialog.show();
@@ -98,7 +106,6 @@ public class StockListAdapter extends CursorAdapter {
         });
 
 
-        // tvToBuy.setOnTouchListener((View v, MotionEvent e) -> {
         tvShop.setOnClickListener((View v) -> {
             View vP = (View) v.getParent();
 
